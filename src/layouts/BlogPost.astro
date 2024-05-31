@@ -1,22 +1,22 @@
 ---
-import type { CollectionEntry } from 'astro:content'
-import FormattedDate from '@/components/FormattedDate'
-import BaseLayout from '@/layouts/BaseLayout'
-import Tag from '@/components/Tag'
-import type { MarkdownHeading } from 'astro'
-import { Image } from 'astro:assets'
+import type { CollectionEntry } from "astro:content";
+import FormattedDate from "@/components/FormattedDate";
+import BaseLayout from "@/layouts/BaseLayout";
+import Tag from "@/components/Tag";
+import type { MarkdownHeading } from "astro";
+import { Image } from "astro:assets";
 
 type Props = {
-	id: CollectionEntry<'blog'>['id']
-	data: CollectionEntry<'blog'>['data']
-	headings: MarkdownHeading[]
-	readTime: string
-}
+	id: CollectionEntry<"blog">["id"];
+	data: CollectionEntry<"blog">["data"];
+	headings: MarkdownHeading[];
+	readTime: string;
+};
 
-const { data, readTime, headings, id } = Astro.props
-const { title, description, pubDate, heroImage, tags } = data
+const { data, readTime, headings, id } = Astro.props;
+const { title, description, publishDate, updatedDate, heroImage, tags } = data;
 
-const articleDate = pubDate.toISOString()
+const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 ---
 
 <BaseLayout
@@ -25,24 +25,31 @@ const articleDate = pubDate.toISOString()
 	image={heroImage?.src}
 	articleDate={articleDate}
 >
-	<article class='min-w-full md:py-4 sm:max-w-none md:max-w-none'>
-		<header class='mb-3 flex flex-col justify-center items-center gap-6'>
-			<div class='flex flex-col gap-2'>
-				<div class='flex items-center justify-center gap-x-1'>
-					<p class='text-center text-sm text-opacity-50'>
-						Published <FormattedDate date={pubDate} />
-					</p>
-					<p class='text-center text-sm text-opacity-50 font-bold'>
-						- {readTime}
-					</p>
-				</div>
-				<h1 class='text-center text-4xl md:text-6xl md:pb-2.5 font-semibold'>
+	<article class="min-w-full sm:max-w-none md:max-w-none md:py-4">
+		<header class="mb-3 flex flex-col items-center justify-center gap-6">
+			<div class="flex flex-col gap-2">
+				<h1 class="text-center text-4xl font-semibold md:pb-2.5 md:text-6xl">
 					{title}
 				</h1>
 			</div>
-
-			<div class='flex flex-wrap justify-center items-center gap-2 gap-y-4 md:gap-5'>
+			<div class="flex flex-wrap items-center justify-center gap-2 gap-y-4 md:gap-5">
 				{tags.map((tag) => <Tag tag={tag} />)}
+			</div>
+			<div class="flex items-center justify-center gap-x-1">
+				<p class="text-center text-sm text-opacity-50">
+					<FormattedDate date={publishDate} />
+				</p>
+				<p class="text-center text-sm font-bold text-opacity-50">
+					- {readTime}
+				</p>
+				{
+					data.updatedDate && (
+						<span class="bg-quote/10 text-quote rounded-lg p-1">
+							Last Updated:
+							<FormattedDate class="ms-1" date={data.updatedDate} />
+						</span>
+					)
+				}
 			</div>
 		</header>
 
@@ -54,9 +61,9 @@ const articleDate = pubDate.toISOString()
 						width={1000}
 						height={500}
 						quality={100}
-						format='jpg'
-						loading='eager'
-						class='rounded-md w-full max-h-[300px]  md:max-h-[500px] my-8 object-cover'
+						format="jpg"
+						loading="eager"
+						class="my-8 max-h-[300px] w-full rounded-md object-cover md:max-h-[500px]"
 						alt={`img of ${title}`}
 					/>
 				)
@@ -69,57 +76,82 @@ const articleDate = pubDate.toISOString()
 			<slot />
 		</div>
 	</article>
+	<button
+		aria-label="Back to Top"
+		class="z-90 fixed bottom-8 end-4 flex h-10 w-10 translate-y-28 items-center justify-center rounded-full border-2 border-transparent bg-zinc-200 text-3xl opacity-0 transition-all duration-300 hover:border-zinc-400 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 dark:bg-zinc-700 sm:end-8 sm:h-12 sm:w-12"
+		data-show="false"
+		id="to-top-btn"
+		style="opacity: 1;--tw-translate-y: -26px;
+		transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));"
+		><svg
+			aria-hidden="true"
+			class="h-6 w-6"
+			fill="none"
+			focusable="false"
+			stroke="currentColor"
+			stroke-width="2"
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path d="M4.5 15.75l7.5-7.5 7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+		</svg>
+	</button>
 </BaseLayout>
 
 <script>
 	const fnObserver = () => {
 		function handleIntersection(
 			entries: IntersectionObserverEntry[],
-			observer: IntersectionObserver
+			observer: IntersectionObserver,
 		) {
 			entries.forEach((entry) => {
-				const index = document.querySelector(`aside a[href="#${entry.target.id}"]`)
+				const index = document.querySelector(`aside a[href="#${entry.target.id}"]`);
 
 				if (entry.isIntersecting) {
-					index?.classList.remove('bg-slate-200', 'dark:bg-slate-800') // remove bg
+					index?.classList.remove("bg-slate-200", "dark:bg-slate-800"); // remove bg
 					index?.classList.add(
-						'bg-indigo-600',
-						'dark:bg-indigo-700',
-						'text-white',
-						'font-bold',
-						'transition-colors',
-						'duration-200'
-					)
+						"bg-indigo-600",
+						"dark:bg-indigo-700",
+						"text-white",
+						"font-bold",
+						"transition-colors",
+						"duration-200",
+					);
 				} else {
-					index?.classList.add('bg-slate-200', 'dark:bg-slate-800') // add bg
+					index?.classList.add("bg-slate-200", "dark:bg-slate-800"); // add bg
 					index?.classList.remove(
-						'bg-indigo-600',
-						'dark:bg-indigo-700',
-						'text-white',
-						'font-bold',
-						'transition-colors',
-						'duration-200'
-					)
+						"bg-indigo-600",
+						"dark:bg-indigo-700",
+						"text-white",
+						"font-bold",
+						"transition-colors",
+						"duration-200",
+					);
 				}
-			})
+			});
 		}
 
 		const headings = document.querySelectorAll(
-			'div.prose h1, div.prose h2, div.prose h3, div.prose h4, div.prose h5, div.prose h6'
-		)
+			"div.prose h1, div.prose h2, div.prose h3, div.prose h4, div.prose h5, div.prose h6",
+		);
 
 		const options = {
 			root: null,
-			rootMargin: ' 15% 0px 0% 0px ',
-			threshold: 1
-		}
+			rootMargin: " 15% 0px 0% 0px ",
+			threshold: 1,
+		};
 
-		const observer = new IntersectionObserver(handleIntersection, options)
+		const observer = new IntersectionObserver(handleIntersection, options);
 
 		headings.forEach((heading) => {
-			observer.observe(heading)
-		})
-	}
-	fnObserver()
-	document.addEventListener('astro:after-swap', fnObserver)
+			observer.observe(heading);
+		});
+	};
+	fnObserver();
+	document.addEventListener("astro:after-swap", fnObserver);
+
+	const scrollBtn = document.getElementById("to-top-btn") as HTMLButtonElement;
+	scrollBtn.addEventListener("click", () => {
+		document.documentElement.scrollTo({ behavior: "smooth", top: 0 });
+	});
 </script>

@@ -24,17 +24,33 @@
 	html.dark .shiki,
 	html.dark .shiki span {
 	  color: var(--shiki-dark) !important;
-	  background-color: theme(colors.gray.900) !important;
+	  background-color: var(--colors-gray-900) !important;
 	}
 }
 
 .glass {
-	background: rgba(57, 56, 56, 0.52);
-	backdrop-filter: blur(13px) saturate(150%);
+	/* background: rgba(57, 56, 56, 0.52); */
+	backdrop-filter: blur(0px) saturate(150%);
 	-webkit-backdrop-filter: blur(13px) saturate(150%);
 	z-index: -1;
 }
 
 .shadow {
 	box-shadow: -5px 3px 8px 1px rgba(0, 0, 0, 0.12);
+}
+
+.text-quote {
+  color: hsl(351deg 66% 48% / 1);
+}
+
+.p-1 {
+  padding: .25rem;
+}
+
+.bg-quote\/10 {
+  background-color: hsl(351deg 66% 48% / .1);
+}
+
+.rounded-lg {
+  border-radius: .5rem;
 }

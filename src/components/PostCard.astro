@@ -1,64 +1,64 @@
 ---
-import { Image } from 'astro:assets'
-import FormattedDate from '@/components/FormattedDate'
-import ArrowUp from '@/components/icons/ArrowUp'
+import { Image } from "astro:assets";
+import FormattedDate from "@/components/FormattedDate";
+import ArrowUp from "@/components/icons/ArrowUp";
 
 const {
 	id,
-	data: { title, description, pubDate, heroImage, category },
+	data: { title, description, publishDate, updatedDate, heroImage, category },
 	readTime,
-	slug
-} = Astro.props
+	slug,
+} = Astro.props;
 ---
 
-<article class='grid grid-rows-[300px_auto] md:grid-rows-[300px_220px] min-h-full group'>
-	<a class='relative overflow-hidden' href={`/post/${slug}/`}>
+<article class="group grid min-h-full grid-rows-[300px_auto] md:grid-rows-[300px_220px]">
+	<a class="relative overflow-hidden" href={`/post/${slug}/`}>
 		<Image
 			src={heroImage}
 			width={600}
 			height={200}
-			format='webp'
-			class='h-full min-w-full object-cover hover:scale-[101%] transition-all duration-200 rounded-[2px]'
+			format="webp"
+			class="h-full min-w-full rounded-[2px] object-cover transition-all duration-200 hover:scale-[101%]"
 			alt={`img of ${title}`}
 		/>
 
-		<div class='z-30 absolute bottom-0 w-full h-20'>
-			<div class='-z-10 absolute bottom-0 glass w-full min-h-full'></div>
-			<div class='flex items-center justify-between gap-x-1 text-white px-6 py-4'>
-				<div class='flex flex-col gap-1 items-center justify-center'>
-					<FormattedDate date={pubDate} />
-					<span class='text-sm'> {readTime}</span>
+		<div class="absolute bottom-0 z-30 h-20 w-full">
+			<div class="glass absolute bottom-0 -z-10 min-h-full w-full"></div>
+			<div class="flex items-center justify-between gap-x-1 px-6 py-4 text-white">
+				<div class="flex flex-col items-center justify-center gap-1">
+					<FormattedDate date={updatedDate} />
+					<span class="text-sm"> {readTime}</span>
 				</div>
 
-				<span class='pb-4'>{category}</span>
+				<span class="pb-4">{category}</span>
 			</div>
 		</div>
 	</a>
 
-	<div class='flex justify-between flex-col gap-4 md:gap-0 py-6 pl-1'>
-		<div class='flex flex-col gap-3'>
-			<div class='flex flex-col gap-2'>
-				<a class='text-2xl font-semibold -tracking-wider' href={`/post/${slug}/`}>
+	<div class="flex flex-col justify-between gap-4 py-6 pl-1 md:gap-0">
+		<div class="flex flex-col gap-3">
+			<div class="flex flex-col gap-2">
+				<a class="text-2xl font-semibold -tracking-wider" href={`/post/${slug}/`}>
 					{title}
 				</a>
 			</div>
 
 			<p
-				class='overflow-hidden line-clamp-3 text-gray-700 dark:text-white mb-5 font-[400] md:pr-[15%]'
+				class="mb-5 line-clamp-3 overflow-hidden font-[400] text-gray-700 dark:text-white md:pr-[15%]"
 			>
 				{description}
 			</p>
 		</div>
 
-		<footer class='flex justify-between items-center'>
+		<footer class="flex items-center justify-between">
 			<a
 				href={`/post/${slug}/`}
-				class='flex justify-center items-center dark:text-white rounded-full hover:translate-x-1 transition-transform duration-150 ease-in-out font-semibold gap-1 group'
+				class="group flex items-center justify-center gap-1 rounded-full font-semibold transition-transform duration-150 ease-in-out hover:translate-x-1 dark:text-white"
 				aria-label={`go to ${title}`}
 			>
 				Read Post <span
-					class='mt-[1px] group-hover:rotate-45 transition-transform duration-250 ease-in-out'
-					><ArrowUp width='18' height='18' /></span
+					class="duration-250 mt-[1px] transition-transform ease-in-out group-hover:rotate-45"
+					><ArrowUp width="18" height="18" /></span
 				>
 			</a>
 		</footer>
@@ -66,26 +66,26 @@ const {
 </article>
 
 <script>
-	import { animate } from 'motion'
+	import { animate } from "motion";
 
-	const images = document.querySelectorAll('img')
+	const images = document.querySelectorAll("img");
 
-	document.addEventListener('DOMContentLoaded', function () {
-		const showAnimations = localStorage.getItem('animations') === 'true'
+	document.addEventListener("DOMContentLoaded", function () {
+		const showAnimations = localStorage.getItem("animations") === "true";
 
 		if (showAnimations) {
 			animate(
-				'.effect',
+				".effect",
 				{
 					opacity: [0, 1],
-					clipPath: ['circle(0% at 0% 0%)', 'circle(100% at 50% 50%)']
+					clipPath: ["circle(0% at 0% 0%)", "circle(100% at 50% 50%)"],
 				},
-				{ duration: 2, easing: 'ease' }
-			)
+				{ duration: 2, easing: "ease" },
+			);
 		} else {
 			images.forEach((img) => {
-				img.classList.remove('opacity-0')
-			})
+				img.classList.remove("opacity-0");
+			});
 		}
-	})
+	});
 </script>

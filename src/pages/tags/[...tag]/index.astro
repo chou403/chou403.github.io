@@ -1,21 +1,22 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout'
-import ListPosts from '@/components/ListPosts'
-import TitlePage from '@/components/TitlePage'
-import { getTags, getPostByTag } from '@/utils'
+import BaseLayout from "@/layouts/BaseLayout";
+import ListPosts from "@/components/ListPosts";
+import TitlePage from "@/components/TitlePage";
+import { getTags, getPostByTag } from "@/utils";
+import { any } from "astro/zod";
 
 export async function getStaticPaths() {
-	const tags = await getTags()
+	const tags = await getTags();
 
 	return tags.map((tag) => ({
 		params: { tag },
-		props: { tag }
-	}))
+		props: { tag },
+	}));
 }
 
-const { tag } = Astro.props
+const { tag } = Astro.props;
 
-const posts = await getPostByTag(tag)
+const posts = await getPostByTag(tag);
 ---
 
 <BaseLayout title={tag}>
