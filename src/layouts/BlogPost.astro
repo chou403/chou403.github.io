@@ -44,9 +44,9 @@ const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 				</p>
 				{
 					data.updatedDate && (
-						<span class="bg-quote/10 text-quote rounded-lg p-1">
+						<span class="text-quote rounded-lg p-1">
 							Last Updated:
-							<FormattedDate class="ms-1" date={data.updatedDate} />
+							<FormattedDate date={data.updatedDate} />
 						</span>
 					)
 				}
@@ -106,7 +106,6 @@ const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 		) {
 			entries.forEach((entry) => {
 				const index = document.querySelector(`aside a[href="#${entry.target.id}"]`);
-
 				if (entry.isIntersecting) {
 					index?.classList.remove("bg-slate-200", "dark:bg-slate-800"); // remove bg
 					index?.classList.add(
@@ -127,6 +126,17 @@ const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 						"transition-colors",
 						"duration-200",
 					);
+				}
+
+				// 右侧内容滚动 左侧活动菜单到大小时，滚动到对应位置
+				const rect = index?.getBoundingClientRect();
+				if (!rect) return;
+				if (rect.top < 0 || rect.bottom > window.innerHeight) {
+					const sidebar = document.querySelector(".sidebar");
+					const sidebarRect = sidebar?.getBoundingClientRect();
+					if (!sidebarRect || !sidebar) return;
+					const scrollOffset = rect.top - sidebarRect.top - sidebar.clientHeight / 2;
+					sidebar.scrollTop += scrollOffset;
 				}
 			});
 		}

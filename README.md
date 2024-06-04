@@ -1,145 +1,104 @@
-<div align="center">
+# 提要
 
-<img src="public/project.png" alt="Screenshot" />
+此 Blog 基于 astro + tina cms + tailwindcss + typescript
 
-<hr/>
+## 内容
 
-<h3 align="center">
- ⭐ Leave a star if you like this project! ⭐️
-</h3>
+1. [Features](#-特性)
+2. [Roadmap](#-发展路线图)
+3. [Stack](#-技术栈)
+4. [Running locally](#-本地运行)
+5. [Configure](#-配置步骤)
+6. [Categories](#-添加分类)
+7. [Posts](#-添加文章)
+8. [Draft](#-启用草稿模式)
+9. [FrontMatter](#-前言信息)
+10. [CLI](#-命令)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fdanielcgilibert%2Fblog-template)
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/danielcgilibert/blog-template)
+## 💪 特性
 
-</div>
+✅ 极简风格
+✅ 移动响应式设计
+✅ Lighthouse 性能评分100/100
+✅ 通过规范 URL 和 OpenGraph 数据实现 SEO 优化
+✅ Sitemap 支持
+✅ RSS 订阅支持
+✅ Markdown 和 MDX 格式支持
+✅ 代码高亮显示
+✅ 图片优化
+✅ 目录导航
+✅ 暗黑模式
+✅ 阅读时间显示
+✅ Pagefind 静态搜索库集成
+✅ 相关文章推荐
+✅ 分享文章（LinkedIn, Twitter）
+✅ 草稿模式
+✅ 复制代码块功能
+✅ 仓库内的 CMS 系统（Tina CMS）
+✅ 分页功能
+✅ 视图过渡效果
+✅ 最近一次更新时间（新添加）
+✅ 菜单栏动态滚动（新添加）
 
-## 📌 Table Of Contents
+## 🛣️ 发展路线图
 
-1. [Demo](#-Demo)
-2. [CMS](#-Tina-CMS)
-3. [Features](#-Features)
-4. [Roadmap](#-Roadmap)
-5. [Stack](#-Stack)
-6. [Running locally](#-Running-Locally)
-7. [Configure](#-Configure)
-8. [Categories](#-Adding-a-category)
-9. [Posts](#-Adding-a-post)
-10. [Draft](#-Activating-draft-mode)
-11. [FrontMatter](#-Frontmatter)
-12. [CLI](#-Commands)
-13. [Contributors](#-Contributors)
+❌ 添加文章作者信息
+❌ 添加自定义颜色设置
+❌ 添加按阅读时间、日期等筛选功能
+❌ 更多分享选项
+❌ 国际化（i18n）
 
-## 💻 Demo
+## ⚙️ 技术栈
 
-Check out the [Demo](https://blog-template-gray.vercel.app/), hosted on Vercel
-<br/>
+- [**ASTRO** + **Typescript**](https://astro.build/) - Astro 是一个专为速度设计的全合一网页框架。
+- [**Tailwind CSS** + **Tailwind-Merge** + **clsx**](https://tailwindcss.com/) - Tailwind CSS 是一个以实用优先的 CSS 框架。
+- [**Tabler Icons**](https://tabler-icons.io/i/) - 一套开源的 SVG 图标集。
+- [**Eslint**](https://eslint.org/) - Eslint 是一个开源项目，帮助您发现并修复代码问题。
+- [**Prettier**](https://prettier.io/) - 代码格式化工具。
+- [**Search Library**](https://pagefind.app/) - 静态搜索库集成。
+- [**Motion**](https://motion.dev/) - Motion One 是网络上最小巧但功能齐全的动画库。
+- [**Tina CMS**](https://tina.io/) - 内容管理系统。
 
-https://github.com/danielcgilibert/blog-template/assets/44746462/56b8399e-cc5b-45a8-b9d2-d69833ecadb1
+## 👨🏻‍💻 本地运行
 
-## 🦙 Tina CMS
+**推荐的 VSCode 扩展:**
 
-By default, this template comes pre-configured with Tina CMS.
-
-Now you can create your posts directly from the CMS without the need to do it manually.
-
-If you decide to use Tina, it's not necessary to add any properties to the Markdown files, Tina does it automatically.
-
-Example:
-
-https://github.com/danielcgilibert/blog-template/assets/44746462/51ae324c-d383-40be-9b16-db159d1af15d
-
-The documentation for Tina CMS can be found [here](https://tina.io/docs/)
-
-> Tina is completely optional, and you can remove it, and it will still function in the same way.
-
-## 💪 Features:
-
-<p align="center">
-  <a href="https://pagespeed.web.dev/analysis/https-blog-template-gray-vercel-app/7ovjfewos9?form_factor=mobile">
-    <img width="510" alt="openblog Lighthouse Score" src="public/openblog-lighthouse-score.svg">
-  <a>
-</p>
-    
-- ✅ Minimal styling
-- ✅ Mobile responsive
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-- ✅ Syntax highlighting
-- ✅ Image optimization
-- ✅ Table of contents
-- ✅ Dark mode
-- ✅ Reading Time
-- ✅ [Pagefind](https://pagefind.app/) static search library integration
-- ✅ Related posts
-- ✅ Share posts (Linkedin, twitter)
-- ✅ Draft mode
-- ✅ Copy code block
-- ✅ CMS in the repository (Tina CMS)
-- ✅ Pagination
-- ✅ ViewTransition (new)
-
-## 🛣️ Roadmap
-
-- ❌ Add post author
-- ❌ Add customization with colors
-- ❌ Add filters for reading time, date...
-- ❌ More sharing options
-- ❌ Internationalization (i18n)
-
-## ⚙️ Stack
-
-- [**ASTRO** + **Typescript**](https://astro.build/) - Astro is the all-in-one web framework designed for speed.
-- [**Tailwind CSS** + **Tailwind-Merge** + **clsx**](https://tailwindcss.com/) - Tailwind CSS is a utility-first CSS framework.
-- [**Tabler Icons**](https://tabler-icons.io/i/) - A open source SVG icons.
-- [**Eslint**](https://eslint.org/) - ESLint is an open source project that helps you find and fix problems.
-- [**Prettier**](https://prettier.io/) - Code formatter.
-- [**Search Library**](https://pagefind.app/) - Static search library integration.
-- [**Motion**](https://motion.dev/) - Motion One is the smallest fully-featured animation library for the web.
-- [**Tina CMS**](https://tina.io/) - CMS.
-
-## 👨🏻‍💻 Running Locally
-
-**Recommended extensions for VSCode:**
-
-- [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss).
+- [Tailwind CSS 智能感知](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss).
 - [Astro](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode).
 
-1. Clone or [fork](https://github.com/danielcgilibert/blog-template/fork) the repository:
+1. 克隆或者 [fork](https://github.com/chou401/chou401.github.io/fork) 仓库
 
 ```bash
-git@github.com:danielcgilibert/blog-template.git
+git@github.com:chou401/chou401.github.io.git
 ```
 
-2. Install dependencies:
+2. 安装依赖:
 
 ```bash
 pnpm install
 ```
 
-3. Run the development server:
+3. 本地启动:
 
 ```bash
 pnpm dev
 ```
 
-## 📐 Configure
+## 📐 配置步骤
 
-- Edit the configuration file **src/data/site.config.ts** for the basic blog metadata.
-- Update the **astro.config.mjs** file at the root of the project with your own domain.
-- Modify the files in the **/public** folder:
-  - favicon
-  - robots.txt -> update the Sitemap url to your own domain
-  - open-graph -> the open-graph is the image that will be displayed when sharing the blog link. For posts, the preview image is the post cover.
-- Edit the social networks in the Header component - **src/components/Header.astro**, change the URL to your social network.
+- 编辑基本博客元数据的配置文件 **src/data/site.config.ts**。
+- 根据您的个人域名更新项目根目录下的 **astro.config.mjs** 文件。
+- 修改 **/public** 文件夹中的文件：
+  - favicon（网站图标）
+  - robots.txt -> 将其中的 Sitemap URL 更新为您的个人域名。
+  - open-graph -> open-graph 图像是在分享博客链接时展示的图片。对于帖子而言，预览图即是帖子的封面图。
+- 在头部组件 **src/components/Header.astro** 中编辑社交网络信息，将链接更改为您的社交网络地址。
 
-## 🗂️ Adding a category
+## 🗂️ 添加分类
 
-To add a new category to your blog, simply go to the src/data/categories.ts file and add it to the array.
+要向博客中添加新的分类，只需前往 `src/data/categories.ts` 文件，并将其添加到数组中。
 
-Example:
+示例:
 
 ```ts
 export  const  CATEGORIES  =  [
@@ -149,65 +108,64 @@ export  const  CATEGORIES  =  [
 ]  as  const
 ```
 
-> 🚨 Zod checks whether the category is not correctly written or does not exist in the properties of the markdown document. **It will throw an error when building the application.** 🚨
+> ⚠️ Zod 检查 markdown 文档的属性中分类是否书写不正确或不存在。**在构建应用程序时，这将抛出错误。** ⚠️
 
-## 📄 Adding a post
+## 📄 添加文章
 
-Adding a post is as simple as adding a .md or .mdx file to the blog folder at the path **src/content/blog**. The filename will be used to create the slug/URL of the page.
+添加文章就像在路径 **src/content/blog** 的博客文件夹中添加 .md 或 .mdx 文件一样简单。文件名将用于生成页面的slug/URL。
 
-For example, if you have a file named **jsx-and-react.md**, it will be transformed into: **http://yourdomain.com/post/jsx-and-react/**
+例如，如果你有一个名为 **jsx-and-react.md** 的文件，它将转换为：http `http://yourdomain.com/post/jsx-and-react/`
 
-## 📝 Activating draft mode
+## 📝 启用草稿模式
 
-To activate draft mode, add the property **draft: true** to the file, and it will no longer be displayed on the blog.
+要启用草稿模式，在文件中添加属性 **draft: true**，这样文章就不会再显示在博客上了。
 
-Example :
+示例 :
 
 ```ts
-title: MacBook Pro 2022
-description: 'The new MacBook Pro 2022 is here. With the Apple M2 chip, a new design, and more, the new MacBook Pro is the best laptop Apple has ever made.'
-publishDate: 'Jul 02 2022'
-heroImage: '../../assets/bg.jpg'
-category: 'Category 1'
-tags: ['JavaScript', 'css', 'HTML5', 'GitHub']
+author: chou401
+publishDate: 2022-09-25T15:20:35Z
+updatedDate: 2024-02-22T00:37:27Z
+title: CompletableFuture
+heroImage: ../../assets/images/cat-3.jpeg
+category: Java
+tags:
+  - java
+  - thread
+description: CompletableFuture 线程处理代码片段
 draft: true <---
 ```
 
-## ⚡️ Frontmatter
+## ⚡️ 前言信息
 
-## Required properties:
+## 必需属性
 
-- Title
-- Description
-- publishDate
-- heroImage (post cover)
-- category (Choose a category from src/data/categories.ts)
+- 标题
+- 描述
+- 发布日期
+- 更新日期
+- 封面图片（post cover）
+- 分类（从 src/data/categories.ts 中选择）
 
-## Optional properties:
+## 可选属性
 
-- draft (no need to include it, by default it's false)
-- tags
+- 草稿（无需包含，默认为 false）
+- 标签
 
-> The schema for posts is located at src/content/config.ts. You can modify any parameter, for example, by adding a maximum of 80 characters for titles: title: z.string().max(80).
-> For more information, refer to the zod documentation.
+> 文章的架构位于 src/content/config.ts。你可以修改任何参数，例如，限制标题最多80个字符：title: z.string().max(80)。
+> 更多信息，请参阅 zod 文档。
 
-## 🧞 Commands
+## 🧞 命令
 
-All commands are run from the root of the project, from a terminal:
+所有命令都需要在项目的根目录下，通过终端执行：
 
-| Command                 | Action                                                                                                                           |
-| :---------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm install`          | Installs dependencies                                                                                                            |
-| `pnpm run dev`          | Starts local dev server at `localhost:3000`                                                                                      |
-| `pnpm run build`        | Build your production site to `./dist/`                                                                                          |
-| `pnpm run preview`      | Preview your build locally, before deploying                                                                                     |
-| `pnpm run format:check` | Check code format with Prettier                                                                                                  |
-| `pnpm run format`       | Format codes with Prettier                                                                                                       |
-| `pnpm run sync`         | Generates TypeScript types for all Astro modules. [Learn more](https://docs.astro.build/en/reference/cli-reference/#astro-sync). |
-| `pnpm run lint`         | Lint with ESLint                                                                                                                 |
-
-## 👋 Contributors
-
-<a href="https://github.com/danielcgilibert/blog-template/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=danielcgilibert/blog-template" />
-</a>
+| 命令                    | 动作                                                                                                                 |
+| :---------------------- | :------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install`          | 安装依赖                                                                                                             |
+| `pnpm run dev`          | 启动本地开发服务器于 `localhost:3000`                                                                                |
+| `pnpm run build`        | 构建生产环境的网站至 `./dist/`                                                                                       |
+| `pnpm run preview`      | 在本地预览构建，部署前检查效果                                                                                       |
+| `pnpm run format:check` | 使用 Prettier 检查代码格式                                                                                           |
+| `pnpm run format`       | 使用 Prettier 格式化代码                                                                                             |
+| `pnpm run sync`         | 为所有 Astro 模块生成 TypeScript 类型。 [了解更多](https://docs.astro.build/en/reference/cli-reference/#astro-sync). |
+| `pnpm run lint`         | 使用 ESLint 进行代码检查                                                                                             |

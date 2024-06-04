@@ -11,7 +11,8 @@ export default defineConfig({
 		remarkPlugins: [remarkReadingTime],
 		drafts: true,
 		shikiConfig: {
-			theme: 'material-theme-palenight',
+      // material-theme-palenight -> one-dark-pro
+			theme: 'one-dark-pro',
 			wrap: true
 		}
 	},
@@ -20,8 +21,10 @@ export default defineConfig({
 			syntaxHighlight: 'shiki',
 			shikiConfig: {
 				experimentalThemes: {
-					light: 'vitesse-light',
-					dark: 'material-theme-palenight',
+          // vitesse-light -> one-dark-pro
+					light: 'one-dark-pro',
+          // material-theme-palenight -> one-dark-pro
+					dark: 'one-dark-pro',
 				  },
 				wrap: true
 			},

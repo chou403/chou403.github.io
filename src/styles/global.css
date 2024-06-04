@@ -40,7 +40,7 @@
 }
 
 .text-quote {
-  color: hsl(351deg 66% 48% / 1);
+  color: hsl(351deg 100% 50%);
 }
 
 .p-1 {
@@ -53,4 +53,9 @@
 
 .rounded-lg {
   border-radius: .5rem;
+}
+
+.sidebar {
+  height: 100%;
+  overflow-y: auto;
 }
