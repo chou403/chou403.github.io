@@ -57,6 +57,12 @@ export default defineConfig({
 						required: true,
 					},
 					{
+						type: "datetime",
+						name: "updatedDate",
+						label: "Updated Date",
+						required: true,
+					},
+					{
 						name: "draft",
 						label: "Draft",
 						type: "boolean",
