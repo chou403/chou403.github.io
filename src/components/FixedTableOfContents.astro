@@ -1,0 +1,83 @@
+---
+import TableOfContentsHeading from "@/components/TabletOfContentsHeading";
+import CloseNavigation from "@/components/icons/CloseNavigationIcon";
+
+const { headings } = Astro.props;
+
+type TableOfContent = {
+	depth: number;
+	text: string;
+	slug: string;
+	subheadings: TableOfContent[];
+};
+
+const toc = buildToc(headings);
+function buildToc(headings: TableOfContent[]) {
+	let toc: TableOfContent[] = [];
+	let parentHeadings = new Map();
+	headings.forEach((h) => {
+		let heading = { ...h, subheadings: [] };
+		parentHeadings.set(heading.depth, heading);
+		// Change 2 to 1 if your markdown includes your <h1>
+		if (heading.depth === 1 || heading.depth === 2) {
+			toc.push(heading);
+		} else {
+			parentHeadings.get(heading.depth - 1).subheadings.push(heading);
+		}
+	});
+	return toc;
+}
+---
+
+<div>
+	<div
+		class="fixed inset-0 z-50 hidden"
+		id="headlessui-dialog-:Rlb6:"
+		role="dialog"
+		aria-modal="true"
+		data-headlessui-state="open"
+	>
+		<div
+			class="fixed inset-0 bg-black/20 backdrop-blur-sm dark:bg-slate-900/80"
+			id=""
+			aria-hidden="true"
+			data-headlessui-state="open"
+		>
+		</div>
+		<div
+			class="relative w-80 max-w-[calc(100%-3rem)] bg-white p-6 dark:bg-slate-800"
+			id="toc_content"
+		>
+			<button
+				id="close-dialog-page"
+				type="button"
+				class="absolute right-5 top-5 z-10 flex h-8 w-8 items-center justify-center text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300"
+				tabindex="0"
+				><span class="sr-only">Close navigation</span>
+				<CloseNavigation />
+			</button>
+			<nav class="h-[62rem] max-w-xs dark:text-black">
+				<h1 class="mb-3 text-2xl font-bold dark:text-white">On this page</h1>
+				<ul class="sidebar flex flex-col gap-4 [text-wrap:balance]">
+					{toc.map((heading) => <TableOfContentsHeading heading={heading} />)}
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+
+<script>
+	const dialog = document.getElementById("headlessui-dialog-:Rlb6:");
+	const closeDialog = document.getElementById("close-dialog-page");
+	dialog?.addEventListener("click", function (event) {
+		const blackArea = document.querySelector("#toc_content");
+		if (!blackArea || blackArea.contains(event.target as Node)) return;
+		close();
+	});
+	closeDialog?.addEventListener("click", function (event) {
+		close();
+	});
+	function close() {
+		dialog?.classList.add("hidden");
+	}
+</script>

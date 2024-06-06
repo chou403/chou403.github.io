@@ -5,6 +5,7 @@ import Code from "@/components/mdx/Code";
 import ListRelatedPosts from "@/components/ListRelatedPosts";
 import Share from "@/components/Share";
 import TableOfContents from "@/components/TableOfContents";
+import FixedTableOfContents from "@/components/FixedTableOfContents";
 import { getPosts } from "@/utils";
 import SButton from "@/components/mdx/SButton";
 import Disqus from "@/components/Disqus";
@@ -46,12 +47,9 @@ const disqusEnabled = disqusConfig.enabled;
 >
 	<div class="mt-8 grid grid-cols-1 gap-10 md:grid-cols-[20%_auto]">
 		<!-- aside  -->
-		<aside class="hidden flex-col gap-8 bg-[#f8f9fa] dark:bg-[#0a0910] md:flex" id="menu-aside">
+		<aside class="hidden flex-col gap-8 bg-[#f8f9fa] dark:bg-[#0a0910] md:flex">
 			<!-- <Share /> -->
-			<div
-				class="sticky top-12 z-10 hidden self-start transition-all duration-200 md:block"
-				id="menu-div"
-			>
+			<div class="sticky top-12 z-10 hidden self-start transition-all duration-200 md:block">
 				{headings && headings.length > 0 && <TableOfContents {headings} />}
 			</div>
 		</aside>
@@ -72,3 +70,5 @@ const disqusEnabled = disqusConfig.enabled;
 
 	{disqusEnabled && <Disqus />}
 </BlogPost>
+
+<FixedTableOfContents {headings} />

@@ -1,5 +1,6 @@
 ---
 import BaseHead from "@/components/BaseHead";
+import BgImage from "@/components/BgImage";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProviderTheme from "@/components/ProviderTheme";
@@ -15,12 +16,12 @@ const { title, description, image, articleDate } = Astro.props;
 		<ProviderTheme />
 		<ProviderAnimations />
 	</head>
-
-	<body class="mx-auto bg-white text-stone-950 dark:bg-[#0a0910] dark:text-white">
+	<body class="mx-auto bg-white dark:bg-slate-900 dark:text-slate-400 dark:text-white">
 		<main
 			class="mt-4 grid gap-12 overflow-hidden px-5 antialiased sm:mx-auto sm:max-w-2xl sm:px-8 md:max-w-6xl md:overflow-visible lg:px-0"
 		>
 			<Header />
+			<BgImage />
 			<slot />
 			<Footer />
 		</main>

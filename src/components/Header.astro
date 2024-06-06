@@ -2,11 +2,11 @@
 import HeaderLink from "@/components/HeaderLink";
 import TwitterIcon from "@/components/icons/TwitterIcon";
 import GithubIcon from "@/components/icons/GithubIcon";
-import MenuIcon from "./icons/MenuIcon.astro";
+import MenuIcon from "@/components/icons/MenuIcon";
 import Search from "@/components/Search";
-import TagIcon from "./icons/TagIcon.astro";
+import TagIcon from "@/components/icons/TagIcon";
 import ToggleTheme from "./ToggleTheme.astro";
-import Navigation from "./icons/Navigation.astro";
+import Navigation from "@/components/icons/Navigation";
 
 // ADD YOUR SOCIAL NETWORKS HERE
 const SOCIALNETWORKS = [
@@ -25,13 +25,12 @@ const SOCIALNETWORKS = [
 ---
 
 <header
-	class="dark:bg-\[\#0a0910\] fixed left-0 top-0 z-50 flex h-12 w-full items-center bg-[#f8f9fa] px-5 py-2.5 font-semibold"
+	class="fixed left-0 top-0 z-50 flex h-12 w-full items-center bg-[#fff9] px-5 py-2.5 font-semibold dark:border-slate-50/[0.06] dark:bg-slate-900/75"
 >
 	<a class="mr-auto text-lg" href="/">Home</a>
-
 	<div
 		id="astro-header-drawer"
-		class="absolute right-1 top-12 z-50 translate-x-96 rounded-l-lg bg-white pb-4 pl-4 pt-4 shadow transition-transform duration-300 ease-in dark:bg-[#0a0910] md:static md:h-auto md:translate-x-0 md:rounded-none md:border-none md:bg-transparent md:p-0 md:shadow-none dark:md:bg-transparent"
+		class="absolute right-1 top-12 z-50 translate-x-96 rounded-l-lg bg-white p-4 text-slate-500 shadow transition-transform duration-300 ease-in dark:bg-[#0a0910] md:static md:h-auto md:translate-x-0 md:rounded-none md:border-none md:bg-transparent md:p-0 md:shadow-none dark:md:bg-transparent"
 	>
 		<nav class="flex h-full justify-between gap-2 text-left md:w-full md:flex-row md:gap-5">
 			<div
@@ -54,7 +53,7 @@ const SOCIALNETWORKS = [
 		</nav>
 	</div>
 
-	<div class="flex items-center gap-3 md:pl-3" transition:persist="navbar">
+	<div class="flex items-center gap-3 text-slate-500 md:pl-3" transition:persist="navbar">
 		<div>
 			<Search />
 		</div>
@@ -70,31 +69,21 @@ const SOCIALNETWORKS = [
 </header>
 <script>
 	document.addEventListener("click", (event) => {
-		const menu = document.getElementById("astro-header-drawer");
-		const menuButton = document.getElementById("astro-header-drawer-button");
-		const isClickInside =
-			menu?.contains(event.target as HTMLDivElement) ||
-			menuButton?.contains(event.target as HTMLButtonElement);
+		const drawerButton = document.getElementById("astro-header-drawer-button");
+		const drawer = document.getElementById("astro-header-drawer");
+		const target = event.target;
 
-		if (isClickInside) {
-			menu?.classList.toggle("translate-x-96");
+		if (drawerButton && (drawerButton as Node).contains(target as Node)) {
+			drawer?.classList.toggle("translate-x-96");
+		} else if (drawer && drawer.contains(target as Node)) {
+			drawer?.classList.toggle("translate-x-96");
 		} else {
-			menu?.classList.add("translate-x-96");
+			drawer?.classList.add("translate-x-96");
 		}
 	});
 
 	const toggleMenu = document.getElementById("toggleMenu");
-	toggleMenu?.addEventListener("click", function () {
-		const menuAside = document.getElementById("menu-aside");
-		const menuDiv = document.getElementById("menu-div");
-		if (menuAside?.classList.contains("mobile-side-menu")) {
-			menuDiv?.classList.add("hidden");
-			menuAside?.classList.add("hidden");
-			menuAside?.classList.remove("mobile-side-menu");
-		} else {
-			menuDiv?.classList.remove("hidden");
-			menuAside?.classList.remove("hidden");
-			menuAside?.classList.add("mobile-side-menu");
-		}
+	toggleMenu?.addEventListener("click", () => {
+		document.getElementById("headlessui-dialog-:Rlb6:")?.classList.remove("hidden");
 	});
 </script>
