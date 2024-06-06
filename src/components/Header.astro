@@ -6,6 +6,7 @@ import MenuIcon from "./icons/MenuIcon.astro";
 import Search from "@/components/Search";
 import TagIcon from "./icons/TagIcon.astro";
 import ToggleTheme from "./ToggleTheme.astro";
+import Navigation from "./icons/Navigation.astro";
 
 // ADD YOUR SOCIAL NETWORKS HERE
 const SOCIALNETWORKS = [
@@ -23,12 +24,12 @@ const SOCIALNETWORKS = [
 ];
 ---
 
-<header class="relative flex h-12 items-center font-semibold">
+<header class="header-fixd dark:bg-\[\#0a0910\] relative flex h-12 items-center font-semibold">
 	<a class="mr-auto text-lg" href="/">Home</a>
 
 	<div
 		id="astro-header-drawer"
-		class="absolute -right-5 top-12 z-50 translate-x-96 rounded-l-lg bg-white pb-4 pl-4 pt-6 shadow transition-transform duration-300 ease-in dark:bg-[#0a0910] md:static md:h-auto md:translate-x-0 md:rounded-none md:border-none md:bg-transparent md:p-0 md:shadow-none dark:md:bg-transparent"
+		class="absolute right-5 top-12 z-50 translate-x-96 rounded-l-lg bg-white pb-4 pl-4 pt-6 shadow transition-transform duration-300 ease-in dark:bg-[#0a0910] md:static md:h-auto md:translate-x-0 md:rounded-none md:border-none md:bg-transparent md:p-0 md:shadow-none dark:md:bg-transparent"
 	>
 		<nav class="flex h-full justify-between gap-2 text-left md:w-full md:flex-row md:gap-5">
 			<div
@@ -56,6 +57,9 @@ const SOCIALNETWORKS = [
 			<Search />
 		</div>
 		<ToggleTheme />
+		<button id="toggleMenu" class="md:ml-6 md:hidden">
+			<Navigation />
+		</button>
 		<button id="astro-header-drawer-button" type="button" class="md:ml-6 md:hidden">
 			<MenuIcon />
 			<span class="sr-only">Show Menu</span>
@@ -74,6 +78,18 @@ const SOCIALNETWORKS = [
 			menu?.classList.toggle("translate-x-96");
 		} else {
 			menu?.classList.add("translate-x-96");
+		}
+	});
+
+	document.getElementById("toggleMenu").addEventListener("click", function () {
+		const menu = document.querySelector(".menu-button");
+		console.log(menu);
+		if (menu?.classList.contains("mobile-side-menu")) {
+			menu?.classList.add("hidden");
+			menu?.classList.remove("mobile-side-menu");
+		} else {
+			menu?.classList.remove("hidden");
+			menu?.classList.add("mobile-side-menu");
 		}
 	});
 </script>

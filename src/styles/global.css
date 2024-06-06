@@ -60,3 +60,37 @@
   height: 100%;
   overflow-y: auto;
 }
+
+/* 默认隐藏侧边栏 */
+/* .mobile-side-menu {
+  display: none;
+} */
+
+/* 当屏幕宽度小于某个阈值（例如600px）时，显示悬浮菜单 */
+/* @media (max-width: 600px) { */
+  .mobile-side-menu {
+    display: flex;
+    position: fixed;
+    top: 4rem;
+    right: 0;
+    bottom: 0;
+    ;background-color: var(--colors-gray-900); /* 背景色 */
+    transition: all 0.3s ease; /* 添加过渡效果 */
+    z-index: 888;
+  }
+/* } */
+
+.header-fixd {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f8f9fa;
+  padding: 10px 20px;
+  /* border-bottom: 1px solid #ccc; */
+  box-sizing: border-box;
+  z-index: 1000;
+  /* display: grid;
+  justify-content: space-between;
+  grid-template-columns: auto auto; */
+}

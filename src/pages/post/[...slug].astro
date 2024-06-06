@@ -46,7 +46,7 @@ const disqusEnabled = disqusConfig.enabled;
 >
 	<div class="mt-8 grid grid-cols-1 gap-10 md:grid-cols-[20%_auto]">
 		<!-- aside  -->
-		<aside class="hidden flex-col gap-8 md:flex">
+		<aside class="menu-button hidden flex-col gap-8 md:flex">
 			<!-- <Share /> -->
 			<div class="sticky top-2 hidden self-start transition-all duration-200 md:block">
 				{headings && headings.length > 0 && <TableOfContents {headings} />}
@@ -54,7 +54,7 @@ const disqusEnabled = disqusConfig.enabled;
 		</aside>
 
 		<!-- post -->
-		<article class="w-full max-w-full">
+		<article class="w-full max-w-full" style="display: grid;">
 			<div class="prose prose-lg mb-12 min-w-full dark:prose-invert md:prose-xl">
 				<Content components={{ pre: Code, SButton }} />
 			</div>
