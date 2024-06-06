@@ -46,9 +46,12 @@ const disqusEnabled = disqusConfig.enabled;
 >
 	<div class="mt-8 grid grid-cols-1 gap-10 md:grid-cols-[20%_auto]">
 		<!-- aside  -->
-		<aside class="menu-button hidden flex-col gap-8 md:flex">
+		<aside class="hidden flex-col gap-8 dark:bg-[#0a0910] md:flex" id="menu-aside">
 			<!-- <Share /> -->
-			<div class="sticky top-12 z-10 hidden self-start transition-all duration-200 md:block">
+			<div
+				class="sticky top-12 z-10 hidden self-start transition-all duration-200 md:block"
+				id="menu-div"
+			>
 				{headings && headings.length > 0 && <TableOfContents {headings} />}
 			</div>
 		</aside>
