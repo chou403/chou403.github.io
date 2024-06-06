@@ -48,13 +48,13 @@ const disqusEnabled = disqusConfig.enabled;
 		<!-- aside  -->
 		<aside class="menu-button hidden flex-col gap-8 md:flex">
 			<!-- <Share /> -->
-			<div class="sticky top-2 hidden self-start transition-all duration-200 md:block">
+			<div class="sticky top-2 z-10 hidden self-start transition-all duration-200 md:block">
 				{headings && headings.length > 0 && <TableOfContents {headings} />}
 			</div>
 		</aside>
 
 		<!-- post -->
-		<article class="w-full max-w-full" style="display: grid;">
+		<article class="grid w-full max-w-full">
 			<div class="prose prose-lg mb-12 min-w-full dark:prose-invert md:prose-xl">
 				<Content components={{ pre: Code, SButton }} />
 			</div>
