@@ -81,9 +81,9 @@ const SOCIALNETWORKS = [
 		}
 	});
 
-	document.getElementById("toggleMenu").addEventListener("click", function () {
+	const toggleMenu = document.getElementById("toggleMenu");
+	toggleMenu?.addEventListener("click", function () {
 		const menu = document.querySelector(".menu-button");
-		console.log(menu);
 		if (menu?.classList.contains("mobile-side-menu")) {
 			menu?.classList.add("hidden");
 			menu?.classList.remove("mobile-side-menu");
