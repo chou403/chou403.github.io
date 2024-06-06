@@ -18,14 +18,14 @@
 	h4,
 	h5,
 	h6 {
-		@apply text-zinc-800 dark:text-zinc-100  !important;
-    /* font-style: italic; */
+		@apply text-zinc-800 dark:text-zinc-100 !important;
+		/* font-style: italic; */
 	}
 
 	html.dark .shiki,
 	html.dark .shiki span {
-	  color: var(--shiki-dark) !important;
-	  background-color: var(--colors-gray-900) !important;
+		color: var(--shiki-dark) !important;
+		background-color: var(--colors-gray-900) !important;
 	}
 }
 
@@ -41,52 +41,33 @@
 }
 
 .text-quote {
-  color: hsl(351deg 100% 50%);
+	color: hsl(351deg 100% 50%);
 }
 
 .p-1 {
-  padding: .25rem;
+	padding: 0.25rem;
 }
 
 .bg-quote\/10 {
-  background-color: hsl(351deg 66% 48% / .1);
+	background-color: hsl(351deg 66% 48% / 0.1);
 }
 
 .rounded-lg {
-  border-radius: .5rem;
+	border-radius: 0.5rem;
 }
 
 .sidebar {
-  height: 100%;
-  overflow-y: auto;
+	height: 100%;
+	overflow-y: auto;
 }
 
-/* 默认隐藏侧边栏 */
-/* .mobile-side-menu {
-  display: none;
-} */
-
-/* 当屏幕宽度小于某个阈值（例如600px）时，显示悬浮菜单 */
-/* @media (max-width: 600px) { */
-  .mobile-side-menu {
-    display: flex;
-    position: fixed;
-    top: 4rem;
-    right: 0;
-    bottom: 0;
-    ;background-color: var(--colors-gray-900); /* 背景色 */
-    transition: all 0.3s ease; /* 添加过渡效果 */
-    z-index: 888;
-  }
-/* } */
-
-.header-fixd {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #f8f9fa;
-  padding: 10px 20px;
-  box-sizing: border-box;
-  z-index: 1000;
+.mobile-side-menu {
+	/* display: flex; */
+	position: fixed;
+	top: 3rem;
+	right: 0;
+	bottom: 0;
+	/* background-color: var(--colors-gray-900); */
+	transition: all 0.3s ease; /* 添加过渡效果 */
+	z-index: 50;
 }

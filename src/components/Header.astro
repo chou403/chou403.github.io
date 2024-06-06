@@ -24,7 +24,9 @@ const SOCIALNETWORKS = [
 ];
 ---
 
-<header class="header-fixd dark:bg-\[\#0a0910\] flex h-12 items-center font-semibold">
+<header
+	class="dark:bg-\[\#0a0910\] fixed left-0 top-0 z-50 flex h-12 w-full items-center bg-[#f8f9fa] px-5 py-2.5 font-semibold"
+>
 	<a class="mr-auto text-lg" href="/">Home</a>
 
 	<div
@@ -83,13 +85,16 @@ const SOCIALNETWORKS = [
 
 	const toggleMenu = document.getElementById("toggleMenu");
 	toggleMenu?.addEventListener("click", function () {
-		const menu = document.querySelector(".menu-button");
-		if (menu?.classList.contains("mobile-side-menu")) {
-			menu?.classList.add("hidden");
-			menu?.classList.remove("mobile-side-menu");
+		const menuAside = document.getElementById("menu-aside");
+		const menuDiv = document.getElementById("menu-div");
+		if (menuAside?.classList.contains("mobile-side-menu")) {
+			menuDiv?.classList.add("hidden");
+			menuAside?.classList.add("hidden");
+			menuAside?.classList.remove("mobile-side-menu");
 		} else {
-			menu?.classList.remove("hidden");
-			menu?.classList.add("mobile-side-menu");
+			menuDiv?.classList.remove("hidden");
+			menuAside?.classList.remove("hidden");
+			menuAside?.classList.add("mobile-side-menu");
 		}
 	});
 </script>
