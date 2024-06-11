@@ -82,8 +82,10 @@ const SOCIALNETWORKS = [
 		}
 	});
 
+	const body = document.body;
 	const toggleMenu = document.getElementById("toggleMenu");
 	toggleMenu?.addEventListener("click", () => {
 		document.getElementById("headlessui-dialog-:Rlb6:")?.classList.remove("hidden");
+		body.style.overflow = "hidden";
 	});
 </script>

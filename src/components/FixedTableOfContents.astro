@@ -77,7 +77,10 @@ function buildToc(headings: TableOfContent[]) {
 	closeDialog?.addEventListener("click", function (event) {
 		close();
 	});
+
+	const body = document.body;
 	function close() {
 		dialog?.classList.add("hidden");
+		body.style.overflow = "";
 	}
 </script>
