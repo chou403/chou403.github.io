@@ -2,6 +2,8 @@ import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import tailwind from '@astrojs/tailwind'
+import react from '@astrojs/react'
+import vue from '@astrojs/vue'
 import { remarkReadingTime } from './src/utils/readTime.ts'
 
 // https://astro.build/config
@@ -31,6 +33,8 @@ export default defineConfig({
 			drafts: true
 		}),
 		sitemap(),
-		tailwind()
+		tailwind(),
+    react(),
+    vue()
 	]
 })

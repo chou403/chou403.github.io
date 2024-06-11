@@ -61,7 +61,7 @@
 }
 
 .sidebar {
-	height: 56rem;
+	height: 51rem;
 	overflow-y: auto;
 }
 
@@ -74,4 +74,18 @@
 	/* background-color: var(--colors-gray-900); */
 	transition: all 0.3s ease; /* 添加过渡效果 */
 	z-index: 50;
+}
+
+.code-container {
+  position: relative;
+  overflow-x: auto; /* 允许代码块水平滚动 */
+}
+
+.copy-button,
+.check-span {
+  position: absolute;
+  top: 45px;
+  right: 10px;
+  will-change: transform;
+  transform: translateZ(0);
 }

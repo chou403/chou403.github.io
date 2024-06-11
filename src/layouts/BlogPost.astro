@@ -97,6 +97,7 @@ const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 		) {
 			entries.forEach((entry) => {
 				const index = document.querySelector(`aside a[href="#${entry.target.id}"]`);
+				console.log(entry.isIntersecting);
 				if (entry.isIntersecting) {
 					index?.classList.remove("bg-slate-200", "dark:bg-slate-800"); // remove bg
 					index?.classList.add(

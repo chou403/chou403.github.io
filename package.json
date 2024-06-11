@@ -33,9 +33,14 @@
 		"prepare": "husky install"
 	},
 	"dependencies": {
+		"@astrojs/react": "^3.5.0",
 		"@astrojs/rss": "4.0.1",
+		"@astrojs/vue": "^4.4.0",
 		"astro": "4.0.8",
-		"astro-font": "^0.0.72"
+		"astro-font": "^0.0.72",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"vue": "^3.4.27"
 	},
 	"devDependencies": {
 		"@astrojs/mdx": "2.0.3",
