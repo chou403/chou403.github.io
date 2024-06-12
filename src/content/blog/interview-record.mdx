@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-01-30T12:28:25Z
-updatedDate: 2024-06-04T18:00:01Z
+updatedDate: 2024-06-12T20:39:41Z
 title: 面基记录
 draft: false
 heroImage: ../../assets/images/wolf-1.jpg
@@ -498,7 +498,7 @@ public class MyService {
 
 以下是一个简单的项目结构示例:
 
-```txt
+```plaintext
 src/
 ├── main/
 │   ├── java/
@@ -3950,3 +3950,1208 @@ public class YourController {
 ```
 
 通过上述步骤,你可以在使用 MyBatis-Plus 时自动填充创建人和更新人等字段,简化开发并提高代码的可维护性。
+
+## final 关键字有哪些使用场景
+
+在 Java 中,final 关键字有三种主要的使用场景:修饰变量、方法和类。
+
+### 修饰变量
+
+使用 final 修饰的变量成为常量,一旦初始化后就不能再修改。
+
+```java
+public class FinalVariableExample {
+    public static void main(String[] args) {
+        final int constantValue = 10;
+        // constantValue = 20; // 编译错误
+    }
+}
+```
+
+### 修饰方法
+
+```java
+class ParentClass {
+    public final void display() {
+        System.out.println("This is a final method.");
+    }
+}
+
+class ChildClass extends ParentClass {
+    // public void display() { // 编译错误
+    //     System.out.println("Trying to override.");
+    // }
+}
+```
+
+### 修饰类
+
+使用 final 修饰的类不能被继承。这对于确保类的实现不会被修改很有用。
+
+```java
+public final class FinalClass {
+    public void display() {
+        System.out.println("This is a final class.");
+    }
+}
+
+// class SubClass extends FinalClass { // 编译错误
+// }
+```
+
+## 集合和流的区别
+
+在编程中,集合（Collection）和流（Stream）是处理数据的两种不同方式。它们在功能、使用场景和操作方式上有显著的区别。下面详细介绍集合和流的主要区别,主要以 Java 为例,但概念在其他编程语言中也类似。
+
+### 集合（Collection）
+
+1. **数据结构**:
+
+   - 集合是存储数据的容器,如 `List`, `Set`, `Map` 等。
+   - 它们用于存储和组织一组对象。
+   - 集合是可变的,你可以添加、删除和修改元素。
+
+2. **存储**:
+
+   - 集合实际上存储了数据,数据保存在内存中。
+
+3. **遍历**:
+
+   - 你可以使用迭代器、增强的 `for` 循环等来遍历集合中的元素。
+
+4. **操作**:
+
+   - 集合支持对数据的基本操作,如添加、删除、查找等。
+   - 集合中的操作通常是即时执行的。
+
+5. **可变性**:
+
+   - 集合是可变的,元素可以动态地添加或删除。
+
+6. **延迟计算**:
+   - 集合不支持延迟计算,操作立即执行并返回结果。
+
+### 流（Stream）
+
+1. **数据处理**:
+
+   - 流是一种用于处理数据的抽象,不是数据结构。
+   - 流用于描述一系列要对数据执行的操作,如过滤、映射、归约等。
+
+2. **数据流动**:
+
+   - 流不存储数据,它从集合、数组或其他数据源中获取数据,并通过一系列的计算管道来处理数据。
+   - 流可以是有界的（有限的元素）或无界的（无限的元素）。
+
+3. **遍历**:
+
+   - 流的元素只能遍历一次,遍历之后流会被消耗（关闭）。
+   - 如果需要再次遍历相同的数据,需要重新生成流。
+
+4. **操作**:
+
+   - 流的操作分为中间操作和终端操作。
+     - 中间操作（如 `filter`, `map`, `sorted`）返回一个新的流,并且是延迟执行的（惰性求值）。
+     - 终端操作（如 `forEach`, `collect`, `reduce`）触发流的计算并返回结果或副作用。
+   - 流的操作可以是并行执行的,从而提高性能。
+
+5. **不可变性**:
+
+   - 流本身是不可变的,每次进行操作时都会生成一个新的流。
+
+6. **延迟计算**:
+   - 流支持延迟计算,中间操作不会立即执行,只有在终端操作时才会执行全部计算。
+
+### 示例代码
+
+#### 集合
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class CollectionExample {
+    public static void main(String[] args) {
+        List<String> list = new ArrayList<>();
+        list.add("one");
+        list.add("two");
+        list.add("three");
+
+        // 遍历集合
+        for (String item : list) {
+            System.out.println(item);
+        }
+
+        // 集合支持修改操作
+        list.remove("two");
+        System.out.println("After removal: " + list);
+    }
+}
+```
+
+#### 流
+
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class StreamExample {
+    public static void main(String[] args) {
+        List<String> list = Arrays.asList("one", "two", "three", "four");
+
+        // 使用流处理数据
+        List<String> filteredList = list.stream()
+                                        .filter(item -> item.length() > 3)
+                                        .map(String::toUpperCase)
+                                        .collect(Collectors.toList());
+
+        // 终端操作触发流的计算
+        filteredList.forEach(System.out::println);
+    }
+}
+```
+
+### 总结
+
+- **集合**:用于存储和管理一组数据,支持对数据的基本操作和即时处理。集合是可变的,可以多次遍历。
+- **流**:用于描述对数据的操作序列,支持惰性求值和并行处理。流是不可变的,操作完成后流会被消耗。
+
+集合和流在数据处理方面各有优势,选择使用哪一个取决于具体的需求。如果需要存储和管理数据,使用集合更合适；如果需要对数据进行复杂的处理和转换,使用流更合适。
+
+## 数据库大文本用什么存储
+
+在数据库中存储大文本（例如,文档、日志、文章内容等）需要考虑效率、可扩展性和数据完整性。以下是一些常见的选项和其适用场景:
+
+### 关系型数据库
+
+1. **MySQL**
+
+   - **TEXT** 类型:适合存储相对较短的文本（最大 65,535 字节）。
+   - **MEDIUMTEXT** 类型:适合存储中等长度的文本（最大 16,777,215 字节）。
+   - **LONGTEXT** 类型:适合存储非常大的文本（最大 4,294,967,295 字节）。
+
+   示例:
+
+   ```sql
+   CREATE TABLE Articles (
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       title VARCHAR(255),
+       content LONGTEXT
+   );
+   ```
+
+2. **PostgreSQL**
+
+   - **TEXT** 类型:适合存储任意长度的文本。
+   - **BYTEA** 类型:适合存储二进制数据,可以用来存储大文本。
+
+   示例:
+
+   ```sql
+   CREATE TABLE Articles (
+       id SERIAL PRIMARY KEY,
+       title VARCHAR(255),
+       content TEXT
+   );
+   ```
+
+### NoSQL 数据库
+
+1. **MongoDB**
+
+   - **String** 类型:适合存储文本数据,最大 16MB。
+   - **GridFS**:适合存储超过 16MB 的文件和大文本。
+
+   示例:
+
+   ```javascript
+   db.articles.insert({
+   	title: "Sample Article",
+   	content: "This is a very long text content...",
+   });
+   ```
+
+2. **Couchbase**
+
+   - **JSON Document**:适合存储大文本,可以使用 Couchbase 的全文搜索（Full Text Search, FTS）功能。
+
+   示例:
+
+   ```json
+   {
+   	"title": "Sample Article",
+   	"content": "This is a very long text content..."
+   }
+   ```
+
+3. **Cassandra**
+
+   - **text** 类型:适合存储大文本。
+
+   示例:
+
+   ```cql
+   CREATE TABLE articles (
+       id UUID PRIMARY KEY,
+       title TEXT,
+       content TEXT
+   );
+   ```
+
+### 专用的文件存储解决方案
+
+1. **Amazon S3**
+
+   - 适合存储任意大小的文件和大文本。可以使用元数据和对象存储 URL 来索引和检索大文本。
+
+2. **Hadoop HDFS**
+   - 适合处理和存储大规模的文本数据和文件。
+
+### 选择考虑因素
+
+- **数据大小**:如果文本数据非常大,可能需要使用专用的文件存储解决方案（如 Amazon S3、Hadoop HDFS）或 NoSQL 数据库（如 MongoDB 的 GridFS）。
+- **查询性能**:如果需要对文本数据进行复杂查询,关系型数据库（如 MySQL、PostgreSQL）和支持全文搜索的 NoSQL 数据库（如 Couchbase）可能更适合。
+- **数据结构**:如果数据是结构化的,并且需要强类型约束和事务支持,关系型数据库是更好的选择。如果数据是半结构化或非结构化的,NoSQL 数据库可能更适合。
+- **扩展性**:对于需要高扩展性和分布式存储的场景,NoSQL 数据库（如 Cassandra）和文件存储解决方案（如 Amazon S3）是更好的选择。
+
+### 示例对比
+
+#### MySQL 示例
+
+```sql
+CREATE TABLE Articles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255),
+    content LONGTEXT
+);
+```
+
+#### MongoDB 示例
+
+```javascript
+db.articles.insert({
+	title: "Sample Article",
+	content: "This is a very long text content...",
+});
+```
+
+#### Amazon S3 示例
+
+```python
+import boto3
+
+s3 = boto3.client('s3')
+s3.put_object(Bucket='mybucket', Key='article.txt', Body='This is a very long text content...')
+```
+
+根据你的具体需求选择合适的存储方案,可以根据数据大小、查询需求、结构性和扩展性来综合考虑。
+
+## SQL执行计划,怎么看,如何优化
+
+SQL 执行计划是数据库查询优化的关键工具,它描述了 SQL 查询的执行步骤和策略。通过阅读执行计划,您可以了解查询的效率,找出潜在的性能瓶颈,并进行优化。以下是如何查看和优化 SQL 执行计划的指南:
+
+### 查看执行计划
+
+#### MySQL
+
+使用 `EXPLAIN` 语句可以查看查询的执行计划:
+
+```sql
+EXPLAIN SELECT * FROM employees WHERE age > 30;
+```
+
+#### PostgreSQL
+
+使用 `EXPLAIN` 语句:
+
+```sql
+EXPLAIN SELECT * FROM employees WHERE age > 30;
+```
+
+要查看更详细的执行计划,可以使用 `EXPLAIN ANALYZE`:
+
+```sql
+EXPLAIN ANALYZE SELECT * FROM employees WHERE age > 30;
+```
+
+#### SQL Server
+
+使用 `SET SHOWPLAN_ALL` 或图形化工具（SQL Server Management Studio）:
+
+```sql
+SET SHOWPLAN_ALL ON;
+GO
+SELECT * FROM employees WHERE age > 30;
+GO
+SET SHOWPLAN_ALL OFF;
+GO
+```
+
+### 解释执行计划
+
+执行计划通常包括以下几个部分:
+
+- **id**: 查询执行的顺序。
+- **select_type**: 查询的类型（SIMPLE, PRIMARY, UNION, SUBQUERY）。
+- **table**: 正在访问的表。
+- **type**: 访问类型（ALL, INDEX, RANGE, REF, EQ_REF, CONST）。
+- **possible_keys**: 可以使用的索引。
+- **key**: 实际使用的索引。
+- **key_len**: 索引的长度。
+- **ref**: 使用的列或常量。
+- **rows**: 预估的扫描行数。
+- **extra**: 其他信息（Using where, Using index, Using filesort）。
+
+### 优化技巧
+
+1. **使用合适的索引**:
+
+   - 确保在查询条件中使用的列上创建了索引,尤其是 WHERE 子句、JOIN 子句、ORDER BY 和 GROUP BY 子句中使用的列。
+   - 使用复合索引来覆盖多个列。
+
+   ```sql
+   CREATE INDEX idx_age ON employees(age);
+   ```
+
+2. **避免全表扫描**:
+
+   - 尽量避免使用 `SELECT *`,只选择需要的列。
+   - 使用 WHERE 子句来减少扫描的行数。
+
+3. **优化 JOIN**:
+
+   - 确保连接列上有索引。
+   - 优化 JOIN 顺序,使用小表驱动大表。
+
+   ```sql
+   EXPLAIN SELECT e.name, d.department
+   FROM employees e
+   JOIN departments d ON e.department_id = d.id
+   WHERE e.age > 30;
+   ```
+
+4. **使用覆盖索引**:
+
+   - 覆盖索引可以让查询只从索引中获取数据,而不必访问表。
+
+   ```sql
+   CREATE INDEX idx_name_age ON employees(name, age);
+   ```
+
+5. **优化子查询**:
+
+   - 尽量避免使用相关子查询,使用 JOIN 或 EXISTS 替代。
+
+   ```sql
+   -- 子查询
+   SELECT name FROM employees WHERE department_id IN (SELECT id FROM departments WHERE location = 'NY');
+
+   -- 优化为 JOIN
+   SELECT e.name
+   FROM employees e
+   JOIN departments d ON e.department_id = d.id
+   WHERE d.location = 'NY';
+   ```
+
+6. **避免使用函数操作列**:
+
+   - 避免在 WHERE 子句中对列使用函数,这会阻止索引的使用。
+
+   ```sql
+   -- 不推荐
+   SELECT * FROM employees WHERE YEAR(hire_date) = 2020;
+
+   -- 推荐
+   SELECT * FROM employees WHERE hire_date BETWEEN '2020-01-01' AND '2020-12-31';
+   ```
+
+7. **分区表**:
+
+   - 对于大表,可以使用分区表来提高查询效率。
+
+   ```sql
+   CREATE TABLE employees (
+       id INT,
+       name VARCHAR(50),
+       age INT,
+       hire_date DATE
+   )
+   PARTITION BY RANGE (age) (
+       PARTITION p0 VALUES LESS THAN (20),
+       PARTITION p1 VALUES LESS THAN (30),
+       PARTITION p2 VALUES LESS THAN (40),
+       PARTITION p3 VALUES LESS THAN MAXVALUE
+   );
+   ```
+
+8. **使用缓存**:
+   - 利用数据库的查询缓存或应用层缓存,减少重复查询的开销。
+
+### 示例优化
+
+假设有一个查询:
+
+```sql
+SELECT * FROM employees WHERE age > 30;
+```
+
+使用 `EXPLAIN` 查看执行计划:
+
+```sql
+EXPLAIN SELECT * FROM employees WHERE age > 30;
+```
+
+输出可能是:
+
+```
++----+-------------+-----------+------+---------------+------+---------+------+---------+-------------+
+| id | select_type | table     | type | possible_keys | key  | key_len | ref  | rows    | Extra       |
++----+-------------+-----------+------+---------------+------+---------+------+---------+-------------+
+|  1 | SIMPLE      | employees | ALL  | NULL          | NULL | NULL    | NULL | 1000000 | Using where |
++----+-------------+-----------+------+---------------+------+---------+------+---------+-------------+
+```
+
+这里的 `type` 是 `ALL`,表示全表扫描,可以通过创建索引来优化:
+
+```sql
+CREATE INDEX idx_age ON employees(age);
+```
+
+再次查看执行计划:
+
+```sql
+EXPLAIN SELECT * FROM employees WHERE age > 30;
+```
+
+输出可能是:
+
+```
++----+-------------+-----------+-------+---------------+--------+---------+------+-------+-----------------------+
+| id | select_type | table     | type  | possible_keys | key    | key_len | ref  | rows  | Extra                 |
++----+-------------+-----------+-------+---------------+--------+---------+------+-------+-----------------------+
+|  1 | SIMPLE      | employees | range | idx_age       | idx_age| 4       | NULL | 50000 | Using where; Using index |
++----+-------------+-----------+-------+---------------+--------+---------+------+-------+-----------------------+
+```
+
+这里的 `type` 是 `range`,表示使用了索引,查询性能显著提高。
+
+### 总结
+
+通过查看 SQL 执行计划,您可以识别查询的性能瓶颈并采取适当的优化措施。关键在于理解执行计划中的每个部分以及如何通过索引优化、避免全表扫描、优化 JOIN、使用覆盖索引等方法来提高查询性能。
+
+## 表索引的使用
+
+在关系型数据库中,索引是提升查询性能的重要工具。索引类似于书的目录,可以加速数据检索,减少查询的响应时间。下面详细介绍表索引的类型、创建、使用和优化。
+
+### 索引的类型
+
+1. **单列索引**:
+
+   - 在单个列上创建的索引。
+   - 用于加速该列上的查询。
+
+   ```sql
+   CREATE INDEX idx_column_name ON table_name(column_name);
+   ```
+
+2. **复合索引（多列索引）**:
+
+   - 在多个列上创建的索引。
+   - 用于加速涉及这些列组合的查询。
+
+   ```sql
+   CREATE INDEX idx_columns ON table_name(column1, column2);
+   ```
+
+3. **唯一索引**:
+
+   - 确保索引列的值唯一。
+
+   ```sql
+   CREATE UNIQUE INDEX idx_unique_column ON table_name(column_name);
+   ```
+
+4. **全文索引**（仅适用于某些数据库,如 MySQL）:
+
+   - 用于全文搜索,加速文本数据的搜索。
+
+   ```sql
+   CREATE FULLTEXT INDEX idx_fulltext_column ON table_name(column_name);
+   ```
+
+5. **聚簇索引（Clustered Index）**:
+
+   - 改变表的物理存储顺序,只能有一个聚簇索引。
+   - 主键通常会自动成为聚簇索引。
+
+   ```sql
+   CREATE CLUSTERED INDEX idx_clustered_column ON table_name(column_name);
+   ```
+
+6. **非聚簇索引（Non-Clustered Index）**:
+
+   - 不改变表的物理存储顺序,可以有多个非聚簇索引。
+
+   ```sql
+   CREATE INDEX idx_nonclustered_column ON table_name(column_name);
+   ```
+
+### 索引的创建
+
+#### MySQL
+
+```sql
+-- 创建单列索引
+CREATE INDEX idx_age ON employees(age);
+
+-- 创建复合索引
+CREATE INDEX idx_name_age ON employees(name, age);
+
+-- 创建唯一索引
+CREATE UNIQUE INDEX idx_unique_name ON employees(name);
+
+-- 创建全文索引
+CREATE FULLTEXT INDEX idx_fulltext_content ON articles(content);
+```
+
+#### PostgreSQL
+
+```sql
+-- 创建单列索引
+CREATE INDEX idx_age ON employees(age);
+
+-- 创建复合索引
+CREATE INDEX idx_name_age ON employees(name, age);
+
+-- 创建唯一索引
+CREATE UNIQUE INDEX idx_unique_name ON employees(name);
+
+-- 创建全文索引
+CREATE INDEX idx_fulltext_content ON articles USING gin(to_tsvector('english', content));
+```
+
+### 索引的使用和优化
+
+1. **选择合适的列**:
+
+   - 经常出现在 WHERE 子句、JOIN 条件、ORDER BY 和 GROUP BY 子句中的列适合创建索引。
+   - 高选择性的列（即具有大量不同值的列）通常是良好的索引候选。
+
+2. **避免在低选择性列上创建索引**:
+
+   - 如性别、布尔值等列,因为这些列的索引利用率不高。
+
+3. **复合索引顺序**:
+
+   - 将选择性高的列放在索引的最前面。
+   - 复合索引的使用遵循“最左前缀”规则,即索引可以加速以第一个列开头的查询。
+
+4. **避免过多索引**:
+
+   - 虽然索引可以加速查询,但过多的索引会导致插入、更新和删除操作变慢,因为每次数据修改都需要更新索引。
+
+5. **定期重建索引**:
+   - 对于大型表,索引的碎片化会影响性能,定期重建索引可以提高查询效率。
+
+### 示例
+
+#### 使用索引的查询
+
+假设有一个 `employees` 表,包含 `id`, `name`, `age`, `department_id` 列,并创建了以下索引:
+
+```sql
+CREATE INDEX idx_age ON employees(age);
+CREATE INDEX idx_name_age ON employees(name, age);
+```
+
+查询示例:
+
+```sql
+-- 使用单列索引
+SELECT * FROM employees WHERE age > 30;
+
+-- 使用复合索引
+SELECT * FROM employees WHERE name = 'John' AND age > 30;
+```
+
+#### 索引优化
+
+假设有一个查询:
+
+```sql
+SELECT * FROM employees WHERE department_id = 3 AND age > 30;
+```
+
+可以创建复合索引以优化查询:
+
+```sql
+CREATE INDEX idx_department_age ON employees(department_id, age);
+```
+
+使用 `EXPLAIN` 查看优化效果:
+
+```sql
+EXPLAIN SELECT * FROM employees WHERE department_id = 3 AND age > 30;
+```
+
+#### 重建索引
+
+在 MySQL 中,可以使用 `OPTIMIZE TABLE` 命令重建索引:
+
+```sql
+OPTIMIZE TABLE employees;
+```
+
+在 PostgreSQL 中,可以使用 `REINDEX` 命令:
+
+```sql
+REINDEX TABLE employees;
+```
+
+### 总结
+
+使用索引是优化 SQL 查询性能的重要手段。关键在于选择合适的列创建索引,避免过多和低选择性的索引,定期维护索引以保持查询性能。通过查看执行计划（如使用 `EXPLAIN`）,可以了解索引的使用情况,并进行相应的优化。
+
+## AOP的概念和使用场景,AOP通知有哪些
+
+面向方面编程（Aspect-Oriented Programming, AOP）是一种编程范式,它允许程序员在不修改代码的情况下为现有代码添加行为。AOP 是通过将横切关注点（如日志记录、安全性、事务管理等）从业务逻辑中分离出来,从而实现更好的模块化。
+
+### AOP 的概念
+
+- **横切关注点（Cross-Cutting Concerns）**:这些是贯穿应用程序多个模块的通用功能,例如日志记录、事务管理、安全性等。AOP 旨在将这些关注点从业务逻辑中分离出来。
+- **方面（Aspect）**:方面是模块化横切关注点的关键概念。一个方面封装了某个特定横切关注点的行为。
+- **连接点（Join Point）**:程序执行期间的某个特定点,例如方法调用或异常处理。这些是横切关注点可以插入的地方。
+- **切点（Pointcut）**:切点定义了一个或多个连接点,在这些连接点上执行特定的代码。它们用于选择横切关注点应该应用到的连接点。
+- **通知（Advice）**:通知是实际在连接点上执行的代码,它定义了在连接点处要执行的横切关注点的具体行为。
+- **织入（Weaving）**:织入是将方面应用到目标对象的过程,可以在编译时、类加载时、或运行时进行。
+
+### AOP 的使用场景
+
+1. **日志记录**:在应用程序的多个层次中记录日志而不干扰业务逻辑。
+2. **事务管理**:自动管理事务边界,而不需要在业务逻辑中手动处理事务。
+3. **安全性**:在方法调用之前进行安全性检查。
+4. **缓存**:在方法调用之前和之后管理缓存。
+5. **异常处理**:统一处理应用程序中的异常。
+
+### AOP 通知类型
+
+通知定义了在连接点处执行的横切关注点的具体行为。主要有以下几种类型:
+
+1. **前置通知（Before Advice）**:在目标方法执行之前运行的通知。
+2. **后置通知（After Advice）**:在目标方法执行之后运行的通知。
+   - **After Returning**:在目标方法成功返回后执行。
+   - **After Throwing**:在目标方法抛出异常后执行。
+3. **环绕通知（Around Advice）**:在目标方法执行之前和之后都可以执行的通知。它可以完全控制目标方法的执行,包括决定是否执行目标方法。
+4. **返回通知（After Returning Advice）**:在目标方法成功返回后运行的通知。
+5. **异常通知（After Throwing Advice）**:在目标方法抛出异常后运行的通知。
+
+### 示例:Spring AOP
+
+#### 配置和使用 Spring AOP
+
+1. **定义 Aspect 类和通知**:
+
+```java
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+
+@Aspect
+public class LoggingAspect {
+
+    @Before("execution(* com.example.service.*.*(..))")
+    public void logBefore() {
+        System.out.println("Before method execution");
+    }
+
+    @After("execution(* com.example.service.*.*(..))")
+    public void logAfter() {
+        System.out.println("After method execution");
+    }
+
+    @Around("execution(* com.example.service.*.*(..))")
+    public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+        System.out.println("Before method execution");
+        Object result = joinPoint.proceed();
+        System.out.println("After method execution");
+        return result;
+    }
+
+    @AfterReturning(pointcut = "execution(* com.example.service.*.*(..))", returning = "result")
+    public void logAfterReturning(Object result) {
+        System.out.println("Method returned: " + result);
+    }
+
+    @AfterThrowing(pointcut = "execution(* com.example.service.*.*(..))", throwing = "error")
+    public void logAfterThrowing(Throwable error) {
+        System.out.println("Method threw an exception: " + error);
+    }
+}
+```
+
+2. **启用 AspectJ 支持**:
+
+在 Spring 配置文件中启用 AspectJ 支持:
+
+```xml
+<aop:aspectj-autoproxy />
+```
+
+或者在 Spring Boot 应用中添加 `@EnableAspectJAutoProxy` 注解:
+
+```java
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+
+@Configuration
+@EnableAspectJAutoProxy
+public class AppConfig {
+    // Other bean definitions
+}
+```
+
+3. **定义目标类和方法**:
+
+```java
+package com.example.service;
+
+public class UserService {
+
+    public void addUser() {
+        System.out.println("Adding user...");
+    }
+
+    public void deleteUser() {
+        System.out.println("Deleting user...");
+    }
+}
+```
+
+4. **测试 AOP**:
+
+```java
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import com.example.service.UserService;
+
+public class Main {
+
+    public static void main(String[] args) {
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        UserService userService = context.getBean(UserService.class);
+
+        userService.addUser();
+        userService.deleteUser();
+    }
+}
+```
+
+### 总结
+
+AOP 提供了一种在不修改业务代码的情况下增强现有功能的方式,适用于日志记录、事务管理、安全性、缓存等场景。通过理解和使用 AOP 的基本概念和通知类型,开发者可以更好地模块化和管理横切关注点,提高代码的可维护性和可读性。
+
+## Spring事务管理注解用的哪个?如果代码里捕获了异常,这个注解还有用么
+
+在 Spring 中,事务管理通常通过 `@Transactional` 注解来实现。`@Transactional` 注解用于声明方法或类中的所有方法都在事务上下文中执行。Spring 事务管理器会自动处理这些方法的事务边界（即事务的开始和结束）。
+
+### 使用 `@Transactional` 注解
+
+#### 基本使用
+
+将 `@Transactional` 注解放在类上或方法上,以声明它们应在事务上下文中执行:
+
+```java
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class UserService {
+
+    @Transactional
+    public void createUser(User user) {
+        // 方法体中的代码将在事务中执行
+    }
+}
+```
+
+#### 高级使用
+
+`@Transactional` 注解提供了一些属性来控制事务行为:
+
+- `propagation`:定义事务的传播行为,例如 `REQUIRED`（默认值）,`REQUIRES_NEW` 等。
+- `isolation`:定义事务的隔离级别,例如 `READ_COMMITTED`,`REPEATABLE_READ` 等。
+- `timeout`:定义事务的超时时间（秒）。
+- `readOnly`:如果为 `true`,表示事务只读。
+- `rollbackFor`:定义哪些异常会触发事务回滚。
+- `noRollbackFor`:定义哪些异常不会触发事务回滚。
+
+```java
+@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, timeout = 30, readOnly = false, rollbackFor = {Exception.class})
+public void createUser(User user) {
+    // 方法体中的代码将在事务中执行
+}
+```
+
+### 异常处理对事务的影响
+
+Spring 的默认事务管理策略是在方法抛出未检查异常（RuntimeException 或 Error）时回滚事务。受检异常（Checked Exception）不会触发事务回滚,除非明确配置。
+
+#### 捕获异常对事务的影响
+
+如果代码捕获了异常,并且没有重新抛出异常,事务管理器将不会检测到异常,也不会触发回滚。如下示例:
+
+```java
+@Transactional
+public void createUser(User user) {
+    try {
+        // 业务逻辑
+    } catch (Exception e) {
+        // 捕获异常,事务不会回滚
+        e.printStackTrace();
+    }
+}
+```
+
+在这种情况下,即使发生异常,由于异常被捕获,事务也不会回滚。要解决这个问题,可以显式地回滚事务:
+
+#### 显式回滚事务
+
+1. **使用 `TransactionAspectSupport`**:
+
+   ```java
+   import org.springframework.transaction.interceptor.TransactionAspectSupport;
+
+   @Transactional
+   public void createUser(User user) {
+       try {
+           // 业务逻辑
+       } catch (Exception e) {
+           // 手动回滚事务
+           TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+           e.printStackTrace();
+       }
+   }
+   ```
+
+2. **重新抛出异常**:
+
+   另一种方法是在捕获异常后重新抛出,这样事务管理器可以检测到异常并回滚事务:
+
+   ```java
+   @Transactional
+   public void createUser(User user) {
+       try {
+           // 业务逻辑
+       } catch (Exception e) {
+           // 重新抛出异常,触发回滚
+           throw new RuntimeException(e);
+       }
+   }
+   ```
+
+3. **指定 `rollbackFor` 属性**:
+
+   如果希望在受检异常发生时也回滚事务,可以使用 `rollbackFor` 属性:
+
+   ```java
+   @Transactional(rollbackFor = Exception.class)
+   public void createUser(User user) {
+       try {
+           // 业务逻辑
+       } catch (Exception e) {
+           // 捕获受检异常
+           e.printStackTrace();
+           throw e; // 重新抛出异常,触发回滚
+       }
+   }
+   ```
+
+### 总结
+
+- **`@Transactional` 注解** 用于声明方法或类中的所有方法在事务上下文中执行。
+- **异常捕获对事务的影响**:默认情况下,未检查异常会触发事务回滚,但受检异常不会。捕获异常会阻止事务管理器检测到异常,从而阻止事务回滚。
+- **显式回滚事务**:可以使用 `TransactionAspectSupport` 进行手动回滚,或在捕获异常后重新抛出异常,确保事务管理器检测到异常并回滚事务。
+
+## 环境的配置文件怎么实现?底层逻辑是什么
+
+在现代应用程序开发中,配置管理是一个非常重要的部分。通过配置文件,可以将应用程序的配置参数与代码分离,方便环境切换和配置管理。Spring 框架提供了多种方式来实现环境配置文件管理。下面详细介绍如何实现环境配置文件管理及其底层逻辑。
+
+### 实现环境配置文件
+
+#### 1. 使用 `application.properties` 或 `application.yml`
+
+Spring Boot 默认使用 `application.properties` 或 `application.yml` 文件来配置应用程序参数。这些文件通常放在 `src/main/resources` 目录下。
+
+例如,`application.properties`:
+
+```properties
+server.port=8080
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=root
+spring.datasource.password=secret
+```
+
+或 `application.yml`:
+
+```yaml
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydb
+    username: root
+    password: secret
+```
+
+#### 2. 环境特定的配置文件
+
+Spring Boot 支持环境特定的配置文件。可以根据不同的环境（如开发、测试、生产）创建不同的配置文件。例如:
+
+- `application-dev.properties`
+- `application-test.properties`
+- `application-prod.properties`
+
+在 `application.properties` 文件中指定使用的环境:
+
+```properties
+spring.profiles.active=dev
+```
+
+#### 3. 使用 `@Profile` 注解
+
+Spring 提供了 `@Profile` 注解,用于根据激活的配置文件加载特定的 Bean。
+
+```java
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
+
+@Service
+@Profile("dev")
+public class DevDatabaseConfig implements DatabaseConfig {
+    // Dev environment specific configuration
+}
+
+@Service
+@Profile("prod")
+public class ProdDatabaseConfig implements DatabaseConfig {
+    // Production environment specific configuration
+}
+```
+
+### 读取配置文件中的参数
+
+使用 `@Value` 注解注入配置参数:
+
+```java
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyComponent {
+
+    @Value("${server.port}")
+    private int serverPort;
+
+    @Value("${spring.datasource.url}")
+    private String datasourceUrl;
+
+    // Getters and setters
+}
+```
+
+使用 `@ConfigurationProperties` 注解:
+
+```java
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ConfigurationProperties(prefix = "spring.datasource")
+public class DatasourceConfig {
+    private String url;
+    private String username;
+    private String password;
+
+    // Getters and setters
+}
+```
+
+### 底层逻辑
+
+Spring Boot 通过 `Environment` 接口和 `PropertySource` 机制实现对配置文件的管理和读取。
+
+#### 1. `Environment` 接口
+
+`Environment` 接口提供了访问当前环境配置信息的方法,主要方法包括:
+
+- `getActiveProfiles()`:获取当前激活的配置文件。
+- `getDefaultProfiles()`:获取默认的配置文件。
+- `getProperty(String key)`:根据键获取配置属性值。
+
+#### 2. `PropertySource` 机制
+
+Spring 的 `PropertySource` 抽象了不同来源的配置属性,例如:
+
+- `application.properties` 或 `application.yml` 文件
+- 操作系统环境变量
+- JVM 系统属性
+- 命令行参数
+
+Spring Boot 在启动时会自动加载这些配置源,并将其放入 `Environment` 中。默认情况下,Spring Boot 会按照以下顺序加载配置源:
+
+1. 命令行参数
+2. `application.properties` 或 `application.yml`
+3. 操作系统环境变量
+4. JVM 系统属性
+
+这种机制确保了配置属性的优先级管理,后加载的配置可以覆盖前面的配置。
+
+#### 3. `@ConfigurationProperties` 和 `@Value`
+
+- `@ConfigurationProperties`:用于将配置属性绑定到 Java Bean。Spring Boot 在应用启动时会扫描带有 `@ConfigurationProperties` 注解的类,并将配置属性注入到这些类中。
+
+  通过 `@EnableConfigurationProperties` 可以启用该功能:
+
+  ```java
+  import org.springframework.boot.context.properties.EnableConfigurationProperties;
+  import org.springframework.context.annotation.Configuration;
+
+  @Configuration
+  @EnableConfigurationProperties(DatasourceConfig.class)
+  public class AppConfig {
+  }
+  ```
+
+- `@Value`:用于直接注入单个配置属性。Spring 在 Bean 初始化时会解析注解中的表达式,并将对应的配置值注入到字段中。
+
+### 示例
+
+以下是一个完整的 Spring Boot 应用程序示例,演示如何使用配置文件和环境特定配置。
+
+#### 目录结构
+
+```
+src/main/resources/
+    application.properties
+    application-dev.properties
+    application-prod.properties
+src/main/java/com/example/demo/
+    DemoApplication.java
+    MyComponent.java
+    AppConfig.java
+    DevDatabaseConfig.java
+    ProdDatabaseConfig.java
+```
+
+#### `application.properties`
+
+```properties
+spring.profiles.active=dev
+```
+
+#### `application-dev.properties`
+
+```properties
+server.port=8081
+spring.datasource.url=jdbc:mysql://localhost:3306/devdb
+```
+
+#### `application-prod.properties`
+
+```properties
+server.port=8080
+spring.datasource.url=jdbc:mysql://localhost:3306/proddb
+```
+
+#### `DemoApplication.java`
+
+```java
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+```
+
+#### `MyComponent.java`
+
+```java
+package com.example.demo;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyComponent {
+
+    @Value("${server.port}")
+    private int serverPort;
+
+    @Value("${spring.datasource.url}")
+    private String datasourceUrl;
+
+    // Getters and setters
+}
+```
+
+#### `AppConfig.java`
+
+```java
+package com.example.demo;
+
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@EnableConfigurationProperties(DatasourceConfig.class)
+public class AppConfig {
+}
+```
+
+#### `DevDatabaseConfig.java`
+
+```java
+package com.example.demo;
+
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
+
+@Service
+@Profile("dev")
+public class DevDatabaseConfig implements DatabaseConfig {
+    // Dev environment specific configuration
+}
+```
+
+#### `ProdDatabaseConfig.java`
+
+```java
+package com.example.demo;
+
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
+
+@Service
+@Profile("prod")
+public class ProdDatabaseConfig implements DatabaseConfig {
+    // Production environment specific configuration
+}
+```
+
+通过这种方式,Spring Boot 可以轻松地管理不同环境下的配置,使得应用程序的部署和管理更加灵活和高效。
+
+## MQ 在哪些场景需要使用到
+
+## java包如何管理?一般是maven,jar包冲突如何解决
