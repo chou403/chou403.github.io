@@ -1,23 +1,47 @@
+---
+import { Image } from "astro:assets";
+import docs from "../assets/images/docs.png";
+import docsav from "../assets/images/docs.avif";
+import docdark from "../assets/images/docs-dark.png";
+import docdarkav from "../assets/images/docs-dark.avif";
+---
+
 <div
 	class="pointer-events-none absolute inset-x-0 top-0 z-[60] flex justify-center overflow-hidden"
 >
 	<div class="flex w-[108rem] flex-none justify-end">
 		<picture>
-			<source srcset="/docs.avif" type="image/avif" />
-			<img
+			<source srcset={docsav.src} type="image/avif" />
+			<Image
+				src={docs}
+				width={200}
+				height={200}
+				format="webp"
+				class="w-[71.75rem] max-w-none flex-none dark:hidden"
+				alt={`img of docs`}
+			/>
+			<!-- <img
 				src="/docs.png"
 				alt=""
 				class="w-[71.75rem] max-w-none flex-none dark:hidden"
 				decoding="async"
-			/>
+			/> -->
 		</picture>
 		<picture>
-			<source srcset="/docs-dark.avif" type="image/avif" />
-			<img
+			<source srcset={docdarkav.src} type="image/avif" />
+			<!-- <img
 				src="/docs-dark.png"
 				alt=""
 				class="hidden w-[90rem] max-w-none flex-none dark:block"
 				decoding="async"
+			/> -->
+			<Image
+				src={docdark}
+				width={200}
+				height={200}
+				format="webp"
+				class="hidden w-[90rem] max-w-none flex-none dark:block"
+				alt={`img of docs-dark`}
 			/>
 		</picture>
 	</div>
