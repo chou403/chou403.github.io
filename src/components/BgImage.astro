@@ -11,7 +11,7 @@ import docdarkav from "../assets/images/docs-dark.avif";
 >
 	<div class="flex w-[108rem] flex-none justify-end">
 		<picture>
-			<source srcset={docsav.src} type="image/avif" />
+			<source srcset={docsav?.src} type="image/avif" />
 			<Image
 				src={docs}
 				width={200}
@@ -20,21 +20,9 @@ import docdarkav from "../assets/images/docs-dark.avif";
 				class="w-[71.75rem] max-w-none flex-none dark:hidden"
 				alt={`img of docs`}
 			/>
-			<!-- <img
-				src="/docs.png"
-				alt=""
-				class="w-[71.75rem] max-w-none flex-none dark:hidden"
-				decoding="async"
-			/> -->
 		</picture>
 		<picture>
-			<source srcset={docdarkav.src} type="image/avif" />
-			<!-- <img
-				src="/docs-dark.png"
-				alt=""
-				class="hidden w-[90rem] max-w-none flex-none dark:block"
-				decoding="async"
-			/> -->
+			<source srcset={docdarkav?.src} type="image/avif" />
 			<Image
 				src={docdark}
 				width={200}
