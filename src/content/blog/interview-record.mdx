@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-01-30T12:28:25Z
-updatedDate: 2024-06-12T20:39:41Z
+updatedDate: 2024-06-13T15:23:56Z
 title: 面基记录
 draft: false
 heroImage: ../../assets/images/wolf-1.jpg
@@ -4001,9 +4001,9 @@ public final class FinalClass {
 
 ## 集合和流的区别
 
-在编程中,集合（Collection）和流（Stream）是处理数据的两种不同方式。它们在功能、使用场景和操作方式上有显著的区别。下面详细介绍集合和流的主要区别,主要以 Java 为例,但概念在其他编程语言中也类似。
+在编程中,集合(Collection)和流(Stream)是处理数据的两种不同方式。它们在功能、使用场景和操作方式上有显著的区别。下面详细介绍集合和流的主要区别,主要以 Java 为例,但概念在其他编程语言中也类似。
 
-### 集合（Collection）
+### 集合(Collection)
 
 1. **数据结构**:
 
@@ -4031,7 +4031,7 @@ public final class FinalClass {
 6. **延迟计算**:
    - 集合不支持延迟计算,操作立即执行并返回结果。
 
-### 流（Stream）
+### 流(Stream)
 
 1. **数据处理**:
 
@@ -4041,18 +4041,18 @@ public final class FinalClass {
 2. **数据流动**:
 
    - 流不存储数据,它从集合、数组或其他数据源中获取数据,并通过一系列的计算管道来处理数据。
-   - 流可以是有界的（有限的元素）或无界的（无限的元素）。
+   - 流可以是有界的(有限的元素)或无界的(无限的元素)。
 
 3. **遍历**:
 
-   - 流的元素只能遍历一次,遍历之后流会被消耗（关闭）。
+   - 流的元素只能遍历一次,遍历之后流会被消耗(关闭)。
    - 如果需要再次遍历相同的数据,需要重新生成流。
 
 4. **操作**:
 
    - 流的操作分为中间操作和终端操作。
-     - 中间操作（如 `filter`, `map`, `sorted`）返回一个新的流,并且是延迟执行的（惰性求值）。
-     - 终端操作（如 `forEach`, `collect`, `reduce`）触发流的计算并返回结果或副作用。
+     - 中间操作(如 `filter`, `map`, `sorted`)返回一个新的流,并且是延迟执行的(惰性求值)。
+     - 终端操作(如 `forEach`, `collect`, `reduce`)触发流的计算并返回结果或副作用。
    - 流的操作可以是并行执行的,从而提高性能。
 
 5. **不可变性**:
@@ -4121,15 +4121,15 @@ public class StreamExample {
 
 ## 数据库大文本用什么存储
 
-在数据库中存储大文本（例如,文档、日志、文章内容等）需要考虑效率、可扩展性和数据完整性。以下是一些常见的选项和其适用场景:
+在数据库中存储大文本(例如,文档、日志、文章内容等)需要考虑效率、可扩展性和数据完整性。以下是一些常见的选项和其适用场景:
 
 ### 关系型数据库
 
 1. **MySQL**
 
-   - **TEXT** 类型:适合存储相对较短的文本（最大 65,535 字节）。
-   - **MEDIUMTEXT** 类型:适合存储中等长度的文本（最大 16,777,215 字节）。
-   - **LONGTEXT** 类型:适合存储非常大的文本（最大 4,294,967,295 字节）。
+   - **TEXT** 类型:适合存储相对较短的文本(最大 65,535 字节)。
+   - **MEDIUMTEXT** 类型:适合存储中等长度的文本(最大 16,777,215 字节)。
+   - **LONGTEXT** 类型:适合存储非常大的文本(最大 4,294,967,295 字节)。
 
    示例:
 
@@ -4174,7 +4174,7 @@ public class StreamExample {
 
 2. **Couchbase**
 
-   - **JSON Document**:适合存储大文本,可以使用 Couchbase 的全文搜索（Full Text Search, FTS）功能。
+   - **JSON Document**:适合存储大文本,可以使用 Couchbase 的全文搜索(Full Text Search, FTS)功能。
 
    示例:
 
@@ -4210,10 +4210,10 @@ public class StreamExample {
 
 ### 选择考虑因素
 
-- **数据大小**:如果文本数据非常大,可能需要使用专用的文件存储解决方案（如 Amazon S3、Hadoop HDFS）或 NoSQL 数据库（如 MongoDB 的 GridFS）。
-- **查询性能**:如果需要对文本数据进行复杂查询,关系型数据库（如 MySQL、PostgreSQL）和支持全文搜索的 NoSQL 数据库（如 Couchbase）可能更适合。
+- **数据大小**:如果文本数据非常大,可能需要使用专用的文件存储解决方案(如 Amazon S3、Hadoop HDFS)或 NoSQL 数据库(如 MongoDB 的 GridFS)。
+- **查询性能**:如果需要对文本数据进行复杂查询,关系型数据库(如 MySQL、PostgreSQL)和支持全文搜索的 NoSQL 数据库(如 Couchbase)可能更适合。
 - **数据结构**:如果数据是结构化的,并且需要强类型约束和事务支持,关系型数据库是更好的选择。如果数据是半结构化或非结构化的,NoSQL 数据库可能更适合。
-- **扩展性**:对于需要高扩展性和分布式存储的场景,NoSQL 数据库（如 Cassandra）和文件存储解决方案（如 Amazon S3）是更好的选择。
+- **扩展性**:对于需要高扩展性和分布式存储的场景,NoSQL 数据库(如 Cassandra)和文件存储解决方案(如 Amazon S3)是更好的选择。
 
 ### 示例对比
 
@@ -4277,7 +4277,7 @@ EXPLAIN ANALYZE SELECT * FROM employees WHERE age > 30;
 
 #### SQL Server
 
-使用 `SET SHOWPLAN_ALL` 或图形化工具（SQL Server Management Studio）:
+使用 `SET SHOWPLAN_ALL` 或图形化工具(SQL Server Management Studio):
 
 ```sql
 SET SHOWPLAN_ALL ON;
@@ -4293,15 +4293,15 @@ GO
 执行计划通常包括以下几个部分:
 
 - **id**: 查询执行的顺序。
-- **select_type**: 查询的类型（SIMPLE, PRIMARY, UNION, SUBQUERY）。
+- **select_type**: 查询的类型(SIMPLE, PRIMARY, UNION, SUBQUERY)。
 - **table**: 正在访问的表。
-- **type**: 访问类型（ALL, INDEX, RANGE, REF, EQ_REF, CONST）。
+- **type**: 访问类型(ALL, INDEX, RANGE, REF, EQ_REF, CONST)。
 - **possible_keys**: 可以使用的索引。
 - **key**: 实际使用的索引。
 - **key_len**: 索引的长度。
 - **ref**: 使用的列或常量。
 - **rows**: 预估的扫描行数。
-- **extra**: 其他信息（Using where, Using index, Using filesort）。
+- **extra**: 其他信息(Using where, Using index, Using filesort)。
 
 ### 优化技巧
 
@@ -4455,7 +4455,7 @@ EXPLAIN SELECT * FROM employees WHERE age > 30;
    CREATE INDEX idx_column_name ON table_name(column_name);
    ```
 
-2. **复合索引（多列索引）**:
+2. **复合索引(多列索引)**:
 
    - 在多个列上创建的索引。
    - 用于加速涉及这些列组合的查询。
@@ -4472,7 +4472,7 @@ EXPLAIN SELECT * FROM employees WHERE age > 30;
    CREATE UNIQUE INDEX idx_unique_column ON table_name(column_name);
    ```
 
-4. **全文索引**（仅适用于某些数据库,如 MySQL）:
+4. **全文索引**(仅适用于某些数据库,如 MySQL):
 
    - 用于全文搜索,加速文本数据的搜索。
 
@@ -4480,7 +4480,7 @@ EXPLAIN SELECT * FROM employees WHERE age > 30;
    CREATE FULLTEXT INDEX idx_fulltext_column ON table_name(column_name);
    ```
 
-5. **聚簇索引（Clustered Index）**:
+5. **聚簇索引(Clustered Index)**:
 
    - 改变表的物理存储顺序,只能有一个聚簇索引。
    - 主键通常会自动成为聚簇索引。
@@ -4489,7 +4489,7 @@ EXPLAIN SELECT * FROM employees WHERE age > 30;
    CREATE CLUSTERED INDEX idx_clustered_column ON table_name(column_name);
    ```
 
-6. **非聚簇索引（Non-Clustered Index）**:
+6. **非聚簇索引(Non-Clustered Index)**:
 
    - 不改变表的物理存储顺序,可以有多个非聚簇索引。
 
@@ -4536,7 +4536,7 @@ CREATE INDEX idx_fulltext_content ON articles USING gin(to_tsvector('english', c
 1. **选择合适的列**:
 
    - 经常出现在 WHERE 子句、JOIN 条件、ORDER BY 和 GROUP BY 子句中的列适合创建索引。
-   - 高选择性的列（即具有大量不同值的列）通常是良好的索引候选。
+   - 高选择性的列(即具有大量不同值的列)通常是良好的索引候选。
 
 2. **避免在低选择性列上创建索引**:
 
@@ -4611,20 +4611,20 @@ REINDEX TABLE employees;
 
 ### 总结
 
-使用索引是优化 SQL 查询性能的重要手段。关键在于选择合适的列创建索引,避免过多和低选择性的索引,定期维护索引以保持查询性能。通过查看执行计划（如使用 `EXPLAIN`）,可以了解索引的使用情况,并进行相应的优化。
+使用索引是优化 SQL 查询性能的重要手段。关键在于选择合适的列创建索引,避免过多和低选择性的索引,定期维护索引以保持查询性能。通过查看执行计划(如使用 `EXPLAIN`),可以了解索引的使用情况,并进行相应的优化。
 
 ## AOP的概念和使用场景,AOP通知有哪些
 
-面向方面编程（Aspect-Oriented Programming, AOP）是一种编程范式,它允许程序员在不修改代码的情况下为现有代码添加行为。AOP 是通过将横切关注点（如日志记录、安全性、事务管理等）从业务逻辑中分离出来,从而实现更好的模块化。
+面向方面编程(Aspect-Oriented Programming, AOP)是一种编程范式,它允许程序员在不修改代码的情况下为现有代码添加行为。AOP 是通过将横切关注点(如日志记录、安全性、事务管理等)从业务逻辑中分离出来,从而实现更好的模块化。
 
 ### AOP 的概念
 
-- **横切关注点（Cross-Cutting Concerns）**:这些是贯穿应用程序多个模块的通用功能,例如日志记录、事务管理、安全性等。AOP 旨在将这些关注点从业务逻辑中分离出来。
-- **方面（Aspect）**:方面是模块化横切关注点的关键概念。一个方面封装了某个特定横切关注点的行为。
-- **连接点（Join Point）**:程序执行期间的某个特定点,例如方法调用或异常处理。这些是横切关注点可以插入的地方。
-- **切点（Pointcut）**:切点定义了一个或多个连接点,在这些连接点上执行特定的代码。它们用于选择横切关注点应该应用到的连接点。
-- **通知（Advice）**:通知是实际在连接点上执行的代码,它定义了在连接点处要执行的横切关注点的具体行为。
-- **织入（Weaving）**:织入是将方面应用到目标对象的过程,可以在编译时、类加载时、或运行时进行。
+- **横切关注点(Cross-Cutting Concerns)**:这些是贯穿应用程序多个模块的通用功能,例如日志记录、事务管理、安全性等。AOP 旨在将这些关注点从业务逻辑中分离出来。
+- **方面(Aspect)**:方面是模块化横切关注点的关键概念。一个方面封装了某个特定横切关注点的行为。
+- **连接点(Join Point)**:程序执行期间的某个特定点,例如方法调用或异常处理。这些是横切关注点可以插入的地方。
+- **切点(Pointcut)**:切点定义了一个或多个连接点,在这些连接点上执行特定的代码。它们用于选择横切关注点应该应用到的连接点。
+- **通知(Advice)**:通知是实际在连接点上执行的代码,它定义了在连接点处要执行的横切关注点的具体行为。
+- **织入(Weaving)**:织入是将方面应用到目标对象的过程,可以在编译时、类加载时、或运行时进行。
 
 ### AOP 的使用场景
 
@@ -4638,13 +4638,13 @@ REINDEX TABLE employees;
 
 通知定义了在连接点处执行的横切关注点的具体行为。主要有以下几种类型:
 
-1. **前置通知（Before Advice）**:在目标方法执行之前运行的通知。
-2. **后置通知（After Advice）**:在目标方法执行之后运行的通知。
+1. **前置通知(Before Advice)**:在目标方法执行之前运行的通知。
+2. **后置通知(After Advice)**:在目标方法执行之后运行的通知。
    - **After Returning**:在目标方法成功返回后执行。
    - **After Throwing**:在目标方法抛出异常后执行。
-3. **环绕通知（Around Advice）**:在目标方法执行之前和之后都可以执行的通知。它可以完全控制目标方法的执行,包括决定是否执行目标方法。
-4. **返回通知（After Returning Advice）**:在目标方法成功返回后运行的通知。
-5. **异常通知（After Throwing Advice）**:在目标方法抛出异常后运行的通知。
+3. **环绕通知(Around Advice)**:在目标方法执行之前和之后都可以执行的通知。它可以完全控制目标方法的执行,包括决定是否执行目标方法。
+4. **返回通知(After Returning Advice)**:在目标方法成功返回后运行的通知。
+5. **异常通知(After Throwing Advice)**:在目标方法抛出异常后运行的通知。
 
 ### 示例:Spring AOP
 
@@ -4757,7 +4757,7 @@ AOP 提供了一种在不修改业务代码的情况下增强现有功能的方�
 
 ## Spring事务管理注解用的哪个?如果代码里捕获了异常,这个注解还有用么
 
-在 Spring 中,事务管理通常通过 `@Transactional` 注解来实现。`@Transactional` 注解用于声明方法或类中的所有方法都在事务上下文中执行。Spring 事务管理器会自动处理这些方法的事务边界（即事务的开始和结束）。
+在 Spring 中,事务管理通常通过 `@Transactional` 注解来实现。`@Transactional` 注解用于声明方法或类中的所有方法都在事务上下文中执行。Spring 事务管理器会自动处理这些方法的事务边界(即事务的开始和结束)。
 
 ### 使用 `@Transactional` 注解
 
@@ -4783,9 +4783,9 @@ public class UserService {
 
 `@Transactional` 注解提供了一些属性来控制事务行为:
 
-- `propagation`:定义事务的传播行为,例如 `REQUIRED`（默认值）,`REQUIRES_NEW` 等。
+- `propagation`:定义事务的传播行为,例如 `REQUIRED`(默认值),`REQUIRES_NEW` 等。
 - `isolation`:定义事务的隔离级别,例如 `READ_COMMITTED`,`REPEATABLE_READ` 等。
-- `timeout`:定义事务的超时时间（秒）。
+- `timeout`:定义事务的超时时间(秒)。
 - `readOnly`:如果为 `true`,表示事务只读。
 - `rollbackFor`:定义哪些异常会触发事务回滚。
 - `noRollbackFor`:定义哪些异常不会触发事务回滚。
@@ -4799,7 +4799,7 @@ public void createUser(User user) {
 
 ### 异常处理对事务的影响
 
-Spring 的默认事务管理策略是在方法抛出未检查异常（RuntimeException 或 Error）时回滚事务。受检异常（Checked Exception）不会触发事务回滚,除非明确配置。
+Spring 的默认事务管理策略是在方法抛出未检查异常(RuntimeException 或 Error)时回滚事务。受检异常(Checked Exception)不会触发事务回滚,除非明确配置。
 
 #### 捕获异常对事务的影响
 
@@ -4911,7 +4911,7 @@ spring:
 
 #### 2. 环境特定的配置文件
 
-Spring Boot 支持环境特定的配置文件。可以根据不同的环境（如开发、测试、生产）创建不同的配置文件。例如:
+Spring Boot 支持环境特定的配置文件。可以根据不同的环境(如开发、测试、生产)创建不同的配置文件。例如:
 
 - `application-dev.properties`
 - `application-test.properties`
@@ -5154,4 +5154,717 @@ public class ProdDatabaseConfig implements DatabaseConfig {
 
 ## MQ 在哪些场景需要使用到
 
+消息队列(MQ,Message Queue)在现代分布式系统中有广泛的应用,主要用于解决系统间的通信、异步处理、解耦合等问题。以下是一些常见的使用场景:
+
+### 1. **系统解耦**
+
+- **微服务架构**:在微服务架构中,不同服务需要相互通信。消息队列可以将服务之间的耦合度降到最低,通过异步消息传递实现服务解耦。
+- **系统集成**:将不同的系统、应用程序或模块连接起来,使用消息队列可以简化集成过程,使得系统之间的通信更加灵活和可靠。
+
+### 2. **异步任务处理**
+
+- **任务队列**:将需要处理的任务放入消息队列中,消费者从队列中获取任务并处理。这种方式可以有效处理异步任务,确保任务的顺序性和可靠性。
+- **定时任务**:使用消息队列实现定时触发任务的调度和执行,例如定时生成报表、定时发送邮件等。
+
+### 3. **削峰填谷**
+
+- **流量控制**:在高并发场景下,消息队列可以作为缓冲层,平滑处理突发的请求流量,避免系统过载,提高系统的稳定性和可靠性。
+- **异步通知**:通过消息队列将瞬时高峰的请求进行削峰处理,确保系统的正常运行。
+
+### 4. **日志处理**
+
+- **日志收集和分析**:将应用程序生成的日志异步地发送到消息队列中,然后使用消费者从队列中获取日志进行处理、存储和分析。这种方式可以提高日志处理的效率和可靠性。
+
+### 5. **事件驱动架构**
+
+- **事件发布与订阅**:通过消息队列实现事件驱动架构,生产者发布事件,消费者订阅并处理这些事件。适用于实时数据分析、实时监控和响应式系统。
+
+### 6. **可靠性消息传递**
+
+- **消息持久化**:消息队列通常支持消息的持久化存储,确保即使在消息传递过程中出现故障或重启,消息也不会丢失。这对于需要确保每条消息都可靠地传递的应用场景非常重要。
+
+### 7. **分布式系统协调**
+
+- **分布式事务**:在分布式系统中,通过消息队列可以实现分布式事务的最终一致性,确保多个步骤的操作能够按照预期顺序进行。
+
+### 8. **通知和报警**
+
+- **即时通知**:通过消息队列实现即时通知功能,例如发送短信、邮件等。消息队列可以确保通知的可靠送达和处理。
+
+### 9. **缓冲和延迟处理**
+
+- **延迟队列**:消息队列支持设置消息的延迟处理时间,适用于需要在特定时间后处理的任务,如订单自动取消、延迟发送的通知等。
+
+### 10. **数据同步**
+
+- **跨系统的数据同步**:消息队列可以用于不同系统之间的数据同步,例如主数据和从数据的同步,确保数据的一致性和实时性。
+
+通过这些场景,消息队列在提高系统的可扩展性、可靠性和灵活性方面起到了重要作用。不同的消息队列实现(如 RabbitMQ、Kafka、ActiveMQ、AWS SQS 等)提供了不同的特性,可以根据具体需求选择合适的消息队列方案。
+
 ## java包如何管理?一般是maven,jar包冲突如何解决
+
+在Java项目中,包管理是一个重要的部分,通常通过Maven、Gradle等工具来进行管理。Maven是最常用的包管理和构建工具之一,下面是如何使用Maven进行包管理以及解决JAR包冲突的详细说明。
+
+### 使用Maven进行包管理
+
+#### 1. 配置 `pom.xml`
+
+Maven使用 `pom.xml` 文件来管理项目的依赖、插件和构建配置。一个简单的 `pom.xml` 文件如下:
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>my-app</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <!-- 添加项目依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>2.5.4</version>
+        </dependency>
+        <!-- 其他依赖 -->
+    </dependencies>
+</project>
+```
+
+#### 2. 添加依赖
+
+在 `pom.xml` 文件中的 `<dependencies>` 部分添加项目所需的依赖。例如:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <version>2.5.4</version>
+    </dependency>
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.20</version>
+        <scope>provided</scope>
+    </dependency>
+</dependencies>
+```
+
+### 解决JAR包冲突
+
+在Maven项目中,JAR包冲突通常发生在不同的依赖项之间使用了不同版本的同一个库。这种情况可以通过以下几种方式解决:
+
+#### 1. 使用 `dependencyManagement`
+
+在父 `pom.xml` 中使用 `dependencyManagement` 来统一管理依赖版本,确保所有子模块使用相同的版本。例如:
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+
+#### 2. 排除冲突的依赖
+
+在依赖项中使用 `<exclusions>` 元素来排除冲突的依赖。例如:
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+    <version>2.5.4</version>
+    <exclusions>
+        <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
+#### 3. 使用 `mvn dependency:tree` 检查依赖树
+
+使用 `mvn dependency:tree` 命令来查看项目的依赖树,找出冲突的依赖。例如:
+
+```shell
+mvn dependency:tree
+```
+
+输出示例:
+
+```
+[INFO] --- maven-dependency-plugin:3.1.2:tree (default-cli) @ my-app ---
+[INFO] com.example:my-app:jar:1.0-SNAPSHOT
+[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:2.5.4:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.5.4:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot:jar:2.5.4:compile
+[INFO] |  |  \- org.springframework:spring-core:jar:5.3.9:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.5.4:compile
+[INFO] |  \- org.springframework:spring-webmvc:jar:5.3.9:compile
+[INFO] \- org.projectlombok:lombok:jar:1.18.20:provided
+```
+
+通过依赖树可以直观地查看和分析依赖关系,并找出可能的冲突。
+
+#### 4. 强制指定依赖版本
+
+在 `pom.xml` 中直接指定冲突依赖的版本来覆盖默认版本。例如:
+
+```xml
+<dependency>
+    <groupId>commons-logging</groupId>
+    <artifactId>commons-logging</artifactId>
+    <version>1.2</version>
+</dependency>
+```
+
+### 总结
+
+通过合理地管理Maven依赖和版本控制,可以有效地解决JAR包冲突问题。确保使用统一的依赖版本、排除不必要的依赖以及定期检查依赖树,是避免和解决依赖冲突的有效方法。
+
+## MQ:事务消息,CommitLog,乱序,重复消费
+
+消息队列(MQ)在分布式系统中广泛应用于处理异步消息传递、削峰填谷等场景。然而,在使用过程中,也会面临一些问题,例如事务消息、CommitLog、消息乱序、重复消费等。下面详细讨论这些概念及其解决方法。
+
+### 事务消息
+
+事务消息用于保证消息的发送和本地事务的原子性,即保证这两者要么都成功,要么都失败。消息队列的事务消息一般用于分布式事务场景。
+
+#### 事务消息的处理方式:
+
+1. **预发送消息**:
+
+   - 发送一条预消息(half message)到消息队列,消息队列会将这条消息标记为不可投递。
+
+2. **执行本地事务**:
+
+   - 在本地数据库中执行事务操作,例如更新数据库记录。
+
+3. **提交或回滚消息**:
+   - 根据本地事务的执行结果,决定提交或回滚预消息。如果本地事务成功,则提交预消息,使其对消费者可见；如果失败,则回滚预消息,删除它。
+
+### CommitLog
+
+CommitLog 是指消息队列系统中的一种持久化机制,记录了所有接收的消息,以便于在系统重启或故障恢复时能够重新加载消息。
+
+#### CommitLog 的作用:
+
+1. **持久化消息**:
+
+   - 保证消息的持久化存储,即使在系统重启或故障时,也能恢复消息数据。
+
+2. **消息重放**:
+
+   - 消息队列系统可以根据 CommitLog 中的记录,重放消息以确保消息的可靠传递。
+
+3. **消息顺序**:
+   - CommitLog 记录消息的顺序,可以在消息重放时保持消息的顺序性。
+
+### 消息乱序
+
+消息乱序是指消息队列中的消息在消费者接收时顺序发生了变化,导致消息处理顺序与生产顺序不一致。
+
+#### 解决消息乱序的方法:
+
+1. **消息分区(Partitioning)**:
+
+   - 将消息按照某个字段进行分区,同一分区内的消息保证顺序。例如,按照用户ID进行分区,同一个用户的消息总是发送到同一个分区。
+
+2. **使用顺序消息队列**:
+
+   - 选择支持顺序消息的消息队列,例如 Kafka 的分区保证了单个分区内的消息顺序。
+
+3. **应用端排序**:
+   - 在消费者端进行排序处理,确保处理顺序与生产顺序一致。
+
+### 重复消费
+
+重复消费是指消费者接收到并处理了同一条消息多次,可能会导致数据重复处理的问题。
+
+#### 解决重复消费的方法:
+
+1. **幂等性设计**:
+
+   - 设计消费者业务逻辑为幂等操作,即同一操作多次执行不会改变结果。例如,使用唯一ID标识操作,如果该ID已经处理过,则忽略重复操作。
+
+2. **消息去重**:
+
+   - 在消费者端记录已经处理过的消息ID,避免重复处理。可以使用数据库或缓存来存储已处理消息的ID列表。
+
+3. **使用消息队列的特性**:
+   - 选择支持消息去重的消息队列,例如 Apache Kafka 中的 `exactly-once` 语义。
+
+### 实践中的示例
+
+假设我们使用 Apache Kafka 作为消息队列,讨论如何解决事务消息、CommitLog、消息乱序、重复消费的问题。
+
+#### 事务消息
+
+在 Kafka 中,使用 Kafka 事务 API 实现事务消息:
+
+```java
+Properties props = new Properties();
+props.put("bootstrap.servers", "localhost:9092");
+props.put("transactional.id", "my-transactional-id");
+
+KafkaProducer<String, String> producer = new KafkaProducer<>(props);
+producer.initTransactions();
+
+try {
+    producer.beginTransaction();
+    // 发送预消息
+    producer.send(new ProducerRecord<>("my-topic", "key", "pre-message"));
+
+    // 执行本地事务操作
+    // 如:更新数据库记录
+
+    producer.commitTransaction();
+} catch (ProducerFencedException | OutOfOrderSequenceException | AuthorizationException e) {
+    // 这些异常是不可恢复的,必须关闭生产者
+    producer.close();
+} catch (KafkaException e) {
+    // 可恢复异常,回滚事务
+    producer.abortTransaction();
+}
+```
+
+#### CommitLog
+
+Kafka 的日志段文件就是 CommitLog,可以通过查看 Kafka 的日志配置来管理持久化日志。
+
+#### 消息乱序
+
+Kafka 的分区机制可以保证同一分区内的消息顺序:
+
+```java
+// 发送消息时指定分区
+producer.send(new ProducerRecord<>("my-topic", partition, key, value));
+```
+
+#### 重复消费
+
+在 Kafka 消费者端实现幂等性:
+
+```java
+KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
+consumer.subscribe(Collections.singletonList("my-topic"));
+
+while (true) {
+    ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
+    for (ConsumerRecord<String, String> record : records) {
+        String messageId = record.key();
+        if (!isMessageProcessed(messageId)) {
+            processMessage(record.value());
+            markMessageAsProcessed(messageId);
+        }
+    }
+}
+```
+
+在实际生产环境中,需要根据具体需求选择合适的解决方案,并进行性能和可靠性测试,以确保系统的稳定性和高效性。
+
+## Redis 存取逻辑和线程模型
+
+Redis 是一个高性能的内存数据库,广泛用于缓存、消息队列、实时数据分析等场景。下面将详细介绍 Redis 的存取逻辑以及与线程相关的概念。
+
+### Redis 的存取逻辑
+
+#### 1. 数据存储
+
+Redis 使用键值对(key-value)的形式存储数据,支持多种数据结构,包括字符串(string)、哈希(hash)、列表(list)、集合(set)、有序集合(sorted set)、位图(bitmap)、HyperLogLog 和地理空间(geospatial)索引等。
+
+#### 2. 命令执行
+
+Redis 提供了一组丰富的命令,用于对不同类型的数据进行操作。例如:
+
+- 字符串:`SET`, `GET`, `INCR`, `DECR`
+- 哈希:`HSET`, `HGET`, `HGETALL`
+- 列表:`LPUSH`, `RPUSH`, `LPOP`, `RPOP`
+- 集合:`SADD`, `SREM`, `SMEMBERS`
+- 有序集合:`ZADD`, `ZRANGE`, `ZREM`
+- 其他:`EXPIRE`, `TTL`, `PERSIST`
+
+#### 3. 数据持久化
+
+Redis 提供了 RDB 和 AOF 两种持久化方式:
+
+- **RDB(Redis Database File)**:通过生成快照的方式将数据保存到磁盘。
+- **AOF(Append Only File)**:通过记录每个写操作的日志来实现持久化。
+
+### Redis 的线程模型
+
+Redis 使用单线程模型处理客户端请求,这是 Redis 高效和简洁的一个重要原因。
+
+#### 1. 单线程架构
+
+- **事件驱动**:Redis 使用基于事件驱动的网络库 `libevent` 或 `libev` 来处理网络 IO,采用 `epoll` 或 `select` 等多路复用机制,使得单线程可以高效地处理大量并发请求。
+- **命令处理**:Redis 通过一个主循环处理来自客户端的命令,执行命令时不涉及上下文切换,因此性能非常高。
+
+#### 2. 多线程支持
+
+尽管 Redis 本身是单线程的,但在某些操作中引入了多线程以提高性能:
+
+- **I/O 多线程**:从 Redis 6.0 开始,Redis 引入了 I/O 多线程功能,用于处理网络请求的读写操作,而命令的实际执行仍然是在单线程中进行。通过配置 `io-threads` 参数,可以开启多个 I/O 线程。
+
+配置示例:
+
+```ini
+# 开启 I/O 多线程
+io-threads 4
+# 设置 I/O 多线程在请求达到一定数量时生效
+io-threads-do-reads yes
+```
+
+#### 3. 异步任务
+
+Redis 在某些耗时操作上使用异步处理,以避免阻塞主线程:
+
+- **快照(RDB)生成**:快照生成是一个耗时操作,Redis 使用子进程异步生成快照,不影响主线程处理命令。
+- **AOF 重写**:AOF 文件重写也是通过子进程异步完成,避免阻塞主线程。
+
+### 线程相关的示例
+
+#### 1. 设置多线程 I/O
+
+编辑 `redis.conf` 文件,配置 I/O 多线程:
+
+```ini
+io-threads 4
+io-threads-do-reads yes
+```
+
+或者在启动 Redis 时指定配置文件:
+
+```bash
+redis-server /path/to/redis.conf
+```
+
+#### 2. 异步持久化
+
+手动触发 RDB 快照和 AOF 重写:
+
+```bash
+# 生成 RDB 快照
+BGSAVE
+
+# 触发 AOF 重写
+BGREWRITEAOF
+```
+
+这两个命令都不会阻塞主线程,而是由子进程异步完成。
+
+### 总结
+
+Redis 通过单线程架构和事件驱动机制实现了高效的请求处理,但在特定场景下引入了多线程和异步处理来提升性能和响应能力。通过合理配置和使用 Redis 提供的特性,可以在高并发和大数据量场景下获得良好的性能表现。
+
+## 单向链表和双向链表
+
+单向链表和双向链表是两种常见的数据结构,它们在结构和功能上有所不同,适用于不同的场景。下面详细介绍这两种链表的数据结构、操作方法及其优缺点。
+
+### 单向链表
+
+#### 结构
+
+单向链表由一系列节点组成,每个节点包含两个部分:
+
+1. 数据部分(data):存储节点的数据。
+2. 指针部分(next):存储指向下一个节点的指针。
+
+示例节点定义(以Java为例):
+
+```java
+class Node {
+    int data;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+```
+
+#### 基本操作
+
+1. **插入节点**:
+
+   - 在链表头部插入:时间复杂度 O(1)
+   - 在链表尾部插入:时间复杂度 O(n)
+   - 在指定位置插入:时间复杂度 O(n)
+
+2. **删除节点**:
+
+   - 删除链表头部节点:时间复杂度 O(1)
+   - 删除链表尾部节点:时间复杂度 O(n)
+   - 删除指定位置节点:时间复杂度 O(n)
+
+3. **查找节点**:
+   - 查找节点(按值):时间复杂度 O(n)
+
+示例代码(Java):
+
+```java
+class SinglyLinkedList {
+    Node head;
+
+    // 在链表头部插入节点
+    public void insertAtHead(int data) {
+        Node newNode = new Node(data);
+        newNode.next = head;
+        head = newNode;
+    }
+
+    // 在链表尾部插入节点
+    public void insertAtTail(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+            return;
+        }
+        Node current = head;
+        while (current.next != null) {
+            current = current.next;
+        }
+        current.next = newNode;
+    }
+
+    // 删除链表头部节点
+    public void deleteAtHead() {
+        if (head != null) {
+            head = head.next;
+        }
+    }
+
+    // 查找节点(按值)
+    public boolean search(int data) {
+        Node current = head;
+        while (current != null) {
+            if (current.data == data) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+}
+```
+
+#### 优缺点
+
+**优点**:
+
+- 结构简单,容易实现。
+- 插入和删除操作在链表头部的时间复杂度为 O(1)。
+
+**缺点**:
+
+- 查找和删除指定节点的时间复杂度为 O(n)。
+- 只能从头到尾进行遍历,无法从尾到头进行遍历。
+
+### 双向链表
+
+#### 结构
+
+双向链表由一系列节点组成,每个节点包含三个部分:
+
+1. 数据部分(data):存储节点的数据。
+2. 前驱指针(prev):存储指向前一个节点的指针。
+3. 后继指针(next):存储指向下一个节点的指针。
+
+示例节点定义(以Java为例):
+
+```java
+class Node {
+    int data;
+    Node prev;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+        this.prev = null;
+        this.next = null;
+    }
+}
+```
+
+#### 基本操作
+
+1. **插入节点**:
+
+   - 在链表头部插入:时间复杂度 O(1)
+   - 在链表尾部插入:时间复杂度 O(1)
+   - 在指定位置插入:时间复杂度 O(n)
+
+2. **删除节点**:
+
+   - 删除链表头部节点:时间复杂度 O(1)
+   - 删除链表尾部节点:时间复杂度 O(1)
+   - 删除指定位置节点:时间复杂度 O(n)
+
+3. **查找节点**:
+   - 查找节点(按值):时间复杂度 O(n)
+
+示例代码(Java):
+
+```java
+class DoublyLinkedList {
+    Node head;
+    Node tail;
+
+    // 在链表头部插入节点
+    public void insertAtHead(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+        }
+    }
+
+    // 在链表尾部插入节点
+    public void insertAtTail(int data) {
+        Node newNode = new Node(data);
+        if (tail == null) {
+            head = tail = newNode;
+        } else {
+            newNode.prev = tail;
+            tail.next = newNode;
+            tail = newNode;
+        }
+    }
+
+    // 删除链表头部节点
+    public void deleteAtHead() {
+        if (head != null) {
+            if (head.next == null) {
+                head = tail = null;
+            } else {
+                head = head.next;
+                head.prev = null;
+            }
+        }
+    }
+
+    // 删除链表尾部节点
+    public void deleteAtTail() {
+        if (tail != null) {
+            if (tail.prev == null) {
+                head = tail = null;
+            } else {
+                tail = tail.prev;
+                tail.next = null;
+            }
+        }
+    }
+
+    // 查找节点(按值)
+    public boolean search(int data) {
+        Node current = head;
+        while (current != null) {
+            if (current.data == data) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+}
+```
+
+#### 优缺点
+
+**优点**:
+
+- 可以双向遍历链表。
+- 插入和删除操作在链表头部和尾部的时间复杂度为 O(1)。
+- 更容易删除指定节点,因为有前驱指针,可以直接访问前一个节点。
+
+**缺点**:
+
+- 结构较复杂,实现难度较大。
+- 需要额外的空间存储前驱指针,空间复杂度较单向链表高。
+
+### 总结
+
+单向链表和双向链表各有优缺点,选择使用哪种链表取决于具体的应用场景。单向链表适用于插入和删除操作主要集中在链表头部的场景,而双向链表适用于需要频繁在链表中间进行插入和删除操作以及需要双向遍历的场景。
+
+## 注册中心:Eureka、Nacos、zookeeper CAP理论以及选型
+
+注册中心在微服务架构中用于服务发现和管理。主要有三种常用的注册中心:Eureka、Nacos 和 Zookeeper,它们在实现和 CAP 理论上的取舍各有不同。
+
+### Eureka
+
+**Eureka** 是 Netflix 开源的服务注册和发现工具,属于 Spring Cloud 生态系统的一部分。
+
+#### 特点
+
+- **强一致性**:Eureka 保证数据一致性,服务注册、服务下线等变更会立即通知到所有客户端。
+- **高可用性**:Eureka 设计成在网络分区和故障情况下,仍能提供高可用性服务。它采用了“自我保护模式”,当 Eureka 服务器与多数节点失去连接时,仍然允许服务实例注册和查询,避免了服务的大面积下线。
+
+#### CAP 理论
+
+Eureka 更倾向于 **AP(可用性和分区容错性)**:
+
+- **可用性(Availability)**:即使发生网络分区,Eureka 也能保证服务的高可用性。
+- **分区容错性(Partition Tolerance)**:在网络分区的情况下,Eureka 能够继续提供服务。
+- **一致性(Consistency)**:通过自我保护模式,在网络分区时,Eureka 会降低一致性要求,以保证服务的可用性。
+
+### Nacos
+
+**Nacos** 是阿里巴巴开源的一款动态服务发现、配置管理和服务管理平台。
+
+#### 特点
+
+- **动态配置服务**:支持动态配置管理,简化服务配置的管理和发布。
+- **服务健康检查**:支持多种健康检查机制,保证服务的可用性。
+- **多语言支持**:不仅支持 Java,还支持其他语言的服务注册和发现。
+
+#### CAP 理论
+
+Nacos 更倾向于 **CP(一致性和分区容错性)**:
+
+- **一致性(Consistency)**:Nacos 保证数据的一致性,服务注册信息会同步到所有节点。
+- **分区容错性(Partition Tolerance)**:在网络分区情况下,Nacos 依然能够提供服务,但可能会牺牲部分可用性。
+- **可用性(Availability)**:在分区情况下,Nacos 可能会暂时不可用,以保证一致性。
+
+### Zookeeper
+
+**Zookeeper** 是 Apache 的一个开源项目,用于分布式协调服务,广泛应用于大数据生态系统和分布式系统中。
+
+#### 特点
+
+- **强一致性**:Zookeeper 通过 Paxos 或 ZAB 协议保证强一致性。
+- **节点监听和通知**:支持客户端对节点的变化进行监听,提供强大的分布式协调能力。
+- **高可靠性**:适用于需要高可靠性和一致性的场景,如分布式锁、配置管理等。
+
+#### CAP 理论
+
+Zookeeper 更倾向于 **CP(一致性和分区容错性)**:
+
+- **一致性(Consistency)**:Zookeeper 保证数据的一致性,所有写操作必须通过大多数节点确认。
+- **分区容错性(Partition Tolerance)**:在网络分区情况下,Zookeeper 依然能够提供服务,但可能会牺牲部分可用性。
+- **可用性(Availability)**:在分区情况下,Zookeeper 可能会暂时不可用,以保证一致性。
+
+### 选型建议
+
+- **Eureka**:适用于对高可用性要求较高的场景,且能够容忍短时间内的数据不一致,如微服务架构中的服务发现。
+- **Nacos**:适用于需要动态配置管理、服务发现和健康检查的场景,且对一致性有较高要求。
+- **Zookeeper**:适用于需要高一致性、高可靠性的场景,如分布式锁、分布式协调服务等。
+
+### 总结
+
+- **Eureka** 偏向 AP 模型,适用于高可用性的场景。
+- **Nacos** 和 **Zookeeper** 偏向 CP 模型,适用于一致性要求高的场景。
+
+选择合适的注册中心取决于具体的业务需求和对 CAP 三个特性的取舍。
