@@ -43,7 +43,7 @@ while read _ file; do
   draft=$(echo "$frontmatter" | awk '/^draft: /{print $2}')
   if [ "$draft" = "false" ]; then
     echo "$file updatedDate updated"
-    cat $file | sed "/---.*/,/---.*/s/^updatedDate:.*$/updatedDate: $(date "+%Y-%m-%dT%H:%M:%SZ")/" > tmp
+    cat $file | sed "/---.*/,/---.*/s/^updatedDate:.*$/updatedDate: $(date "+%Y-%m-%dT%H:%M:%S")/" > tmp
     mv tmp $file
     git add $file
   fi
