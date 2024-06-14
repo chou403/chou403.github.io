@@ -1,0 +1,143 @@
+---
+author: chou401
+publishDate: 2024-06-14T08:51:08
+updatedDate: 2024-06-14T08:51:08
+title: 线程池内存分配
+draft: false
+heroImage: /src/assets/images/triger-5.jpg
+category: Interview
+tags:
+  - java
+description: 线程池 内存分配 密集型有几种情况 如何分配对应的线程数
+---
+
+## 线程池 内存分配 密集型有几种情况 如何分配对应的线程数
+
+在并发编程中,线程池的内存分配和线程数配置需要根据任务的类型进行调整。任务主要可以分为三种情况:
+
+1. **CPU 密集型任务(CPU-bound tasks)**: 主要消耗 CPU 资源。
+2. **I/O 密集型任务(I/O-bound tasks)**: 主要消耗 I/O 资源,如文件读写、网络通信等。
+3. **混合型任务(Mixed tasks)**: 同时消耗 CPU 和 I/O 资源。
+
+针对这些不同类型的任务,线程池的配置也有所不同。
+
+### 1. CPU 密集型任务
+
+对于 CPU 密集型任务,线程数应与可用的 CPU 核心数(Ncpu)相匹配或略少于核心数。这样可以确保 CPU 被充分利用而不会因过多的线程切换而降低效率。
+
+推荐公式:
+`线程数 = Ncpu + 1`
+
+示例代码:
+
+```java
+int cpuCores = Runtime.getRuntime().availableProcessors();
+int threadPoolSize = cpuCores + 1;
+ExecutorService executorService = Executors.newFixedThreadPool(threadPoolSize);
+```
+
+### 2. I/O 密集型任务
+
+对于 I/O 密集型任务,线程在等待 I/O 操作完成时会被阻塞,因此需要更多的线程来保持 CPU 的繁忙。线程数应远大于 CPU 核心数,具体数值可以根据 I/O 操作的阻塞程度和系统的 I/O 吞吐量来调整。
+
+推荐公式:
+`线程数 = Ncpu (1 + 等待时间 / 计算时间)`
+
+示例代码:
+
+```java
+int cpuCores = Runtime.getRuntime().availableProcessors();
+int waitTime = ... // 平均等待时间
+int computeTime = ... // 平均计算时间
+int threadPoolSize = cpuCores * (1 + waitTime / computeTime);
+ExecutorService executorService = Executors.newFixedThreadPool(threadPoolSize);
+```
+
+### 3. 混合型任务
+
+混合型任务同时消耗 CPU 和 I/O 资源,线程池配置需要根据任务的具体情况进行调整。一般来说,可以结合 CPU 密集型和 I/O 密集型任务的配置方法,通过性能测试来找到最佳的线程数。
+
+### 示例代码
+
+以下是一个示例,展示如何根据任务类型来配置线程池:
+
+```java
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class ThreadPoolConfig {
+
+    public static void main(String[] args) {
+        int cpuCores = Runtime.getRuntime().availableProcessors();
+
+        // CPU 密集型任务
+        int cpuBoundThreadPoolSize = cpuCores + 1;
+        ExecutorService cpuBoundExecutor = Executors.newFixedThreadPool(cpuBoundThreadPoolSize);
+
+        // I/O 密集型任务
+        int waitTime = 100; // 假设等待时间为 100ms
+        int computeTime = 20; // 假设计算时间为 20ms
+        int ioBoundThreadPoolSize = cpuCores * (1 + waitTime / computeTime);
+        ExecutorService ioBoundExecutor = Executors.newFixedThreadPool(ioBoundThreadPoolSize);
+
+        // 混合型任务
+        int mixedThreadPoolSize = (cpuBoundThreadPoolSize + ioBoundThreadPoolSize) / 2;
+        ExecutorService mixedExecutor = Executors.newFixedThreadPool(mixedThreadPoolSize);
+
+        // 示例任务提交
+        for (int i = 0; i < 10; i++) {
+            cpuBoundExecutor.submit(new CpuBoundTask());
+            ioBoundExecutor.submit(new IoBoundTask());
+            mixedExecutor.submit(new MixedTask());
+        }
+
+        cpuBoundExecutor.shutdown();
+        ioBoundExecutor.shutdown();
+        mixedExecutor.shutdown();
+    }
+
+    static class CpuBoundTask implements Runnable {
+        @Override
+        public void run() {
+            // 模拟 CPU 密集型任务
+            for (int i = 0; i < 1000000; i++) {
+                Math.sqrt(i);
+            }
+            System.out.println(Thread.currentThread().getName() + " finished CPU-bound task.");
+        }
+    }
+
+    static class IoBoundTask implements Runnable {
+        @Override
+        public void run() {
+            try {
+                // 模拟 I/O 密集型任务
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            System.out.println(Thread.currentThread().getName() + " finished I/O-bound task.");
+        }
+    }
+
+    static class MixedTask implements Runnable {
+        @Override
+        public void run() {
+            // 模拟混合型任务
+            for (int i = 0; i < 100000; i++) {
+                Math.sqrt(i);
+            }
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            System.out.println(Thread.currentThread().getName() + " finished mixed task.");
+        }
+    }
+}
+```
+
+### 线程数分配总结
+
+针对不同类型的任务,线程池的线程数配置需要有所区别。CPU 密集型任务的线程数应接近 CPU 核心数,I/O 密集型任务则需要更多的线程来掩盖 I/O 等待时间,而混合型任务则需要根据具体情况进行调整。通过合理配置线程池,可以最大限度地提高系统性能和资源利用效率。

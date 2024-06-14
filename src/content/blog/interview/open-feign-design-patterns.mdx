@@ -1,0 +1,172 @@
+---
+author: chou401
+publishDate: 2024-06-13T21:01:17
+updatedDate: 2024-06-13T21:01:17
+title: Open Feign Design Patterns
+draft: false
+heroImage: /src/assets/images/cat-31.png
+category: Interview
+tags:
+  - java
+description: OpenFeign 用到了哪些设计模式
+---
+
+## OpenFeign 用到了哪些设计模式 重要
+
+OpenFeign 是一个声明式的 HTTP 客户端,它使用了多种设计模式来实现其功能。以下是 OpenFeign 中使用的一些主要设计模式及其应用场景:
+
+### 1. 代理模式 (Proxy Pattern)
+
+**应用场景**: Feign 客户端接口
+
+**解释**: 代理模式允许一个对象作为另一个对象的代理,以控制对这个对象的访问。Feign 使用代理模式创建接口的实现类,允许开发者仅通过定义接口即可发出 HTTP 请求,而不需要手动编写实现。
+
+**代码示例**:
+
+```java
+@FeignClient(name = "service-name")
+public interface MyFeignClient {
+    @GetMapping("/endpoint")
+    String getData();
+}
+```
+
+### 2. 工厂模式 (Factory Pattern)
+
+**应用场景**: Feign Builder
+
+**解释**: 工厂模式通过定义一个用于创建对象的接口,让子类决定实例化哪个类。Feign 使用工厂模式来创建 Feign 客户端实例。
+
+**代码示例**:
+
+```java
+Feign.Builder builder = Feign.builder();
+MyFeignClient client = builder.target(MyFeignClient.class, "http://service-url");
+```
+
+### 3. 单例模式 (Singleton Pattern)
+
+**应用场景**: Feign 的内部组件
+
+**解释**: 单例模式确保一个类只有一个实例,并提供一个全局访问点。Feign 的一些内部组件如编码器、解码器、契约等,通常作为单例来管理,以减少资源消耗和确保一致性。
+
+**代码示例**:
+
+```java
+public class MyDecoder implements Decoder {
+    private static final MyDecoder INSTANCE = new MyDecoder();
+
+    private MyDecoder() {
+        // private constructor
+    }
+
+    public static MyDecoder getInstance() {
+        return INSTANCE;
+    }
+
+    @Override
+    public Object decode(Response response, Type type) throws IOException {
+        // decoding logic
+    }
+}
+```
+
+### 4. 适配器模式 (Adapter Pattern)
+
+**应用场景**: 编码器、解码器
+
+**解释**: 适配器模式将一个类的接口转换成客户希望的另一个接口。Feign 使用适配器模式将请求和响应适配到用户定义的编码器和解码器上。
+
+**代码示例**:
+
+```java
+public class MyEncoder implements Encoder {
+    @Override
+    public void encode(Object object, Type bodyType, RequestTemplate template) {
+        // encoding logic
+    }
+}
+```
+
+### 5. 装饰器模式 (Decorator Pattern)
+
+**应用场景**: 请求拦截器
+
+**解释**: 装饰器模式通过一系列的装饰对象来动态地为对象添加职责。Feign 使用装饰器模式允许开发者定义一系列请求拦截器来在请求发送之前或之后添加额外的行为。
+
+**代码示例**:
+
+```java
+public class MyRequestInterceptor implements RequestInterceptor {
+    @Override
+    public void apply(RequestTemplate template) {
+        template.header("Authorization", "Bearer my-token");
+    }
+}
+```
+
+### 6. 策略模式 (Strategy Pattern)
+
+**应用场景**: 负载均衡策略、重试策略
+
+**解释**: 策略模式定义了一系列算法,并将每一个算法封装起来,使它们可以相互替换。Feign 可以使用策略模式来定义不同的负载均衡策略和重试策略。
+
+**代码示例**:
+
+```java
+@Bean
+public Retryer feignRetryer() {
+    return new Retryer.Default(100, 1000, 3);
+}
+```
+
+### 7. 模板方法模式 (Template Method Pattern)
+
+**应用场景**: 自定义契约
+
+**解释**: 模板方法模式在一个方法中定义一个算法的骨架,而将一些步骤延迟到子类中。Feign 使用模板方法模式来实现自定义契约,通过扩展 `Contract.BaseContract` 来定义解析接口的方法签名的规则。
+
+**代码示例**:
+
+```java
+public class MyContract extends Contract.BaseContract {
+    @Override
+    protected void processAnnotationOnMethod(MethodMetadata data, Annotation annotation, Method method) {
+        // custom processing logic
+    }
+}
+```
+
+### 8. 责任链模式 (Chain of Responsibility Pattern)
+
+**应用场景**: 拦截器链
+
+**解释**: 责任链模式为请求创建一条处理链,每个处理者都有机会处理请求或将其传递给下一个处理者。Feign 的请求拦截器链就是责任链模式的一个例子,每个拦截器按顺序处理请求。
+
+**代码示例**:
+
+```java
+public class MyRequestInterceptor1 implements RequestInterceptor {
+    @Override
+    public void apply(RequestTemplate template) {
+        template.header("Header1", "Value1");
+    }
+}
+
+public class MyRequestInterceptor2 implements RequestInterceptor {
+    @Override
+    public void apply(RequestTemplate template) {
+        template.header("Header2", "Value2");
+    }
+}
+
+// Configuration
+@Bean
+public Feign.Builder feignBuilder() {
+    return Feign.builder()
+                .requestInterceptor(new MyRequestInterceptor1())
+                .requestInterceptor(new MyRequestInterceptor2());
+}
+```
+
+通过使用这些设计模式,OpenFeign 实现了灵活、可扩展和易于使用的 HTTP 客户端功能,使开发者能够方便地进行微服务之间的通信。

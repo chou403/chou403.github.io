@@ -1,0 +1,156 @@
+---
+author: chou401
+publishDate: 2024-06-13T20:59:45
+updatedDate: 2024-06-13T20:59:45
+title: Spring Cloud Load Balancer and Ribbon
+draft: false
+heroImage: /src/assets/images/cat-38.jpg
+category: Interview
+tags:
+  - java
+description: Spring Cloud LoadBalancer 负载均衡 和 ribbon 负载均衡
+---
+
+## Spring Cloud LoadBalancer 负载均衡 和 ribbon 负载均衡
+
+Spring Cloud 提供了两种负载均衡解决方案: Ribbon 和 Spring Cloud LoadBalancer。以下是它们的定义、配置、比较以及选择意见。
+
+### 定义
+
+#### Ribbon
+
+Ribbon 是 Netflix 提供的一个客户端负载均衡器,Spring Cloud Netflix 包含了 Ribbon 的集成,使得它可以和 Spring Cloud 生态系统中的其他组件(如 Eureka、Feign)无缝集成。Ribbon 提供了多种负载均衡策略,如轮询、随机、加权等,并且可以通过配置或编程自定义负载均衡逻辑。
+
+#### Spring Cloud LoadBalancer
+
+Spring Cloud LoadBalancer 是 Spring Cloud 生态系统中的一个新负载均衡器,它是 Spring Cloud Commons 项目的一部分,用于替代 Ribbon。Spring Cloud LoadBalancer 提供了更现代化的架构和更灵活的配置方式,同时减少了对外部依赖的需求。它也集成了 Spring Cloud Discovery Client 来实现服务发现和负载均衡。
+
+### 配置
+
+#### 配置 Ribbon
+
+1. **引入依赖**
+   在 `pom.xml` 中引入 Ribbon 和 Feign 的依赖:
+
+   ```xml
+   <dependency>
+       <groupId>org.springframework.cloud</groupId>
+       <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+   </dependency>
+   <dependency>
+       <groupId>org.springframework.cloud</groupId>
+       <artifactId>spring-cloud-starter-openfeign</artifactId>
+   </dependency>
+   ```
+
+2. **启用 Ribbon**
+   在 Spring Boot 应用主类上启用 Ribbon 和 Feign:
+
+   ```java
+   @SpringBootApplication
+   @EnableFeignClients
+   public class MyApplication {
+       public static void main(String[] args) {
+           SpringApplication.run(MyApplication.class, args);
+       }
+   }
+   ```
+
+3. **配置负载均衡策略**
+   在 `application.yml` 或 `application.properties` 中配置 Ribbon:
+
+   ```yaml
+   service-name:
+     ribbon:
+       NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+   ```
+
+#### 配置 Spring Cloud LoadBalancer
+
+1. **引入依赖**
+   在 `pom.xml` 中引入 Spring Cloud LoadBalancer 和 Feign 的依赖:
+
+   ```xml
+   <dependency>
+       <groupId>org.springframework.cloud</groupId>
+       <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+   </dependency>
+   <dependency>
+       <groupId>org.springframework.cloud</groupId>
+       <artifactId>spring-cloud-starter-openfeign</artifactId>
+   </dependency>
+   ```
+
+2. **启用 Spring Cloud LoadBalancer**
+   在 Spring Boot 应用主类上启用 Feign:
+
+   ```java
+   @SpringBootApplication
+   @EnableFeignClients
+   public class MyApplication {
+       public static void main(String[] args) {
+           SpringApplication.run(MyApplication.class, args);
+       }
+   }
+   ```
+
+3. **配置负载均衡策略**
+   创建一个自定义的 `LoadBalancerConfiguration` 类:
+
+   ```java
+   import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
+   import org.springframework.context.annotation.Bean;
+   import org.springframework.context.annotation.Configuration;
+   import reactor.core.publisher.Flux;
+   import org.springframework.cloud.client.ServiceInstance;
+
+   @Configuration
+   public class LoadBalancerConfiguration {
+
+       @Bean
+       public ServiceInstanceListSupplier serviceInstanceListSupplier() {
+           return new ServiceInstanceListSupplier() {
+               @Override
+               public Flux<List<ServiceInstance>> get() {
+                   // 自定义负载均衡逻辑
+                   return Flux.just(Collections.singletonList(new DefaultServiceInstance(
+                       "service-instance-id", "service-name", "localhost", 8080, false)));
+               }
+
+               @Override
+               public String getServiceId() {
+                   return "service-name";
+               }
+           };
+       }
+   }
+   ```
+
+### 比较
+
+#### 1. 依赖性
+
+- **Ribbon**: 依赖于 Netflix 生态系统,有较多外部依赖(如 Archaius)。
+- **Spring Cloud LoadBalancer**: 依赖于 Spring Cloud Commons,减少了外部依赖,更加轻量级。
+
+#### 2. 配置灵活性
+
+- **Ribbon**: 提供多种内置负载均衡策略,可以通过配置文件或编程方式进行定制。
+- **Spring Cloud LoadBalancer**: 提供更灵活的编程方式进行自定义,可以利用 Spring 的强大生态进行扩展和定制。
+
+#### 3. 社区支持
+
+- **Ribbon**: 由于 Netflix 停止了对 Ribbon 的积极维护,社区逐渐转向 Spring Cloud LoadBalancer。
+- **Spring Cloud LoadBalancer**: 作为 Spring Cloud 的新标准,得到了 Spring 社区的积极支持和发展。
+
+#### 4. 迁移和兼容性
+
+- **Ribbon**: 在已有 Netflix 生态系统中广泛使用,迁移成本可能较高。
+- **Spring Cloud LoadBalancer**: 推荐用于新项目,对于老项目可以逐步迁移以获得更好的支持和性能。
+
+### 选择意见
+
+- **新项目**: 建议使用 Spring Cloud LoadBalancer。它更现代化,具有更少的外部依赖,并且得到了 Spring 社区的积极支持。
+- **已有项目**: 如果你的项目已经使用了 Ribbon,并且运行稳定,可以暂时继续使用,但应考虑未来逐步迁移到 Spring Cloud LoadBalancer 以获得更好的长期支持和新特性。
+
+通过上述步骤和比较,你可以根据项目需求选择合适的负载均衡器,并配置相应的策略和失败重试机制,以确保服务的高可用性和性能优化。

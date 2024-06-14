@@ -1,0 +1,87 @@
+---
+author: chou401
+publishDate: 2024-06-14T09:03:11
+updatedDate: 2024-06-14T09:03:11
+title: 事务隔离级别
+draft: false
+heroImage: /src/assets/images/elephant-1.jpeg
+category: Interview
+tags:
+  - java
+description: 事务的隔离级别有哪些
+---
+
+## 事务的隔离级别有哪些
+
+事务的隔离级别定义了一个事务与另一个事务隔离的程度。它们决定了一个事务在被其他并发事务影响的程度。不同的隔离级别可以防止不同类型的并发问题。SQL 标准定义了四种隔离级别,从最低到最高分别是: 读未提交(Read Uncommitted)、读已提交(Read Committed)、可重复读(Repeatable Read)和串行化(Serializable)。每种隔离级别的特性如下:
+
+### 1. 读未提交 (Read Uncommitted)
+
+- **特性**: 允许事务读取尚未提交的数据。这意味着一个事务可以读取到另一个事务尚未提交的修改。
+- **并发问题**:
+  - **脏读(Dirty Read)**: 一个事务读到另一个事务未提交的数据。
+  - **不可重复读(Non-repeatable Read)**: 一个事务在两次读取之间,读到了其他事务已提交的不同数据。
+  - **幻读(Phantom Read)**: 一个事务在两次读取之间,读到了其他事务插入的新数据。
+
+### 2. 读已提交 (Read Committed)
+
+- **特性**: 只能读取到已经提交的数据。这意味着一个事务只能读取到其他事务已提交的数据。
+- **并发问题**:
+  - **脏读(Dirty Read)**: 被防止。
+  - **不可重复读(Non-repeatable Read)**: 一个事务在两次读取之间,读到了其他事务已提交的不同数据。
+  - **幻读(Phantom Read)**: 一个事务在两次读取之间,读到了其他事务插入的新数据。
+
+### 3. 可重复读 (Repeatable Read)
+
+- **特性**: 保证在同一个事务内多次读取同一数据的结果是一致的。一个事务在读取数据时,会锁住读取的数据,防止其他事务修改或删除这些数据。
+- **并发问题**:
+  - **脏读(Dirty Read)**: 被防止。
+  - **不可重复读(Non-repeatable Read)**: 被防止。
+  - **幻读(Phantom Read)**: 一个事务在两次读取之间,读到了其他事务插入的新数据。
+
+### 4. 串行化 (Serializable)
+
+- **特性**: 提供最高的隔离级别。所有事务串行执行,完全隔离。这种隔离级别防止了所有类型的并发问题。
+- **并发问题**:
+  - **脏读(Dirty Read)**: 被防止。
+  - **不可重复读(Non-repeatable Read)**: 被防止。
+  - **幻读(Phantom Read)**: 被防止。
+
+### 并发问题总结
+
+- **脏读(Dirty Read)**: 一个事务读到了另一个事务尚未提交的数据。
+- **不可重复读(Non-repeatable Read)**: 一个事务在两次读取之间,读到了其他事务已提交的不同数据。
+- **幻读(Phantom Read)**: 一个事务在两次读取之间,读到了其他事务插入的新数据。
+
+### 配置事务隔离级别
+
+在 Spring 中,可以通过 `@Transactional` 注解配置事务的隔离级别。以下是一个示例:
+
+```java
+@Service
+public class MyService {
+
+    @Autowired
+    private MyRepository myRepository;
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void performDatabaseOperations() {
+        myRepository.save(new Entity(...));
+        myRepository.update(...);
+        myRepository.delete(...);
+        // 其他数据库操作
+    }
+}
+```
+
+常见的隔离级别枚举值包括:
+
+- `Isolation.DEFAULT`: 使用数据库默认的隔离级别。
+- `Isolation.READ_UNCOMMITTED`: 读未提交。
+- `Isolation.READ_COMMITTED`: 读已提交。
+- `Isolation.REPEATABLE_READ`: 可重复读。
+- `Isolation.SERIALIZABLE`: 串行化。
+
+### 隔离级别总结
+
+不同的隔离级别提供不同程度的并发控制和性能权衡。选择适当的隔离级别需要权衡数据一致性要求和系统性能。理解事务隔离级别和它们之间的区别,对于设计和实现高效、安全的并发应用程序至关重要。

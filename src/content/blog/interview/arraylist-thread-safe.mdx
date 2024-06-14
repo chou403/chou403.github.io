@@ -1,0 +1,72 @@
+---
+author: chou401
+publishDate: 2024-06-14T09:11:33
+updatedDate: 2024-06-14T09:11:33
+title: ArrayList线程安全
+draft: false
+heroImage: /src/assets/images/bird-4.jpg
+category: Interview
+tags:
+  - java
+description: Arraylist 是不是线程安全的 哪些是线程安全的
+---
+
+## Arraylist 是不是线程安全的 哪些是线程安全的
+
+`ArrayList` 不是线程安全的。`ArrayList` 是 Java 中常用的动态数组实现,但它不提供内部同步机制,这意味着如果多个线程同时访问和修改同一个 `ArrayList` 实例,而没有适当的同步,就会导致不一致的状态和潜在的竞争条件。
+
+### 线程安全的替代方案
+
+如果需要在多线程环境中使用线程安全的列表,可以考虑以下几种替代方案:
+
+1. **使用同步集合包装器**
+
+   Java 提供了一个实用工具类 `Collections`,可以通过 `Collections.synchronizedList` 方法将普通的 `ArrayList` 包装成一个线程安全的列表。
+
+   ```java
+   List<String> synchronizedList = Collections.synchronizedList(new ArrayList<String>());
+
+   synchronized (synchronizedList) {
+       // 访问和修改列表的代码块
+       synchronizedList.add("item");
+   }
+   ```
+
+   注意: 尽管 `Collections.synchronizedList` 提供了同步,但对于迭代操作,仍然需要手动同步。
+
+2. **使用 `CopyOnWriteArrayList`**
+
+   `CopyOnWriteArrayList` 是 `java.util.concurrent` 包的一部分,它是线程安全的变体,适用于多读少写的场景。写操作时,它会创建底层数组的一个副本,从而避免了并发修改问题。
+
+   ```java
+   List<String> cowList = new CopyOnWriteArrayList<>();
+   cowList.add("item");
+
+   // 迭代时不需要额外同步
+   for (String item : cowList) {
+       System.out.println(item);
+   }
+   ```
+
+3. **使用 `Vector`**
+
+   `Vector` 是一个同步的集合类,但由于同步是粗粒度的,因此性能通常不如 `CopyOnWriteArrayList`。
+
+   ```java
+   List<String> vector = new Vector<>();
+   vector.add("item");
+   ```
+
+### 比较与选择
+
+- **`Collections.synchronizedList`**: 适用于需要在现有 `ArrayList` 上添加同步的场景。适合写操作较少但读操作频繁的场景。在迭代时需要手动同步。
+- **`CopyOnWriteArrayList`**: 适用于多读少写的场景。写操作较慢(因为每次写操作都会复制整个数组),但读操作性能较好,且迭代器不会抛出 `ConcurrentModificationException`。
+- **`Vector`**: 适用于需要简单同步的场景,但性能通常不如 `CopyOnWriteArrayList`。
+
+### 总结
+
+- `ArrayList` 不是线程安全的,不能在多线程环境中直接使用。
+- 线程安全的替代方案包括 `Collections.synchronizedList`、`CopyOnWriteArrayList` 和 `Vector`。
+- 根据具体使用场景选择合适的线程安全集合实现。
+
+选择合适的线程安全集合实现有助于在多线程环境中确保数据的一致性和操作的安全性。

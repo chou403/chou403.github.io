@@ -1,0 +1,146 @@
+---
+author: chou401
+publishDate: 2024-06-14T09:22:59
+updatedDate: 2024-06-14T09:22:59
+title: jwt 如何实现
+draft: false
+heroImage: /src/assets/images/cat-18.jpeg
+category: Interview
+tags:
+  - java
+description: jwt是怎么实现的
+---
+
+## jwt是怎么实现的
+
+JSON Web Token (JWT) 是一种基于 JSON 的开放标准(RFC 7519)用于在网络应用环境间传递声明。JWT 是一种紧凑的、URL 安全的方式,用于表示一组信息。它由三部分组成: 头部(Header)、载荷(Payload)和签名(Signature)。以下是 JWT 的实现细节及其工作原理:
+
+### JWT 组成部分
+
+1. **Header**: 头部通常包括两部分: 令牌类型(即 JWT)和所使用的签名算法(如 HMAC SHA256 或 RSA)。
+
+   ```json
+   {
+   	"alg": "HS256",
+   	"typ": "JWT"
+   }
+   ```
+
+2. **Payload**: 载荷部分包含声明(claims)。声明是有关实体(通常是用户)及其他数据的声明。声明可以分为三类:
+
+   - **Registered claims**: 预定义的声明集,但不是强制的,例如 `iss`(发行者),`exp`(过期时间),`sub`(主题),`aud`(受众)。
+   - **Public claims**: 可以随意定义的声明,但为了避免冲突,应该在 IANA JSON Web Token Registry 或使用包含倒数域名的自定义名称空间中定义。
+   - **Private claims**: 自定义声明,通常是双方协商使用的声明。
+
+   ```json
+   {
+   	"sub": "1234567890",
+   	"name": "John Doe",
+   	"admin": true
+   }
+   ```
+
+3. **Signature**: 签名部分是通过将编码后的头部、编码后的载荷,以及一个密钥组合在一起,然后使用指定的签名算法生成的。
+
+   ```java
+   HMACSHA256(
+     base64UrlEncode(header) + "." +
+     base64UrlEncode(payload),
+     secret)
+   ```
+
+### JWT 工作原理
+
+1. **创建 JWT**: 服务器在用户登录时验证用户身份,通过使用头部和载荷创建 JWT,然后用签名算法和密钥对其进行签名。生成的 JWT 令牌会返回给客户端。
+2. **存储 JWT**: 客户端将收到的 JWT 令牌存储在浏览器的 Local Storage 或 Cookie 中。
+3. **发送 JWT**: 客户端在每次请求时,将 JWT 令牌放在 HTTP 请求的 Authorization 头部中发送给服务器。
+
+   ```java
+   Authorization: Bearer <token>
+   ```
+
+4. **验证 JWT**: 服务器接收到请求后,会验证 JWT 的签名和声明(例如过期时间)。如果验证通过,则处理请求;否则,返回401未授权状态。
+
+### 实现 JWT 示例(Java)
+
+以下是使用 Java 和 jjwt 库实现 JWT 的一个简单示例:
+
+#### 依赖项(Maven)
+
+```xml
+<dependency>
+  <groupId>io.jsonwebtoken</groupId>
+  <artifactId>jjwt</artifactId>
+  <version>0.9.1</version>
+</dependency>
+```
+
+#### 创建 JWT
+
+```java
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+import java.util.Date;
+
+public class JwtExample {
+    private static final String SECRET_KEY = "mySecretKey";
+
+    public static String createJwt(String id, String issuer, String subject, long ttlMillis) {
+        long nowMillis = System.currentTimeMillis();
+        Date now = new Date(nowMillis);
+
+        // JWT 构建器
+        return Jwts.builder()
+                .setId(id)
+                .setIssuedAt(now)
+                .setSubject(subject)
+                .setIssuer(issuer)
+                .setExpiration(new Date(nowMillis + ttlMillis))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
+
+    public static void main(String[] args) {
+        String jwt = createJwt("123", "issuer", "subject", 3600000);
+        System.out.println("Generated JWT: " + jwt);
+    }
+}
+```
+
+#### 验证 JWT
+
+```java
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+
+public class JwtExample {
+    private static final String SECRET_KEY = "mySecretKey";
+
+    public static Claims decodeJwt(String jwt) {
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(jwt)
+                .getBody();
+    }
+
+    public static void main(String[] args) {
+        String jwt = createJwt("123", "issuer", "subject", 3600000);
+        System.out.println("Generated JWT: " + jwt);
+
+        Claims claims = decodeJwt(jwt);
+        System.out.println("ID: " + claims.getId());
+        System.out.println("Subject: " + claims.getSubject());
+        System.out.println("Issuer: " + claims.getIssuer());
+        System.out.println("Expiration: " + claims.getExpiration());
+    }
+}
+```
+
+### 安全注意事项
+
+1. **密钥管理**: 密钥必须安全存储,不能硬编码在代码中,应使用环境变量或安全的配置管理工具。
+2. **过期时间**: 设置合理的过期时间,避免长期有效的令牌被滥用。
+3. **HTTPS**: 在传输 JWT 时,确保使用 HTTPS 以防止中间人攻击。
+
+通过以上步骤,您可以在 Java 应用中实现 JWT 生成和验证机制。不同语言有不同的库和实现方式,但核心原理是一致的。

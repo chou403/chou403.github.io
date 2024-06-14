@@ -1,0 +1,175 @@
+---
+author: chou401
+publishDate: 2024-06-14T09:01:43
+updatedDate: 2024-06-14T09:01:43
+title: Transactional 注解原理
+draft: false
+heroImage: /src/assets/images/wolf-3.jpeg
+category: Interview
+tags:
+  - java
+description: Transactional 原理 为什么加上这个 就会实现所有数据库操作在一起
+---
+
+## @Transactional 原理 为什么加上这个 就会实现所有数据库操作在一起
+
+`@Transactional` 是 Spring 中用于声明式事务管理的注解。当在方法或类上使用 `@Transactional` 时,Spring 会确保该方法内的所有数据库操作在一个事务中执行。实现这个功能的原理涉及到 Spring 的事务管理机制、AOP(面向切面编程)和代理模式。
+
+### @Transactional 的工作原理
+
+1. **AOP(面向切面编程)**:
+
+   - `@Transactional` 注解使用 AOP 来拦截方法调用。
+   - Spring AOP 通过动态代理拦截目标方法的执行,在方法执行之前、之后以及异常发生时,插入事务管理逻辑。
+
+2. **代理模式**:
+
+   - Spring 使用 JDK 动态代理或 CGLIB 代理来创建目标对象的代理实例。
+   - 当调用代理对象的方法时,代理对象会拦截调用,并在适当的时机管理事务。
+
+3. **事务管理器**:
+   - `@Transactional` 依赖于 Spring 的 `PlatformTransactionManager` 来管理事务。
+   - 事务管理器负责开启、提交和回滚事务,具体实现包括 `DataSourceTransactionManager`(用于 JDBC)、`JpaTransactionManager`(用于 JPA)等。
+
+### 事务传播机制
+
+`@Transactional` 提供多种事务传播机制,决定了当一个事务方法调用另一个事务方法时,事务如何传播。常见的传播行为包括:
+
+- **REQUIRED**(默认): 如果当前没有事务,就新建一个事务;如果已经存在一个事务中,加入到这个事务中。
+- **REQUIRES_NEW**: 总是新建一个事务。如果当前已经存在一个事务,暂停当前事务。
+- **MANDATORY**: 使用当前的事务,如果当前没有事务,就抛出异常。
+- **SUPPORTS**: 如果当前有事务,就使用事务;如果当前没有事务,就以非事务方式执行。
+- **NOT_SUPPORTED**: 总是以非事务方式执行,如果当前存在事务,就暂停当前事务。
+- **NEVER**: 总是以非事务方式执行,如果当前存在事务,则抛出异常。
+- **NESTED**: 如果当前存在事务,则在嵌套事务内执行。如果当前没有事务,则新建一个事务。
+
+### 实现原理详解
+
+1. **代理对象的创建**:
+
+   - Spring 在创建 Bean 的时候,会检测 Bean 类或其方法是否标注了 `@Transactional` 注解。
+   - 如果检测到 `@Transactional` 注解,Spring 会为该 Bean 创建一个代理对象。
+   - 代理对象可以是基于接口的 JDK 动态代理,也可以是基于类的 CGLIB 代理。
+
+2. **拦截方法调用**:
+
+   - 当调用 `@Transactional` 标注的方法时,代理对象会拦截方法调用。
+   - 代理对象会在方法执行前调用事务管理器,开启一个新的事务(如果没有事务存在)。
+   - 然后调用目标方法。
+
+3. **事务的提交与回滚**:
+   - 如果目标方法执行成功,代理对象会在方法执行后提交事务。
+   - 如果目标方法抛出异常,代理对象会回滚事务。
+
+### @Transactional 示例代码
+
+下面是一个简单的示例,展示了 `@Transactional` 的使用和事务管理的过程:
+
+```java
+@Service
+public class MyService {
+
+    @Autowired
+    private MyRepository myRepository;
+
+    @Transactional
+    public void performDatabaseOperations() {
+        myRepository.save(new Entity(...));
+        myRepository.update(...);
+        myRepository.delete(...);
+        // 其他数据库操作
+    }
+}
+```
+
+在这个例子中,`performDatabaseOperations` 方法上的 `@Transactional` 注解确保了所有的数据库操作在一个事务中执行。如果方法执行过程中出现异常,事务会回滚,所有操作都会撤销。
+
+### @Transactional 总结
+
+`@Transactional` 通过 AOP、代理模式和事务管理器的结合,确保标注的方法在一个事务中执行,从而实现了所有数据库操作要么一起成功,要么一起失败的事务特性。这种机制大大简化了开发者的工作,使得事务管理变得更加透明和易于使用。
+
+## 事务传播行为有哪些
+
+事务传播行为(Transaction Propagation Behavior)定义了在一个事务中,当方法调用另一个方法时,事务如何传播。Spring 提供了多种事务传播行为,以应对不同的业务场景。以下是 Spring 中常见的事务传播行为:
+
+### 1. `REQUIRED`
+
+- **描述**: 如果当前没有事务,就新建一个事务。如果已经有一个事务在运行中,加入这个事务。
+- **应用场景**: 这是默认的传播行为,适用于大多数情况。通常用于需要确保所有操作在同一个事务中的情况。
+
+### 2. `REQUIRES_NEW`
+
+- **描述**: 总是新建一个新的事务。如果当前已经有一个事务,则先挂起当前事务。
+- **应用场景**: 用于需要一个全新事务的情况,即使当前已经存在一个事务。例如,记录审计日志时,不希望日志记录受主事务的影响。
+
+### 3. `SUPPORTS`
+
+- **描述**: 如果当前有事务,就在事务中运行。如果当前没有事务,就以非事务方式运行。
+- **应用场景**: 用于既可以在事务环境中执行,也可以在非事务环境中执行的情况。
+
+### 4. `NOT_SUPPORTED`
+
+- **描述**: 总是以非事务方式运行。如果当前有事务,则挂起当前事务。
+- **应用场景**: 用于不需要事务管理的操作,或者操作必须在非事务环境中执行的情况。
+
+### 5. `MANDATORY`
+
+- **描述**: 如果当前有事务,就在事务中运行。如果当前没有事务,则抛出异常。
+- **应用场景**: 用于必须在现有事务中运行的方法。如果没有事务环境,则认为是错误的调用。
+
+### 6. `NEVER`
+
+- **描述**: 总是以非事务方式运行。如果当前有事务,则抛出异常。
+- **应用场景**: 用于必须确保方法不在事务中运行的情况。
+
+### 7. `NESTED`
+
+- **描述**: 如果当前有事务,则在嵌套事务中运行。如果当前没有事务,则新建一个事务。
+- **应用场景**: 用于需要嵌套事务的情况。嵌套事务允许部分回滚,即内部事务可以回滚而外部事务可以继续。
+
+### 示例代码
+
+下面是一个示例代码,展示了如何使用不同的事务传播行为:
+
+```java
+@Service
+public class TransactionalService {
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void methodWithRequired() {
+        // Method implementation
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void methodWithRequiresNew() {
+        // Method implementation
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void methodWithSupports() {
+        // Method implementation
+    }
+
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void methodWithNotSupported() {
+        // Method implementation
+    }
+
+    @Transactional(propagation = Propagation.MANDATORY)
+    public void methodWithMandatory() {
+        // Method implementation
+    }
+
+    @Transactional(propagation = Propagation.NEVER)
+    public void methodWithNever() {
+        // Method implementation
+    }
+
+    @Transactional(propagation = Propagation.NESTED)
+    public void methodWithNested() {
+        // Method implementation
+    }
+}
+```
+
+这些传播行为提供了灵活的事务管理策略,可以根据具体的业务需求选择合适的传播行为,从而确保数据的一致性和完整性。
