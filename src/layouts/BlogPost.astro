@@ -34,7 +34,7 @@ const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 				</h1>
 			</div>
 			<div class="flex flex-wrap items-center justify-center gap-2 gap-y-4 md:gap-5">
-				{tags.map((tag) => <Tag tag={tag} />)}
+				{tags.map((tag: any) => <Tag tag={tag} />)}
 			</div>
 			<div class="flex items-center justify-center gap-x-1">
 				<p class="text-center text-sm text-opacity-50">
