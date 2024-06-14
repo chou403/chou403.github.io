@@ -44,7 +44,7 @@ while read _ file; do
   if [ "$draft" = "false" ]; then
     echo "$file updatedDate updated"
     echo "32e23e32dsffsdfdsfewr223"
-    cat $file | sed "/---.*/,/---.*/s/^updatedDate:.*$/updatedDate: $(date "+%Y-%m-%dT%H:%M:%S")/" > tmp
+    cat $file | sed "/---.*/,/---.*/s/^updatedDate:.*$/updatedDate: $(date "+%Y-%m-%dT%H:%M:%SZS")/" > tmp
     mv tmp $file
     git add $file
   fi
