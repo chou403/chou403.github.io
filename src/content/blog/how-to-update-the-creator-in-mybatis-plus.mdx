@@ -1,0 +1,163 @@
+---
+author: chou401
+publishDate: 2024-06-14T09:32:32
+updatedDate: 2024-06-14T09:32:32
+title: Mybatis-Plus 如何操作更新创建人
+draft: false
+heroImage: ../../assets/images/cat-23.jpg
+category: Interview
+tags:
+  - java
+description: Mybatis-Plus 如何操作更新创建人
+---
+
+## Mybatis-Plus 如何操作更新创建人这些东西具体实现方法类
+
+在使用 MyBatis-Plus 时,可以通过插件、拦截器和注解来自动处理字段的填充,例如更新和创建人、创建时间和更新时间等。MyBatis-Plus 提供了自动填充功能,通过实现`MetaObjectHandler`接口来实现自动填充功能。
+
+以下是具体实现步骤:
+
+### 1. MyBatis-Plus 引入依赖
+
+确保你的项目中已经引入了 MyBatis-Plus 依赖。以下是 Maven 依赖配置:
+
+```xml
+<dependency>
+    <groupId>com.baomidou</groupId>
+    <artifactId>mybatis-plus-boot-starter</artifactId>
+    <version>3.4.3.4</version>
+</dependency>
+```
+
+### 2. 配置自动填充处理器
+
+创建一个类实现 `MetaObjectHandler` 接口,重写 `insertFill` 和 `updateFill` 方法来处理自动填充逻辑。
+
+#### MetaObjectHandler 示例代码
+
+```java
+import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import org.apache.ibatis.reflection.MetaObject;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+
+@Component
+public class MyMetaObjectHandler implements MetaObjectHandler {
+
+    @Override
+    public void insertFill(MetaObject metaObject) {
+        // 自动填充创建时间和创建人
+        this.setFieldValByName("createTime", LocalDateTime.now(), metaObject);
+        this.setFieldValByName("createBy", getCurrentUser(), metaObject);
+        // 如果更新人和更新时间也需要在插入时填充
+        this.setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
+        this.setFieldValByName("updateBy", getCurrentUser(), metaObject);
+    }
+
+    @Override
+    public void updateFill(MetaObject metaObject) {
+        // 自动填充更新时间和更新人
+        this.setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
+        this.setFieldValByName("updateBy", getCurrentUser(), metaObject);
+    }
+
+    // 获取当前用户的方法(需要自行实现)
+    private String getCurrentUser() {
+        // 示例: 从安全上下文中获取当前用户名
+        // return SecurityContextHolder.getContext().getAuthentication().getName();
+        return "system"; // 示例返回固定值
+    }
+}
+```
+
+### 3. 在实体类中使用注解
+
+在需要自动填充的字段上使用 `@TableField` 注解的 `fill` 属性来指定自动填充策略。
+
+#### @TableField 示例代码
+
+```java
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.time.LocalDateTime;
+
+@TableName("your_table_name")
+public class YourEntity {
+
+    @TableId
+    private Long id;
+
+    @TableField(fill = FieldFill.INSERT)
+    private String createBy;
+
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private String updateBy;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
+
+    // getters and setters
+}
+```
+
+### 4. 配置 Spring Boot 配置类
+
+确保你的 Spring Boot 配置类中扫描到 `MyMetaObjectHandler` 类。
+
+#### 扫描 @MyMetaObjectHandler 示例代码
+
+```java
+import org.springframework.context.annotation.Configuration;
+import org.mybatis.spring.annotation.MapperScan;
+
+@Configuration
+@MapperScan("com.yourpackage.mapper") // 替换为你的 Mapper 包路径
+public class MyBatisPlusConfig {
+    // 其他配置
+}
+```
+
+### 5. 验证自动填充功能
+
+现在,当你使用 MyBatis-Plus 执行插入或更新操作时,`createBy`、`createTime`、`updateBy` 和 `updateTime` 字段会自动填充,无需手动设置。
+
+### 示例测试代码
+
+```java
+import com.yourpackage.entity.YourEntity;
+import com.yourpackage.mapper.YourEntityMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class YourController {
+
+    @Autowired
+    private YourEntityMapper yourEntityMapper;
+
+    @PostMapping("/testInsert")
+    public void testInsert() {
+        YourEntity entity = new YourEntity();
+        // entity.setCreateBy("user1"); // 不需要手动设置
+        // entity.setCreateTime(LocalDateTime.now()); // 不需要手动设置
+        yourEntityMapper.insert(entity);
+    }
+
+    @PostMapping("/testUpdate")
+    public void testUpdate() {
+        YourEntity entity = yourEntityMapper.selectById(1L);
+        entity.setSomeField("newValue");
+        yourEntityMapper.updateById(entity);
+    }
+}
+```
+
+通过上述步骤,你可以在使用 MyBatis-Plus 时自动填充创建人和更新人等字段,简化开发并提高代码的可维护性。

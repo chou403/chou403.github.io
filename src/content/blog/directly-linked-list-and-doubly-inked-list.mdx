@@ -1,0 +1,245 @@
+---
+author: chou401
+publishDate: 2024-06-14T09:54:31
+updatedDate: 2024-06-14T09:54:31
+title: 单向链表和双向链表
+draft: false
+heroImage: ../../assets/images/bird-7.jpg
+category: Interview
+tags:
+  - java
+description: 单向链表和双向链表
+---
+
+## 单向链表和双向链表
+
+单向链表和双向链表是两种常见的数据结构,它们在结构和功能上有所不同,适用于不同的场景。下面详细介绍这两种链表的数据结构、操作方法及其优缺点。
+
+### 单向链表
+
+#### 结构
+
+单向链表由一系列节点组成,每个节点包含两个部分:
+
+1. 数据部分(data):存储节点的数据。
+2. 指针部分(next):存储指向下一个节点的指针。
+
+示例节点定义(以Java为例):
+
+```java
+class Node {
+    int data;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+```
+
+#### 基本操作
+
+1. **插入节点**:
+
+   - 在链表头部插入:时间复杂度 O(1)
+   - 在链表尾部插入:时间复杂度 O(n)
+   - 在指定位置插入:时间复杂度 O(n)
+
+2. **删除节点**:
+
+   - 删除链表头部节点:时间复杂度 O(1)
+   - 删除链表尾部节点:时间复杂度 O(n)
+   - 删除指定位置节点:时间复杂度 O(n)
+
+3. **查找节点**:
+   - 查找节点(按值):时间复杂度 O(n)
+
+示例代码(Java):
+
+```java
+class SinglyLinkedList {
+    Node head;
+
+    // 在链表头部插入节点
+    public void insertAtHead(int data) {
+        Node newNode = new Node(data);
+        newNode.next = head;
+        head = newNode;
+    }
+
+    // 在链表尾部插入节点
+    public void insertAtTail(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+            return;
+        }
+        Node current = head;
+        while (current.next != null) {
+            current = current.next;
+        }
+        current.next = newNode;
+    }
+
+    // 删除链表头部节点
+    public void deleteAtHead() {
+        if (head != null) {
+            head = head.next;
+        }
+    }
+
+    // 查找节点(按值)
+    public boolean search(int data) {
+        Node current = head;
+        while (current != null) {
+            if (current.data == data) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+}
+```
+
+#### 优缺点
+
+**优点**:
+
+- 结构简单,容易实现。
+- 插入和删除操作在链表头部的时间复杂度为 O(1)。
+
+**缺点**:
+
+- 查找和删除指定节点的时间复杂度为 O(n)。
+- 只能从头到尾进行遍历,无法从尾到头进行遍历。
+
+### 双向链表
+
+#### 结构
+
+双向链表由一系列节点组成,每个节点包含三个部分:
+
+1. 数据部分(data):存储节点的数据。
+2. 前驱指针(prev):存储指向前一个节点的指针。
+3. 后继指针(next):存储指向下一个节点的指针。
+
+示例节点定义(以Java为例):
+
+```java
+class Node {
+    int data;
+    Node prev;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+        this.prev = null;
+        this.next = null;
+    }
+}
+```
+
+#### 基本操作
+
+1. **插入节点**:
+
+   - 在链表头部插入:时间复杂度 O(1)
+   - 在链表尾部插入:时间复杂度 O(1)
+   - 在指定位置插入:时间复杂度 O(n)
+
+2. **删除节点**:
+
+   - 删除链表头部节点:时间复杂度 O(1)
+   - 删除链表尾部节点:时间复杂度 O(1)
+   - 删除指定位置节点:时间复杂度 O(n)
+
+3. **查找节点**:
+   - 查找节点(按值):时间复杂度 O(n)
+
+示例代码(Java):
+
+```java
+class DoublyLinkedList {
+    Node head;
+    Node tail;
+
+    // 在链表头部插入节点
+    public void insertAtHead(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+        }
+    }
+
+    // 在链表尾部插入节点
+    public void insertAtTail(int data) {
+        Node newNode = new Node(data);
+        if (tail == null) {
+            head = tail = newNode;
+        } else {
+            newNode.prev = tail;
+            tail.next = newNode;
+            tail = newNode;
+        }
+    }
+
+    // 删除链表头部节点
+    public void deleteAtHead() {
+        if (head != null) {
+            if (head.next == null) {
+                head = tail = null;
+            } else {
+                head = head.next;
+                head.prev = null;
+            }
+        }
+    }
+
+    // 删除链表尾部节点
+    public void deleteAtTail() {
+        if (tail != null) {
+            if (tail.prev == null) {
+                head = tail = null;
+            } else {
+                tail = tail.prev;
+                tail.next = null;
+            }
+        }
+    }
+
+    // 查找节点(按值)
+    public boolean search(int data) {
+        Node current = head;
+        while (current != null) {
+            if (current.data == data) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+}
+```
+
+#### 优缺点
+
+**优点**:
+
+- 可以双向遍历链表。
+- 插入和删除操作在链表头部和尾部的时间复杂度为 O(1)。
+- 更容易删除指定节点,因为有前驱指针,可以直接访问前一个节点。
+
+**缺点**:
+
+- 结构较复杂,实现难度较大。
+- 需要额外的空间存储前驱指针,空间复杂度较单向链表高。
+
+### 总结
+
+单向链表和双向链表各有优缺点,选择使用哪种链表取决于具体的应用场景。单向链表适用于插入和删除操作主要集中在链表头部的场景,而双向链表适用于需要频繁在链表中间进行插入和删除操作以及需要双向遍历的场景。

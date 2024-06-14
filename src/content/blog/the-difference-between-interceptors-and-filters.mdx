@@ -1,0 +1,101 @@
+---
+author: chou401
+publishDate: 2024-06-14T09:18:18
+updatedDate: 2024-06-14T09:18:18
+title: 拦截器与过滤器
+draft: false
+heroImage: ../../assets/images/dog-5.jpeg
+category: Interview
+tags:
+  - java
+description: 拦截器和过滤器的区别 拦截器具体实现类是什么
+---
+
+## 拦截器和过滤器的区别 拦截器具体实现类是什么
+
+拦截器(Interceptor)和过滤器(Filter)是Java Web开发中用于对请求和响应进行预处理和后处理的两种机制。它们虽然在功能上有些重叠,但在实现原理、使用方式和应用场景上有所不同。
+
+### 拦截器(Interceptor)
+
+#### 拦截器特点
+
+1. **层级**: 拦截器是在框架层面上进行的,通常在MVC框架(如Spring MVC)中使用。
+2. **范围**: 拦截器可以对Controller层的方法调用进行拦截。
+3. **工作流程**: 拦截器在请求进入Controller之前进行处理,可以在请求处理之前和之后执行特定的操作。
+4. **配置**: 拦截器通常通过配置文件或注解进行配置。
+5. **实现**: 拦截器通常实现特定框架提供的接口,例如在Spring MVC中实现`HandlerInterceptor`接口。
+
+#### 拦截器具体实现类
+
+在Spring MVC中,一个简单的拦截器实现示例如下:
+
+```java
+import org.springframework.web.servlet.HandlerInterceptor;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class MyInterceptor implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // 在请求处理之前执行的逻辑
+        return true; // 返回true继续执行后续处理,返回false中止请求
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        // 在请求处理之后但在视图渲染之前执行的逻辑
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        // 在整个请求结束之后,通常用于资源清理
+    }
+}
+```
+
+### 过滤器(Filter)
+
+#### 过滤器特点
+
+1. **层级**: 过滤器是在Servlet规范层面上的,属于Servlet容器。
+2. **范围**: 过滤器可以对所有进入容器的请求和响应进行过滤。
+3. **工作流程**: 过滤器在请求到达Servlet之前进行处理,可以对请求和响应进行修改。
+4. **配置**: 过滤器通过在`web.xml`中配置或通过注解(如`@WebFilter`)进行配置。
+5. **实现**: 过滤器需要实现`javax.servlet.Filter`接口。
+
+#### 过滤器具体实现类
+
+一个简单的过滤器实现示例如下:
+
+```java
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+public class MyFilter implements Filter {
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        // 初始化配置
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        // 在请求处理之前执行的逻辑
+        chain.doFilter(request, response); // 继续执行后续处理
+        // 在请求处理之后执行的逻辑
+    }
+
+    @Override
+    public void destroy() {
+        // 资源清理
+    }
+}
+```
+
+### 区别总结
+
+- **拦截器**在更高的框架层面工作,主要用于对Controller的请求进行处理,依赖于特定的框架(如Spring MVC)。
+- **过滤器**在Servlet容器层面工作,可以对所有进入容器的请求和响应进行处理,与具体的框架无关。

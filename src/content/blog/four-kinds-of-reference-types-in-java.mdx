@@ -1,0 +1,143 @@
+---
+author: chou401
+publishDate: 2024-06-13T19:27:43
+updatedDate: 2024-06-13T19:27:43
+title: Java 中的四种引用类型
+draft: false
+heroImage: ../../assets/images/cat-14.jpg
+category: Interview
+tags:
+  - java
+description: Java 中的四种引用类型
+---
+
+## Java 中的四种引用类型
+
+在 Java 中,有四种引用类型,用于管理内存中的对象生命周期和垃圾回收机制。这四种引用类型分别是强引用(Strong Reference)、软引用(Soft Reference)、弱引用(Weak Reference)和虚引用(Phantom Reference)。每种引用类型在内存管理和垃圾回收方面都有不同的用途和特点。
+
+### 1. 强引用(Strong Reference)
+
+**描述**: 强引用是 Java 中最常见的引用类型。如果一个对象具有强引用,那么垃圾回收器绝不会回收该对象。
+
+**特点**:
+
+- 当内存不足时,JVM 会抛出 `OutOfMemoryError`,也不会回收强引用指向的对象。
+- 强引用是默认的引用类型。
+
+**示例代码**:
+
+```java
+String str = new String("Hello, World!"); // str 是一个强引用
+```
+
+### 2. 软引用(Soft Reference)
+
+**描述**: 软引用在内存不足时会被垃圾回收器回收。它适合用来实现内存敏感的缓存机制。
+
+**特点**:
+
+- 当内存充足时,不会回收软引用指向的对象。
+- 当内存不足时,会回收软引用指向的对象,以避免 `OutOfMemoryError`。
+- 软引用在垃圾回收前会被加入到一个引用队列(Reference Queue)中,供程序进一步处理。
+
+**示例代码**:
+
+```java
+import java.lang.ref.SoftReference;
+
+public class SoftReferenceExample {
+    public static void main(String[] args) {
+        String str = new String("Hello, World!");
+        SoftReference<String> softRef = new SoftReference<>(str);
+
+        str = null; // 现在只有软引用指向该对象
+        System.gc(); // 建议垃圾回收
+
+        if (softRef.get() != null) {
+            System.out.println("对象未被回收");
+        } else {
+            System.out.println("对象已被回收");
+        }
+    }
+}
+```
+
+### 3. 弱引用(Weak Reference)
+
+**描述**: 弱引用在下一次垃圾回收时会被回收。它适合用来实现一些内存敏感的缓存和映射机制,如 `WeakHashMap`。
+
+**特点**:
+
+- 无论内存是否充足,下一次垃圾回收时,弱引用指向的对象都会被回收。
+- 弱引用在垃圾回收前会被加入到一个引用队列(Reference Queue)中,供程序进一步处理。
+
+**示例代码**:
+
+```java
+import java.lang.ref.WeakReference;
+
+public class WeakReferenceExample {
+    public static void main(String[] args) {
+        String str = new String("Hello, World!");
+        WeakReference<String> weakRef = new WeakReference<>(str);
+
+        str = null; // 现在只有弱引用指向该对象
+        System.gc(); // 建议垃圾回收
+
+        if (weakRef.get() != null) {
+            System.out.println("对象未被回收");
+        } else {
+            System.out.println("对象已被回收");
+        }
+    }
+}
+```
+
+### 4. 虚引用(Phantom Reference)
+
+**描述**: 虚引用不能通过 `get()` 方法访问对象。它主要用于跟踪对象被垃圾回收的状态。
+
+**特点**:
+
+- 虚引用本身并不决定对象的生命周期。
+- 在对象被回收时,虚引用会被加入到一个引用队列(Reference Queue)中,通过处理引用队列,可以执行一些清理工作。
+- 虚引用适用于需要在对象被垃圾回收后执行一些特定操作的场景。
+
+**示例代码**:
+
+```java
+import java.lang.ref.PhantomReference;
+import java.lang.ref.ReferenceQueue;
+
+public class PhantomReferenceExample {
+    public static void main(String[] args) {
+        String str = new String("Hello, World!");
+        ReferenceQueue<String> refQueue = new ReferenceQueue<>();
+        PhantomReference<String> phantomRef = new PhantomReference<>(str, refQueue);
+
+        str = null; // 现在只有虚引用指向该对象
+        System.gc(); // 建议垃圾回收
+
+        if (phantomRef.get() != null) {
+            System.out.println("对象未被回收");
+        } else {
+            System.out.println("对象已被回收");
+        }
+
+        if (refQueue.poll() != null) {
+            System.out.println("虚引用已被加入引用队列");
+        } else {
+            System.out.println("虚引用未被加入引用队列");
+        }
+    }
+}
+```
+
+### 总结
+
+- **强引用**: 最常见的引用类型,不会被垃圾回收。
+- **软引用**: 适用于实现内存敏感的缓存,当内存不足时会被回收。
+- **弱引用**: 适用于实现内存敏感的映射,如 `WeakHashMap`,在下一次垃圾回收时会被回收。
+- **虚引用**: 用于跟踪对象的垃圾回收状态,在对象被回收后会被加入引用队列,不能通过 `get()` 方法访问对象。
+
+选择适当的引用类型可以帮助更有效地管理内存,优化应用程序的性能和可靠性。

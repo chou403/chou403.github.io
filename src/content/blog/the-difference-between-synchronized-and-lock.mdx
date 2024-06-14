@@ -1,0 +1,162 @@
+---
+author: chou401
+publishDate: 2024-06-14T09:28:33
+updatedDate: 2024-06-14T09:28:33
+title: synchronized 和 lock
+draft: false
+heroImage: ../../assets/images/triger-2.jpeg
+category: Interview
+tags:
+  - java
+description: synchronized和lock的区别具体实现
+---
+
+## synchronized和lock的区别具体实现
+
+在 Java 中,`synchronized` 和 `Lock` 是两种常用的并发控制机制,用于管理多线程对共享资源的访问。虽然它们都能实现线程同步,但它们在使用方式、功能和性能上有许多不同之处。
+
+### synchronized
+
+`synchronized` 是 Java 内置的同步机制,可以用来修饰方法或代码块,以确保同一时间只有一个线程可以执行被同步的代码。
+
+#### synchronized特点
+
+1. **内置于 Java 语言**: `synchronized` 是 Java 关键字,使用简单。
+2. **自动释放锁**: 当线程退出同步方法或同步代码块时,会自动释放锁。
+3. **无法中断**: 线程在等待获取 `synchronized` 锁时,不能被中断。
+4. **锁范围**: 可以是方法级别(实例方法或静态方法)或代码块级别。
+
+#### synchronized示例代码
+
+```java
+public class SynchronizedExample {
+    private int count = 0;
+
+    public synchronized void increment() {
+        count++;
+    }
+
+    public void incrementBlock() {
+        synchronized (this) {
+            count++;
+        }
+    }
+
+    public synchronized int getCount() {
+        return count;
+    }
+}
+```
+
+### Lock
+
+`Lock` 是 Java 5 引入的 `java.util.concurrent.locks` 包中的一个接口,提供了比 `synchronized` 更灵活的锁机制。
+
+#### Lock特点
+
+1. **灵活性**: 提供了比 `synchronized` 更加丰富的功能,如可中断的锁获取、超时获取锁、非块结构的锁释放等。
+2. **需要手动释放锁**: 必须显式调用 `unlock()` 方法来释放锁。
+3. **可响应中断**: 线程在等待获取锁时可以被中断。
+4. **多种实现**: 例如 `ReentrantLock`,支持公平锁和非公平锁。
+
+#### Lock示例代码
+
+```java
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class LockExample {
+    private final Lock lock = new ReentrantLock();
+    private int count = 0;
+
+    public void increment() {
+        lock.lock();
+        try {
+            count++;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public int getCount() {
+        lock.lock();
+        try {
+            return count;
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+```
+
+### 具体实现细节
+
+#### synchronized 实现
+
+`sychronized` 关键字在 JVM 层面是通过 `monitorenter` 和 `monitorexit` 字节码指令实现的。每个对象都有一个监视器,当一个线程持有了对象的监视器时,其他线程只能等待。
+
+#### Lock(以 ReentrantLock 为例)
+
+`ReentrantLock` 是 `Lock` 的一个实现,提供了更高级的功能。它内部使用了 AQS(AbstractQueuedSynchronizer)来管理锁状态和线程队列。
+
+##### 主要方法
+
+1. **lock()**: 获取锁,如果锁不可用,则当前线程将被禁用以进行线程调度,并处于休眠状态,直到锁被获取。
+2. **tryLock()**: 尝试获取锁,立即返回,如果锁不可用则返回 `false`。
+3. **tryLock(long timeout, TimeUnit unit)**: 在给定的等待时间内获取锁,如果锁不可用则等待指定时间,如果在超时之前获得锁,则返回 `true`,否则返回 `false`。
+4. **lockInterruptibly()**: 如果当前线程未被中断,则获取锁。如果锁可用,则获取锁,并立即返回。如果锁不可用,则禁用当前线程进行线程调度,并处于休眠状态,直到发生以下三种情况之一:
+   - 锁由当前线程获得;
+   - 其他某个线程中断当前线程;
+   - 指定的等待时间过去。
+
+##### Lock 示例代码
+
+```java
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class LockExample {
+    private final Lock lock = new ReentrantLock();
+    private int count = 0;
+
+    public void increment() {
+        lock.lock();
+        try {
+            count++;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public int getCount() {
+        lock.lock();
+        try {
+            return count;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void tryIncrement() {
+        if (lock.tryLock()) {
+            try {
+                count++;
+            } finally {
+                lock.unlock();
+            }
+        } else {
+            System.out.println("Could not get the lock");
+        }
+    }
+}
+```
+
+### 选择使用 synchronized 还是 Lock
+
+1. **简单同步**: 如果只需要简单的同步,`synchronized` 更加方便且性能较好。
+2. **高级功能**: 如果需要更高级的功能(如可中断锁获取、超时锁获取等),使用 `Lock` 会更合适。
+3. **性能考虑**: 在高并发环境下,`Lock` 可能会有更好的性能和扩展性,特别是使用 `ReentrantLock` 的公平锁机制,可以避免线程饥饿问题。
+
+### 锁选择总结
+
+`synchronized` 和 `Lock` 各有优劣,选择哪种机制取决于具体需求和应用场景。在需要简单、可靠的同步时,`synchronized` 是首选;在需要更灵活的锁控制或在复杂的并发场景中,`Lock`(尤其是 `ReentrantLock`)提供了更丰富的功能和更好的性能。

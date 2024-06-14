@@ -1,15 +1,16 @@
 {
   "Frontmatter": {
-    "scope": "markdown",
-    "prefix": "frontmatter",
+    "scope": "mdx",
+    "prefix": "mdx-front",
     "body": [
       "---",
-      "author: $1",
-      "pubDatetime: $CURRENT_YEAR-$CURRENT_MONTH-${CURRENT_DATE}T$CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND.000Z",
-      "modDatetime: $3",
+      "author: chou401",
+      "publishDate: $CURRENT_YEAR-$CURRENT_MONTH-${CURRENT_DATE}T$CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND",
+      "updatedDate: $CURRENT_YEAR-$CURRENT_MONTH-${CURRENT_DATE}T$CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND",
       "title: $4",
-      "featured: ${5|false,true|}",
-      "draft: ${6|true,false|}",
+      "draft: false",
+      "heroImage: ../../assets/images/wolf-1.jpg",
+      "category: $9",
       "tags:",
       "  - $7",
       "description: $8",
@@ -17,18 +18,18 @@
     ],
     "description": "Adds the frontmatter block for the AstroPaper Blog post"
   },
-  "Blog Template": {
-    "scope": "markdown",
-    "prefix": "template",
-    "body": [
-      "${1:frontmatter}",
-      "",
-      "${2: Introductory Sentence}",
-      "",
-      "## Table of contents",
-      "",
-      "## ${3: heading 1}",
-    ],
-    "description": "Adds the template for the AstroPaper Blog post. You will need to trigger the snippet modal on the 'frontmatter' line to insert the other snipper."
-  }
+  // "Blog Template": {
+  //   "scope": "mdx",
+  //   "prefix": "template",
+  //   "body": [
+  //     "${1:frontmatter}",
+  //     "",
+  //     "${2: Introductory Sentence}",
+  //     "",
+  //     "## Table of contents",
+  //     "",
+  //     "## ${3: heading 1}",
+  //   ],
+  //   "description": "Adds the template for the AstroPaper Blog post. You will need to trigger the snippet modal on the 'frontmatter' line to insert the other snipper."
+  // }
 }

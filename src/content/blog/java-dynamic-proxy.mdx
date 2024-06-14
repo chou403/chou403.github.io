@@ -1,0 +1,127 @@
+---
+author: chou401
+publishDate: 2024-06-13T21:03:44
+updatedDate: 2024-06-13T21:03:44
+title: java动态代理
+draft: false
+heroImage: ../../assets/images/cat-25.jpg
+category: Interview
+tags:
+  - java
+description: 动态代理是什么
+---
+
+## 动态代理是什么
+
+动态代理通常使用 Java 的反射机制来实现。Java 中的动态代理主要有两种实现方式:
+
+1. JDK 动态代理: JDK 动态代理是 Java 标准库提供的一种动态代理实现方式。它基于接口来创建代理类和代理对象,只能代理实现了接口的类。JDK 动态代理主要涉及两个类: java.lang.reflect.Proxy 和 java.lang.reflect.InvocationHandler。开发者通过实现 InvocationHandler 接口来编写代理逻辑,然后使用 Proxy.newProxyInstance() 方法来生成代理对象。代理类在调用方法时,会调用 InvocationHandler 的 invoke 方法,允许在执行真实方法前后插入自定义逻辑。
+
+2. CGLIB 动态代理: CGLIB(Code Generation Library)是一个强大的、高性能的代码生成库,可以在运行时动态生成字节码,从而实现动态代理。CGLIB 动态代理不需要接口,它可以直接代理类,并在运行时生成被代理类的子类作为代理类。CGLIB 动态代理主要涉及到两个类: net.sf.cglib.proxy.Enhancer 和 net.sf.cglib.proxy.MethodInterceptor。开发者通过实现 MethodInterceptor 接口来编写代理逻辑,然后使用 Enhancer.create() 方法来生成代理对象。
+
+动态代理是一种在运行时创建代理类并代理某个接口或类的方法调用的技术。在Java中,动态代理主要通过`java.lang.reflect.Proxy`类和`InvocationHandler`接口来实现。动态代理允许我们在不编写代理类的情况下,动态地为目标对象创建代理,并在代理对象的方法调用前后进行特定处理。
+
+### 动态代理的主要概念
+
+1. **代理对象(Proxy Object)**:
+   代理对象是实现了目标接口的对象。它负责接收客户端的请求,并将请求转发给目标对象。同时,代理对象可以在方法调用前后执行一些额外操作。
+
+2. **目标对象(Target Object)**:
+   目标对象是实际执行业务逻辑的对象。代理对象会将客户端的请求转发给目标对象。
+
+3. **InvocationHandler**:
+   `InvocationHandler`是一个接口,用于定义代理对象的方法调用处理逻辑。当代理对象的方法被调用时,调用会被转发到`InvocationHandler`的`invoke`方法中。
+
+### 动态代理的实现步骤
+
+以下是使用Java标准库实现动态代理的步骤:
+
+1. **定义接口**:
+   定义一个接口,目标对象和代理对象都要实现这个接口。
+
+   ```java
+   public interface UserService {
+       void addUser(String username);
+   }
+   ```
+
+2. **实现目标对象**:
+   目标对象实现接口并定义具体的业务逻辑。
+
+   ```java
+   public class UserServiceImpl implements UserService {
+       @Override
+       public void addUser(String username) {
+           System.out.println("Adding user: " + username);
+       }
+   }
+   ```
+
+3. **实现InvocationHandler**:
+   实现`InvocationHandler`接口,定义代理对象的方法调用处理逻辑。
+
+   ```java
+   import java.lang.reflect.InvocationHandler;
+   import java.lang.reflect.Method;
+
+   public class UserServiceInvocationHandler implements InvocationHandler {
+       private Object target;
+
+       public UserServiceInvocationHandler(Object target) {
+           this.target = target;
+       }
+
+       @Override
+       public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+           System.out.println("Before method: " + method.getName());
+           Object result = method.invoke(target, args);
+           System.out.println("After method: " + method.getName());
+           return result;
+       }
+   }
+   ```
+
+4. **创建代理对象**:
+   使用`Proxy`类的静态方法`newProxyInstance`创建代理对象。
+
+   ```java
+   import java.lang.reflect.Proxy;
+
+   public class Main {
+       public static void main(String[] args) {
+           UserService userService = new UserServiceImpl();
+           UserServiceInvocationHandler handler = new UserServiceInvocationHandler(userService);
+
+           UserService proxy = (UserService) Proxy.newProxyInstance(
+                   userService.getClass().getClassLoader(),
+                   userService.getClass().getInterfaces(),
+                   handler
+           );
+
+           proxy.addUser("Alice");
+       }
+   }
+   ```
+
+在上述代码中,代理对象`proxy`被创建,并实现了`UserService`接口。调用`proxy.addUser("Alice")`时,会触发`UserServiceInvocationHandler`的`invoke`方法,在方法调用前后打印日志。
+
+### 动态代理的优势
+
+1. **解耦业务逻辑与横切关注点**:
+   动态代理可以将业务逻辑与日志、事务管理、权限校验等横切关注点分离,保持代码的简洁和模块化。
+
+2. **代码复用**:
+   通过动态代理,可以编写通用的代理逻辑,并在多个代理对象中复用。
+
+3. **灵活性**:
+   动态代理在运行时创建代理对象,能够根据需求动态地改变代理逻辑,而不需要修改现有代码。
+
+### 动态代理的应用
+
+动态代理在许多Java框架中被广泛使用。例如:
+
+- **Spring AOP**: Spring通过动态代理实现面向切面编程(AOP),在方法调用前后添加额外的行为。
+- **MyBatis**: MyBatis使用动态代理创建Mapper接口的实现类,从而简化数据访问层的代码。
+- **Java RMI**: Java远程方法调用(RMI)使用动态代理生成远程对象的代理。
+
+通过动态代理,开发者可以轻松地在方法调用的前后添加额外的逻辑,极大地增强了代码的可维护性和扩展性。
