@@ -1,0 +1,164 @@
+{
+	"main": {
+		"id": "6af0022251761142",
+		"type": "split",
+		"children": [
+			{
+				"id": "6a82933d34bd5f4f",
+				"type": "tabs",
+				"children": [
+					{
+						"id": "caed8831b9d2435e",
+						"type": "leaf",
+						"state": {
+							"type": "markdown",
+							"state": {
+								"file": "blog/interview/javabase/cas-principle.mdx",
+								"mode": "source",
+								"source": false
+							}
+						}
+					}
+				]
+			}
+		],
+		"direction": "vertical"
+	},
+	"left": {
+		"id": "7998d7b119cbe22f",
+		"type": "split",
+		"children": [
+			{
+				"id": "1ed25a0c674a0e00",
+				"type": "tabs",
+				"children": [
+					{
+						"id": "6c1005835bfd23ec",
+						"type": "leaf",
+						"state": {
+							"type": "file-explorer",
+							"state": {
+								"sortOrder": "alphabetical"
+							}
+						}
+					},
+					{
+						"id": "18145c5c816928d3",
+						"type": "leaf",
+						"state": {
+							"type": "search",
+							"state": {
+								"query": "",
+								"matchingCase": false,
+								"explainSearch": false,
+								"collapseAll": false,
+								"extraContext": false,
+								"sortOrder": "alphabetical"
+							}
+						}
+					},
+					{
+						"id": "43f348d944ff62d9",
+						"type": "leaf",
+						"state": {
+							"type": "bookmarks",
+							"state": {}
+						}
+					}
+				]
+			}
+		],
+		"direction": "horizontal",
+		"width": 447.5
+	},
+	"right": {
+		"id": "0629b597c4b0d08f",
+		"type": "split",
+		"children": [
+			{
+				"id": "fe47bef0ca23d825",
+				"type": "tabs",
+				"children": [
+					{
+						"id": "022dd6b8cee0aa24",
+						"type": "leaf",
+						"state": {
+							"type": "backlink",
+							"state": {
+								"file": "blog/interview/javabase/cas-principle.mdx",
+								"collapseAll": false,
+								"extraContext": false,
+								"sortOrder": "alphabetical",
+								"showSearch": false,
+								"searchQuery": "",
+								"backlinkCollapsed": false,
+								"unlinkedCollapsed": true
+							}
+						}
+					},
+					{
+						"id": "a7e190d90ad26284",
+						"type": "leaf",
+						"state": {
+							"type": "outgoing-link",
+							"state": {
+								"file": "blog/interview/javabase/cas-principle.mdx",
+								"linksCollapsed": false,
+								"unlinkedCollapsed": true
+							}
+						}
+					},
+					{
+						"id": "64b62cf3b0cb71c7",
+						"type": "leaf",
+						"state": {
+							"type": "tag",
+							"state": {
+								"sortOrder": "frequency",
+								"useHierarchy": true
+							}
+						}
+					},
+					{
+						"id": "ffa1350b27997cd4",
+						"type": "leaf",
+						"state": {
+							"type": "outline",
+							"state": {
+								"file": "blog/interview/javabase/cas-principle.mdx"
+							}
+						}
+					}
+				]
+			}
+		],
+		"direction": "horizontal",
+		"width": 300,
+		"collapsed": true
+	},
+	"left-ribbon": {
+		"hiddenItems": {
+			"switcher:打开快速切换": false,
+			"graph:查看关系图谱": false,
+			"canvas:新建白板": false,
+			"daily-notes:打开/创建今天的日记": false,
+			"templates:插入模板": false,
+			"command-palette:打开命令面板": false
+		}
+	},
+	"active": "6c1005835bfd23ec",
+	"lastOpenFiles": [
+		"blog/interview/javabase/final-keyword-usage-scenarios.mdx",
+		"blog/interview/javabase/four-kinds-of-reference-types-in-java.mdx",
+		"blog/interview/javabase/how-to-implement-the-environment-configuration-file.mdx",
+		"blog/interview/javabase/how-to-manage-java-packages.mdx",
+		"blog/interview/javabase/java-dynamic-proxy.mdx",
+		"blog/interview/javabase/java-multi-share-one-memory.mdx",
+		"blog/interview/javabase/string-memory-allocation.mdx",
+		"blog/interview/javabase/the-difference-between-forwarding-and-redirecting.mdx",
+		"blog/interview/javabase/the-difference-between-synchronized-and-lock.mdx",
+		"blog/interview/interview-record.mdx",
+		"blog/interview/未命名.canvas",
+		"blog/interview/spring/the-origin-and-impact-of-stw.mdx"
+	]
+}
