@@ -119,7 +119,7 @@ const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 					);
 				}
 
-				// 右侧内容滚动 左侧活动菜单到大小时，滚动到对应位置
+				// 右侧内容滚动 左侧活动菜单到大小时,滚动到对应位置
 				const rect = index?.getBoundingClientRect();
 				if (!rect) return;
 				if (rect.top < 0 || rect.bottom > window.innerHeight) {

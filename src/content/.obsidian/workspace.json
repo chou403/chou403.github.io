@@ -13,9 +13,9 @@
 						"state": {
 							"type": "markdown",
 							"state": {
-								"file": "blog/interview/javabase/cas-principle.mdx",
+								"file": "blog/interview/collection/the-difference-between-collections-and-streams.mdx",
 								"mode": "source",
-								"source": false
+								"source": true
 							}
 						}
 					}
@@ -85,7 +85,7 @@
 						"state": {
 							"type": "backlink",
 							"state": {
-								"file": "blog/interview/javabase/cas-principle.mdx",
+								"file": "blog/interview/collection/the-difference-between-collections-and-streams.mdx",
 								"collapseAll": false,
 								"extraContext": false,
 								"sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
 						"state": {
 							"type": "outgoing-link",
 							"state": {
-								"file": "blog/interview/javabase/cas-principle.mdx",
+								"file": "blog/interview/collection/the-difference-between-collections-and-streams.mdx",
 								"linksCollapsed": false,
 								"unlinkedCollapsed": true
 							}
@@ -125,7 +125,7 @@
 						"state": {
 							"type": "outline",
 							"state": {
-								"file": "blog/interview/javabase/cas-principle.mdx"
+								"file": "blog/interview/collection/the-difference-between-collections-and-streams.mdx"
 							}
 						}
 					}
@@ -146,19 +146,20 @@
 			"command-palette:打开命令面板": false
 		}
 	},
-	"active": "6c1005835bfd23ec",
+	"active": "caed8831b9d2435e",
 	"lastOpenFiles": [
-		"blog/interview/javabase/final-keyword-usage-scenarios.mdx",
-		"blog/interview/javabase/four-kinds-of-reference-types-in-java.mdx",
-		"blog/interview/javabase/how-to-implement-the-environment-configuration-file.mdx",
-		"blog/interview/javabase/how-to-manage-java-packages.mdx",
-		"blog/interview/javabase/java-dynamic-proxy.mdx",
-		"blog/interview/javabase/java-multi-share-one-memory.mdx",
-		"blog/interview/javabase/string-memory-allocation.mdx",
-		"blog/interview/javabase/the-difference-between-forwarding-and-redirecting.mdx",
-		"blog/interview/javabase/the-difference-between-synchronized-and-lock.mdx",
-		"blog/interview/interview-record.mdx",
-		"blog/interview/未命名.canvas",
-		"blog/interview/spring/the-origin-and-impact-of-stw.mdx"
+		"blog/interview/collection/fail-fast.mdx",
+		"blog/interview/ddd/entity-value-object.mdx",
+		"blog/interview/ddd/ddd.mdx",
+		"blog/interview/ddd/what-is-entity.mdx",
+		"blog/interview/ddd/entity.mdx",
+		"blog/interview/ddd/domain-event.mdx",
+		"blog/interview/ddd/congestion-anemia.mdx",
+		"blog/interview/ddd/aggregation.mdx",
+		"blog/interview/ddd/implementation-process.mdx",
+		"blog/interview/ddd/layered-architecture.mdx",
+		"blog/interview/ddd/what-is-domain-event.mdx",
+		"blog/interview/collection/what-is-fail-fast.mdx.md",
+		"blog/interview/未命名.canvas"
 	]
 }
