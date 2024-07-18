@@ -9,7 +9,7 @@
       "updatedDate: $CURRENT_YEAR-$CURRENT_MONTH-${CURRENT_DATE}T$CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND",
       "title: $4",
       "draft: false",
-      "heroImage: ../../assets/images/wolf-1.jpg",
+      "heroImage: /src/assets/images/wolf-1.jpg",
       "category: $9",
       "tags:",
       "  - $7",
