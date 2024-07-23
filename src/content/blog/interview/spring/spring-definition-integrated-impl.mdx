@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2022-09-25T15:20:35
-updatedDate: 2024-06-14T16:24:07
+updatedDate: 2024-07-23T16:45:53
 title: Spring
 draft: false
 heroImage: /src/assets/images/dog-1.jpeg
@@ -1339,7 +1339,7 @@ public class DelegatingWebMvcConfiguration extends WebMvcConfigurationSupport {
    }
    ```
 
-   @EnableWebMvc表示完全自己控制mvc配置,也就是说所有配置自己重写,所有默认配置都没了！有时会导致很多请求进不来,或者参数转换出错之类的,因为spring mvc默认的转换器已经不生效了,包括全局配置的Jackson也会失效,所以在大多数情况下我们需要的是在其基础配置上添加自定义配置。
+   @EnableWebMvc表示完全自己控制mvc配置,也就是说所有配置自己重写,所有默认配置都没了!有时会导致很多请求进不来,或者参数转换出错之类的,因为spring mvc默认的转换器已经不生效了,包括全局配置的Jackson也会失效,所以在大多数情况下我们需要的是在其基础配置上添加自定义配置。
 
 2. 注解+继承解决失效问题
 

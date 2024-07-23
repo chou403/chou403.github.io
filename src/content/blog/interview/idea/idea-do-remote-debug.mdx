@@ -1,0 +1,72 @@
+---
+author: chou401
+publishDate: 2024-07-23T14:12:00
+updatedDate: 2024-07-23T14:12:00
+title: idea to do remote debug
+draft: false
+heroImage: /src/assets/images/wolf-1.jpg
+category: Interview
+tags:
+  - idea
+  - debug
+description: IDEA如何做远程Debug?
+---
+
+在 IntelliJ IDEA 中进行远程调试可以帮助你在本地调试运行在远程服务器上的应用程序。以下是设置和使用远程调试的步骤:
+
+### 1. **配置远程服务器**
+
+首先,需要确保你的远程服务器上的 Java 应用程序以调试模式启动。你需要在启动命令中添加特定的 JVM 参数。假设你有一个 Java 应用程序 `MyApp`,以下是一个示例启动命令:
+
+1.5-1.8
+
+```sh
+java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar MyApp.jar
+```
+
+1.9以后
+
+```sh
+java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar MyApp.jar
+```
+
+解释这些参数:
+
+- `-agentlib:jdwp`:启用 Java 调试器。
+- `transport=dt_socket`:使用套接字进行通信。
+- `server=y`:在服务器模式下启动调试器。
+- `suspend=n`:不在启动时暂停应用程序。
+- `address=*:5005`:在端口 5005 上监听调试连接。
+
+### 2. **配置 IntelliJ IDEA**
+
+在 IntelliJ IDEA 中配置远程调试:
+
+1. 打开 IntelliJ IDEA 并打开你的项目。
+2. 导航到 `Run` 菜单并选择 `Edit Configurations...`。
+3. 在左侧的配置列表中点击 `+` 按钮,然后选择 `Remote`。
+4. 为你的配置命名,例如 `Remote Debug`.
+5. 在 `Configuration` 部分中,设置以下参数:
+
+   - `Host`: 远程服务器的 IP 地址或主机名。
+   - `Port`: 远程服务器上设置的调试端口,例如 `5005`。
+   - `Command line arguments for remote JVM`: 保持默认即可,除非你需要自定义 JVM 参数。
+
+6. 点击 `OK` 保存配置。
+
+### 3. **启动远程调试**
+
+1. 确保你的远程服务器上的应用程序已经以调试模式启动。
+2. 在 IntelliJ IDEA 中,选择你刚刚创建的 `Remote Debug` 配置。
+3. 点击调试图标(或者使用快捷键 Shift + F9)启动远程调试。
+
+### 4. **设置断点并调试**
+
+1. 在你的代码中设置断点。
+2. 当远程服务器上的代码运行到断点时,IntelliJ IDEA 会在本地停止执行,你可以像调试本地应用程序一样进行调试操作。
+
+### 总结
+
+通过这些步骤,你可以在 IntelliJ IDEA 中配置和使用远程调试功能,方便调试运行在远程服务器上的 Java 应用程序。这对调试生产环境中的问题尤其有帮助,可以大大提高开发和调试效率。
+
+如果你遇到连接问题,检查防火墙设置以及确保正确的 IP 地址和端口号。
