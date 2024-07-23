@@ -1,0 +1,114 @@
+---
+author: chou401
+publishDate: 2024-07-23T09:49:12
+updatedDate: 2024-07-23T09:49:12
+title: Fat Jar
+draft: false
+heroImage: /src/assets/images/pexels-lucasandrade-4681107.jpg
+category: Interview
+tags:
+  - java
+  - jar
+description: 什么是fat jar?
+---
+
+## 介绍
+
+**Fat JAR**(也称为 **Uber JAR**)是一种特殊的 JAR 文件,它包含了 Java 应用程序的所有类文件和依赖项(即所有外部库)。通过将所有内容打包到一个单一的 JAR 文件中,Fat JAR 提供了一种方便的方式来分发和运行 Java 应用程序,无需单独管理依赖项。
+
+### Fat JAR 的优点
+
+1. **简化部署**:所有依赖项都包含在一个文件中,部署时只需要一个 JAR 文件,而无需处理多个依赖项文件。
+2. **简化运行**:运行 Fat JAR 文件非常简单,不需要额外配置类路径,只需一个命令即可启动应用程序。
+3. **自包含**:应用程序及其所有依赖项都打包在一起,减少了由于缺少依赖项或版本冲突引起的问题。
+
+### Fat JAR 的缺点
+
+1. **文件大小**:由于包含了所有依赖项,Fat JAR 文件通常较大,这可能影响传输速度和存储空间。
+2. **重复依赖**:在同一个项目中多个 Fat JAR 可能会导致重复的依赖项,这会进一步增加文件大小。
+3. **更新复杂性**:每次更新依赖项都需要重新打包整个 Fat JAR 文件。
+
+### 如何创建 Fat JAR
+
+#### 使用 Maven
+
+Maven 提供了 `maven-shade-plugin` 插件,可以用来创建 Fat JAR 文件。
+
+在 `pom.xml` 文件中配置 `maven-shade-plugin`:
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.2.4</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    <configuration>
+                        <transformers>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>com.example.Main</mainClass>
+                            </transformer>
+                        </transformers>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+```
+
+然后使用以下命令来构建 Fat JAR:
+
+```sh
+mvn package
+```
+
+#### 使用 Gradle
+
+Gradle 提供了 `shadow` 插件,可以用来创建 Fat JAR 文件。
+
+在 `build.gradle` 文件中应用 `shadow` 插件:
+
+```groovy
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+shadowJar {
+    archiveBaseName.set('all-in-one-jar')
+    archiveVersion.set('1.0.0')
+    archiveClassifier.set('')
+}
+
+dependencies {
+    implementation 'com.example:example-dependency:1.0.0'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.example.Main'
+    }
+}
+```
+
+然后使用以下命令来构建 Fat JAR:
+
+```sh
+gradle shadowJar
+```
+
+### 运行 Fat JAR
+
+一旦创建了 Fat JAR,可以使用以下命令运行它:
+
+```sh
+java -jar all-in-one-jar-1.0.0.jar
+```
+
+这种方式简化了 Java 应用程序的部署和运行,特别适用于需要打包所有依赖项并在各种环境中分发的场景。
