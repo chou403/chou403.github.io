@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-06-14T08:54:34
-updatedDate: 2024-06-14T08:54:34
+updatedDate: 2024-07-24T17:14:45
 title: Spring不建议使用基于字段的依赖注入
 draft: false
 heroImage: /src/assets/images/cheetah-2.jpg
@@ -71,14 +71,14 @@ public class MyService {
 
 ### 依赖注入结论
 
-尽管基于字段的依赖注入在某些情况下可能看起来更简洁,但它在测试性、可维护性、代码清晰度和可靠性方面存在显著缺点。因此,Spring 社区和文档通常推荐使用构造函数注入,或者在需要时使用 Setter 方法注入,以确保代码的质量和可维护性。
+尽管基于字段的依赖注入在某些情况下可能看起来更简洁,但它在测试性,可维护性,代码清晰度和可靠性方面存在显著缺点。因此,Spring 社区和文档通常推荐使用构造函数注入,或者在需要时使用 Setter 方法注入,以确保代码的质量和可维护性。
 
 ## Seata 有几种模式 重要
 
 Seata(Simple Extensible Autonomous Transaction Architecture)是一个开源的分布式事务解决方案,致力于解决分布式系统中数据一致性的问题。Seata 提供了多种模式来管理分布式事务,主要包括:
 
 1. **AT 模式(Automatic Transaction Mode)**:
-   - **适用场景**: 适用于支持 ACID(原子性、一致性、隔离性、持久性)事务的关系型数据库。
+   - **适用场景**: 适用于支持 ACID(原子性,一致性,隔离性,持久性)事务的关系型数据库。
    - **原理**: 通过代理 JDBC 数据源的方式,自动生成和管理全局事务。Seata 在执行数据库操作前后进行自动补偿。
    - **特点**: 开发者无需修改现有代码,只需简单配置即可使用,适合对性能要求不太高的场景。
 2. **TCC 模式(Try-Confirm-Cancel Mode)**:
@@ -88,7 +88,7 @@ Seata(Simple Extensible Autonomous Transaction Architecture)是一个开源的�
 3. **SAGA 模式(Long-Running Transaction Mode)**:
    - **适用场景**: 适用于长时间运行的事务。
    - **原理**: 将业务流程分解为一系列有序的子事务,每个子事务都有对应的补偿操作。在全局事务出错时,按逆序执行补偿操作。
-   - **特点**: 适合需要长时间处理的业务流程,如订单处理、供应链管理等。
+   - **特点**: 适合需要长时间处理的业务流程,如订单处理,供应链管理等。
 4. **XA 模式(Distributed Transaction XA Mode)**:
    - **适用场景**: 适用于支持 XA 协议的数据库。
    - **原理**: 基于两阶段提交(2PC)协议实现的分布式事务管理器,协调多个数据库资源的提交和回滚。

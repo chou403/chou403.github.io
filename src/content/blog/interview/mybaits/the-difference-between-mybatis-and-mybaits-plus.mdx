@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-06-14T09:27:29
-updatedDate: 2024-06-14T09:27:29
+updatedDate: 2024-07-24T17:14:44
 title: MyBatis 与 MyBatis Plus 的区别
 draft: false
 heroImage: /src/assets/images/fox-1.jpg
@@ -19,7 +19,7 @@ MyBatis和MyBatis-Plus是Java中常用的持久层框架,它们用于简化数�
 
 1. **基本介绍**:
 
-   - MyBatis是一款持久层框架,支持自定义SQL、存储过程以及高级映射。
+   - MyBatis是一款持久层框架,支持自定义SQL,存储过程以及高级映射。
    - 它通过XML或注解配置来将接口和Java对象映射到SQL语句。
 
 2. **特性**:
@@ -31,7 +31,7 @@ MyBatis和MyBatis-Plus是Java中常用的持久层框架,它们用于简化数�
 3. **实现细节**:
    - **Mapper文件**: 定义SQL语句和映射关系的XML文件。
    - **Mapper接口**: 与Mapper文件对应的Java接口,用于调用Mapper文件中的SQL语句。
-   - **配置文件**: 全局配置文件(如`mybatis-config.xml`)用于配置数据源、事务管理等。
+   - **配置文件**: 全局配置文件(如`mybatis-config.xml`)用于配置数据源,事务管理等。
 
 ### MyBatis-Plus
 
@@ -43,15 +43,15 @@ MyBatis和MyBatis-Plus是Java中常用的持久层框架,它们用于简化数�
 2. **特性**:
 
    - **CRUD操作**: 内置通用的CRUD操作,减少重复的SQL编写。
-   - **代码生成器**: 提供代码生成工具,可以根据数据库表快速生成Mapper、Service、Controller等层代码。
+   - **代码生成器**: 提供代码生成工具,可以根据数据库表快速生成Mapper,Service,Controller等层代码。
    - **条件构造器**: 提供方便的条件构造器,简化复杂SQL的构建。
-   - **插件机制**: 支持分页插件、性能分析插件、SQL注入攻击防御插件等。
+   - **插件机制**: 支持分页插件,性能分析插件,SQL注入攻击防御插件等。
    - **Lambda表达式支持**: 通过Lambda表达式构建条件,增强代码可读性。
 
 3. **实现细节**:
    - **通用Mapper**: 通过继承MyBatis-Plus提供的基础Mapper类,自动拥有基本的CRUD功能。
    - **条件构造器**: 通过Wrapper类,提供链式调用的方法构建查询条件。
-   - **自动填充**: 支持字段自动填充,如创建时间、更新时间等。
+   - **自动填充**: 支持字段自动填充,如创建时间,更新时间等。
    - **乐观锁**: 支持乐观锁机制,避免并发更新问题。
    - **插件机制**: 可以自定义插件扩展MyBatis-Plus的功能。
 
@@ -65,7 +65,7 @@ MyBatis和MyBatis-Plus是Java中常用的持久层框架,它们用于简化数�
 2. **功能扩展**:
 
    - MyBatis主要提供基础的ORM功能。
-   - MyBatis-Plus在此基础上增加了很多实用功能,如条件构造器、分页插件、自动填充等。
+   - MyBatis-Plus在此基础上增加了很多实用功能,如条件构造器,分页插件,自动填充等。
 
 3. **使用复杂度**:
    - MyBatis需要手动编写和维护SQL,适合对SQL有高度控制需求的场景。

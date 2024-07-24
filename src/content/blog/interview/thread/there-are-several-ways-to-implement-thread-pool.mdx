@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-06-14T09:19:54
-updatedDate: 2024-06-14T09:19:54
+updatedDate: 2024-07-24T17:14:46
 title: 线程池有几种实现方法
 draft: false
 heroImage: /src/assets/images/triger-4.jpeg
@@ -102,14 +102,14 @@ ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(
 - **corePoolSize 和 maximumPoolSize**: 决定线程池在不同负载下的行为。对于固定线程池,`corePoolSize` 和 `maximumPoolSize` 是相同的;对于缓存线程池,`maximumPoolSize` 是 `Integer.MAX_VALUE`。
 - **keepAliveTime 和 unit**: 用于控制非核心线程的存活时间。
 - **workQueue**: 选择适当的队列类型(如`LinkedBlockingQueue`, `SynchronousQueue`)对任务的调度策略影响很大。
-- **threadFactory**: 允许自定义线程的创建方式,通常用于设置线程名称、优先级等。
+- **threadFactory**: 允许自定义线程的创建方式,通常用于设置线程名称,优先级等。
 - **handler**: 当任务添加到线程池中被拒绝时的处理策略,如`AbortPolicy`, `CallerRunsPolicy`, `DiscardPolicy`, `DiscardOldestPolicy`。
 
 通过合理设置这些参数,可以创建满足不同并发需求的线程池,实现高效的任务处理。
 
 ## threadlocal 是干嘛的如何实现的
 
-`ThreadLocal` 是 Java 中的一种机制,允许你为每个线程创建独立的变量副本。这些变量副本对每个线程是隔离的,因此一个线程无法访问另一个线程的`ThreadLocal`变量。`ThreadLocal`常用于在多线程环境中存储不希望被共享的线程局部变量,例如用户会话、数据库连接等。
+`ThreadLocal` 是 Java 中的一种机制,允许你为每个线程创建独立的变量副本。这些变量副本对每个线程是隔离的,因此一个线程无法访问另一个线程的`ThreadLocal`变量。`ThreadLocal`常用于在多线程环境中存储不希望被共享的线程局部变量,例如用户会话,数据库连接等。
 
 ### `ThreadLocal`的用途
 

@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-06-14T09:05:26
-updatedDate: 2024-06-14T09:05:26
+updatedDate: 2024-07-24T17:14:43
 title: java多线程共享一个内存
 draft: false
 heroImage: /src/assets/images/cat-26.jpg
@@ -13,7 +13,7 @@ description: Java 什么操作可以多线程共享一块内存
 
 ## Java 什么操作可以多线程共享一块内存
 
-在 Java 中,多线程可以通过共享一块内存来实现并发操作。共享内存的常见方法包括使用共享变量、共享对象和并发集合。为了保证线程安全,需要使用同步机制或并发工具来避免竞争条件和数据不一致问题。以下是几种常见的实现方法:
+在 Java 中,多线程可以通过共享一块内存来实现并发操作。共享内存的常见方法包括使用共享变量,共享对象和并发集合。为了保证线程安全,需要使用同步机制或并发工具来避免竞争条件和数据不一致问题。以下是几种常见的实现方法:
 
 ### 1. 使用共享变量
 
@@ -111,7 +111,7 @@ public class SharedObjectExample {
 
 ### 3. 使用并发集合
 
-Java 提供了一些线程安全的并发集合,如 `ConcurrentHashMap`、`CopyOnWriteArrayList` 等,它们内部已经实现了线程安全机制。
+Java 提供了一些线程安全的并发集合,如 `ConcurrentHashMap`,`CopyOnWriteArrayList` 等,它们内部已经实现了线程安全机制。
 
 #### 示例
 
@@ -198,7 +198,7 @@ public class VolatileExample {
 
 ### 5. 使用 `Atomic` 类
 
-对于需要原子操作的共享变量,可以使用 `java.util.concurrent.atomic` 包中的原子类,如 `AtomicInteger`、`AtomicLong`、`AtomicReference` 等。
+对于需要原子操作的共享变量,可以使用 `java.util.concurrent.atomic` 包中的原子类,如 `AtomicInteger`,`AtomicLong`,`AtomicReference` 等。
 
 #### 示例
 

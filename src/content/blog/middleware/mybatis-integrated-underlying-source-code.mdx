@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2022-09-25T15:20:35
-updatedDate: 2024-06-14T16:24:09
+updatedDate: 2024-07-24T17:14:47
 title: Mybatis
 draft: false
 heroImage: /src/assets/images/cat-11.jpeg
@@ -49,7 +49,7 @@ ORM框架: Object Relational Mapping。用于实现面向对象编程语言里�
           <!-- 是否覆盖 -->
           <overwrite>true</overwrite>
           <!-- 自动生成的配置文件路径。启动插件时,插件会根据这里配置的路径去找到generatorConfig.xml配置文件,
-          根据配置文件里的配置,去自动生成Mapper接口(可以理解为Dao层)、实体类、Mapper.xml文件
+          根据配置文件里的配置,去自动生成Mapper接口(可以理解为Dao层),实体类,Mapper.xml文件
           -->
           <configurationFile>src/main/resources/GeneratorConfig.xml</configurationFile>
       </configuration>
@@ -116,7 +116,7 @@ ORM框架: Object Relational Mapping。用于实现面向对象编程语言里�
               <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
           </commentGenerator>
 
-          <!-- 数据库连接驱动类,URL,用户名、密码 -->
+          <!-- 数据库连接驱动类,URL,用户名,密码 -->
           <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
                           connectionURL="jdbc:mysql://119.45.27.47:3306/dms_usp?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf-8"
                           userId="FordDms"
@@ -130,7 +130,7 @@ ORM框架: Object Relational Mapping。用于实现面向对象编程语言里�
               <property name="forceBigDecimals" value="true"/>
           </javaTypeResolver>
 
-          <!-- 生成Domain模型: 包名(targetPackage)、位置(targetProject) -->
+          <!-- 生成Domain模型: 包名(targetPackage),位置(targetProject) -->
           <javaModelGenerator targetPackage="com.yonyou.dms.web.entity" targetProject="E:\workspace\Parent\Login\src\main\java">
               <!-- 在targetPackage的基础上,根据数据库的schema再生成一层package,最终生成的类放在这个package下,默认为false -->
               <property name="enableSubPackages" value="true"/>
@@ -138,12 +138,12 @@ ORM框架: Object Relational Mapping。用于实现面向对象编程语言里�
               <property name="trimStrings" value="true"/>
           </javaModelGenerator>
 
-          <!-- 生成xml映射文件: 包名(targetPackage)、位置(targetProject) -->
+          <!-- 生成xml映射文件: 包名(targetPackage),位置(targetProject) -->
           <sqlMapGenerator targetPackage="mapper" targetProject="E:\workspace\Parent\Login\src\main\resources">
               <property name="enableSubPackages" value="true"/>
           </sqlMapGenerator>
 
-          <!-- 生成DAO接口: 包名(targetPackage)、位置(targetProject) -->
+          <!-- 生成DAO接口: 包名(targetPackage),位置(targetProject) -->
           <javaClientGenerator type="XMLMAPPER" targetPackage="com.yonyou.dms.web.dao"
                                targetProject="E:\workspace\Parent\Login\src\main\java">
               <property name="enableSubPackages" value="true"/>
@@ -353,7 +353,7 @@ private UserMapper userMapper; // Mybatis生成的UserMapper代理对象 --> Bea
 
 ## SqlSessionFactoryBean的底层原理
 
-SqlSessionFactoryBean是MyBatis框架中的一个重要组件,它的主要作用是创建SqlSessionFactory对象,SqlSessionFactory是MyBatis框架中的核心对象,它负责管理MyBatis的所有配置信息,并且提供了创建SqlSession对象的方法。SqlSessionFactoryBean的底层原理是通过读取MyBatis的配置文件,解析其中的配置信息,然后根据配置信息创建SqlSessionFactory对象。在创建SqlSessionFactory对象的过程中,SqlSessionFactoryBean会使用MyBatis框架中的多个组件,包括Configuration、MapperRegistry、TypeHandlerRegistry等,这些组件都是MyBatis框架中的核心组件,它们负责管理MyBatis的各种配置信息,并且提供了各种功能的实现。SqlSessionFactoryBean的底层原理比较复杂,需要深入了解MyBatis框架的各个组件之间的关系和作用,才能更好地理解它的实现原理。
+SqlSessionFactoryBean是MyBatis框架中的一个重要组件,它的主要作用是创建SqlSessionFactory对象,SqlSessionFactory是MyBatis框架中的核心对象,它负责管理MyBatis的所有配置信息,并且提供了创建SqlSession对象的方法。SqlSessionFactoryBean的底层原理是通过读取MyBatis的配置文件,解析其中的配置信息,然后根据配置信息创建SqlSessionFactory对象。在创建SqlSessionFactory对象的过程中,SqlSessionFactoryBean会使用MyBatis框架中的多个组件,包括Configuration,MapperRegistry,TypeHandlerRegistry等,这些组件都是MyBatis框架中的核心组件,它们负责管理MyBatis的各种配置信息,并且提供了各种功能的实现。SqlSessionFactoryBean的底层原理比较复杂,需要深入了解MyBatis框架的各个组件之间的关系和作用,才能更好地理解它的实现原理。
 
 ```java
 @Bean
@@ -378,7 +378,7 @@ FactoryBean是Spring框架中的一个接口,它的作用是用于创建和管�
 ```java
 @Component
 public class TestFactoryBean implements FactoryBean {
-    // 实现FactoryBean接口会生成两个Bean对象 1、TestFactoryBean 2、getObject
+    // 实现FactoryBean接口会生成两个Bean对象 1,TestFactoryBean 2,getObject
     // 先生成TestFactoryBean 之后再生成 getObject
 
     @Autowired

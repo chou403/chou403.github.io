@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2022-09-25T15:20:35
-updatedDate: 2024-06-14T16:24:08
+updatedDate: 2024-07-24T17:14:46
 title: CompletableFuture
 draft: false
 heroImage: /src/assets/images/cat-3.jpeg
@@ -114,7 +114,7 @@ public static void main(String[] args) {
 ```java
 public static void main(String[] args) {
     SmallTool.print("小白吃好了");
-    SmallTool.print("小白 结账、要求开发票");
+    SmallTool.print("小白 结账,要求开发票");
     CompletableFuture<String> invoice = CompletableFuture.supplyAsync(() -> {
         SmallTool.print("服务员收款 500元");
         SmallTool.sleep(200);
@@ -137,7 +137,7 @@ public static void main(String[] args) {
 ```java
 public static void main(String[] args) {
     SmallTool.print("小白吃好了");
-    SmallTool.print("小白 结账、要求开发票");
+    SmallTool.print("小白 结账,要求开发票");
     CompletableFuture<String> invoice = CompletableFuture.supplyAsync(() -> {
         SmallTool.print("服务员收款 500元");
         SmallTool.sleep(300);

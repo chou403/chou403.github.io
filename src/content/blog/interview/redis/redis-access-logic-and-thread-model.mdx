@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-06-14T09:53:13
-updatedDate: 2024-06-14T09:53:13
+updatedDate: 2024-07-24T17:14:45
 title: Redis 访问逻辑与线程模型
 draft: false
 heroImage: /src/assets/images/cat-36.jpeg
@@ -13,13 +13,13 @@ description: Redis 存取逻辑和线程模型
 
 ## Redis 存取逻辑和线程模型
 
-Redis 是一个高性能的内存数据库,广泛用于缓存、消息队列、实时数据分析等场景。下面将详细介绍 Redis 的存取逻辑以及与线程相关的概念。
+Redis 是一个高性能的内存数据库,广泛用于缓存,消息队列,实时数据分析等场景。下面将详细介绍 Redis 的存取逻辑以及与线程相关的概念。
 
 ### Redis 的存取逻辑
 
 #### 1. 数据存储
 
-Redis 使用键值对(key-value)的形式存储数据,支持多种数据结构,包括字符串(string)、哈希(hash)、列表(list)、集合(set)、有序集合(sorted set)、位图(bitmap)、HyperLogLog 和地理空间(geospatial)索引等。
+Redis 使用键值对(key-value)的形式存储数据,支持多种数据结构,包括字符串(string),哈希(hash),列表(list),集合(set),有序集合(sorted set),位图(bitmap),HyperLogLog 和地理空间(geospatial)索引等。
 
 #### 2. 命令执行
 
@@ -83,7 +83,7 @@ io-threads-do-reads yes
 
 或者在启动 Redis 时指定配置文件:
 
-```bash
+```sh
 redis-server /path/to/redis.conf
 ```
 
@@ -91,7 +91,7 @@ redis-server /path/to/redis.conf
 
 手动触发 RDB 快照和 AOF 重写:
 
-```bash
+```sh
 # 生成 RDB 快照
 BGSAVE
 

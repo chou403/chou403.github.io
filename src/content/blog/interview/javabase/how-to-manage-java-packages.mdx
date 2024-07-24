@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-06-14T09:49:37
-updatedDate: 2024-06-14T09:49:37
+updatedDate: 2024-07-24T17:14:43
 title: 如何管理Java包
 draft: false
 heroImage: /src/assets/images/cat-21.png
@@ -13,13 +13,13 @@ description: java包如何管理?一般是maven,jar包冲突如何解决
 
 ## java包如何管理?一般是maven,jar包冲突如何解决
 
-在Java项目中,包管理是一个重要的部分,通常通过Maven、Gradle等工具来进行管理。Maven是最常用的包管理和构建工具之一,下面是如何使用Maven进行包管理以及解决JAR包冲突的详细说明。
+在Java项目中,包管理是一个重要的部分,通常通过Maven,Gradle等工具来进行管理。Maven是最常用的包管理和构建工具之一,下面是如何使用Maven进行包管理以及解决JAR包冲突的详细说明。
 
 ### 使用Maven进行包管理
 
 #### 1. 配置 `pom.xml`
 
-Maven使用 `pom.xml` 文件来管理项目的依赖、插件和构建配置。一个简单的 `pom.xml` 文件如下:
+Maven使用 `pom.xml` 文件来管理项目的依赖,插件和构建配置。一个简单的 `pom.xml` 文件如下:
 
 ```xml
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -139,4 +139,4 @@ mvn dependency:tree
 
 ### 总结
 
-通过合理地管理Maven依赖和版本控制,可以有效地解决JAR包冲突问题。确保使用统一的依赖版本、排除不必要的依赖以及定期检查依赖树,是避免和解决依赖冲突的有效方法。
+通过合理地管理Maven依赖和版本控制,可以有效地解决JAR包冲突问题。确保使用统一的依赖版本,排除不必要的依赖以及定期检查依赖树,是避免和解决依赖冲突的有效方法。

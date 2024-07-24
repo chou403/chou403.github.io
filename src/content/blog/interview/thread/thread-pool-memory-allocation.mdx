@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-06-14T08:51:08
-updatedDate: 2024-06-14T08:51:08
+updatedDate: 2024-07-24T17:14:46
 title: 线程池内存分配
 draft: false
 heroImage: /src/assets/images/triger-5.jpg
@@ -16,7 +16,7 @@ description: 线程池 内存分配 密集型有几种情况 如何分配对应�
 在并发编程中,线程池的内存分配和线程数配置需要根据任务的类型进行调整。任务主要可以分为三种情况:
 
 1. **CPU 密集型任务(CPU-bound tasks)**: 主要消耗 CPU 资源。
-2. **I/O 密集型任务(I/O-bound tasks)**: 主要消耗 I/O 资源,如文件读写、网络通信等。
+2. **I/O 密集型任务(I/O-bound tasks)**: 主要消耗 I/O 资源,如文件读写,网络通信等。
 3. **混合型任务(Mixed tasks)**: 同时消耗 CPU 和 I/O 资源。
 
 针对这些不同类型的任务,线程池的配置也有所不同。

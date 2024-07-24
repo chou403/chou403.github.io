@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-07-10T17:22:55
-updatedDate: 2024-07-18T18:00:28
+updatedDate: 2024-07-24T17:14:43
 title: 架构模式
 draft: false
 heroImage: /src/assets/images/pexels-tranmautritam-2194261.jpg
@@ -13,7 +13,7 @@ description: DDD的分层架构是怎么样的
 
 ## 简介
 
-领域驱动设计(DDD,Domain-Driven Design)的分层架构通常分为四层,每一层都有特定的职责。这四层从上到下依次是用户界面层(Presentation Layer)、应用层(Application Layer)、领域层(Domain Layer)和基础设施层(Infrastructure Layer)。这种分层架构有助于实现代码的高内聚和低耦合,使系统更加易于维护和扩展。
+领域驱动设计(DDD,Domain-Driven Design)的分层架构通常分为四层,每一层都有特定的职责。这四层从上到下依次是用户界面层(Presentation Layer),应用层(Application Layer),领域层(Domain Layer)和基础设施层(Infrastructure Layer)。这种分层架构有助于实现代码的高内聚和低耦合,使系统更加易于维护和扩展。
 
 ### 1. 用户界面层(Presentation Layer)
 
@@ -22,7 +22,7 @@ description: DDD的分层架构是怎么样的
 **示例**:
 
 - Web 控制器(如 Spring MVC 中的控制器)
-- 前端页面或视图(如 HTML、CSS、JavaScript)
+- 前端页面或视图(如 HTML,CSS,JavaScript)
 
 **例子**:
 
@@ -73,7 +73,7 @@ public class OrderService {
 
 ### 3. 领域层(Domain Layer)
 
-**职责**:包含业务逻辑和业务规则,是整个系统的核心。领域层包括领域对象、值对象、领域服务、聚合、聚合根和领域事件等。
+**职责**:包含业务逻辑和业务规则,是整个系统的核心。领域层包括领域对象,值对象,领域服务,聚合,聚合根和领域事件等。
 
 **示例**:
 
@@ -113,7 +113,7 @@ public class Order {
 
 ### 4. 基础设施层(Infrastructure Layer)
 
-**职责**:提供技术支持,为其他层提供通用的技术能力,处理与外部系统的集成,如数据库访问、消息队列、文件系统等。
+**职责**:提供技术支持,为其他层提供通用的技术能力,处理与外部系统的集成,如数据库访问,消息队列,文件系统等。
 
 **示例**:
 
@@ -142,7 +142,7 @@ public interface CustomerRepository extends JpaRepository<Customer, String> {
 
 通过这种分层架构,DDD 能够帮助开发者更清晰地组织代码,确保系统的可维护性和可扩展性。
 
-层次之间的调用关系是上层可以调用下层,即用户接口层可以调用应用层、领域层及基础层。应用层可以调用领域层和基础层,领域层可以调用基础层。
+层次之间的调用关系是上层可以调用下层,即用户接口层可以调用应用层,领域层及基础层。应用层可以调用领域层和基础层,领域层可以调用基础层。
 
 但是不能从下往上反向调用,各个层级之间是严格的单向调用的依赖关系。
 
@@ -161,7 +161,7 @@ public interface CustomerRepository extends JpaRepository<Customer, String> {
 
 1. **核心层(Core)**:
 
-   - 包含领域模型、值对象、聚合根、领域事件等。
+   - 包含领域模型,值对象,聚合根,领域事件等。
 
 2. **领域服务层(Domain Services)**:
 
@@ -172,7 +172,7 @@ public interface CustomerRepository extends JpaRepository<Customer, String> {
    - 调用领域服务,编排用例。
 
 4. **基础设施层(Infrastructure)**:
-   - 实现技术细节,如数据库访问、消息传递、文件系统等。
+   - 实现技术细节,如数据库访问,消息传递,文件系统等。
 
 **例子**:
 
@@ -223,21 +223,21 @@ public class JpaOrderRepository implements OrderRepository {
 
 **核心思想**:
 
-- 系统的核心逻辑(领域模型)不依赖于外部系统(如数据库、UI、第三方服务)。
+- 系统的核心逻辑(领域模型)不依赖于外部系统(如数据库,UI,第三方服务)。
 - 通过端口(Ports)定义系统的输入输出,通过适配器(Adapters)实现具体的技术细节。
 
 **层次**:
 
 1. **核心层**:
 
-   - 包含领域模型、领域服务。
+   - 包含领域模型,领域服务。
 
 2. **端口(Ports)**:
 
-   - 定义系统的输入输出接口,如服务接口、事件接口。
+   - 定义系统的输入输出接口,如服务接口,事件接口。
 
 3. **适配器(Adapters)**:
-   - 实现端口接口的具体细节,如数据库适配器、UI适配器、API适配器。
+   - 实现端口接口的具体细节,如数据库适配器,UI适配器,API适配器。
 
 **例子**:
 

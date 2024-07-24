@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2022-09-25T15:20:35
-updatedDate: 2024-06-14T16:24:08
+updatedDate: 2024-07-24T17:14:47
 title: JDBC
 draft: false
 heroImage: /src/assets/images/cat-8.jpg
@@ -46,11 +46,11 @@ description: jdbc acid & 隔离级别
 
 ### JDBC定义了五种事务隔离级别
 
-- TRANSACTION_READ_UNCOMMITTED: 允许脏读、不可重复读和幻读。
+- TRANSACTION_READ_UNCOMMITTED: 允许脏读,不可重复读和幻读。
 
 - TRANSACTION_READ_COMMITTED: 禁止脏读,但允许不可重复读和幻读。
 
-- TRANSACTION_REPEATABLE_READ: 禁止脏读、不可重复读,但允许幻读。
+- TRANSACTION_REPEATABLE_READ: 禁止脏读,不可重复读,但允许幻读。
 
 - TRANSACTION_NONE JDBC: 驱动不支持事务。
 
@@ -129,7 +129,7 @@ Connection接口对象.setAutoCommit(false) ; 设置为手动提交事务。
 
 在Java语言中,任何类只有被装载到JVM上才能运行。Class.forName() 方法的作用就是把类加载到JVM中,它会返回一个与带有给定字符串名的类或接口相关联的Class对象,并且JVM会加载这个类,同时JVM会执行该类的静态代码段。
 
-## Statement、PreparedStatement、CallableStatement
+## Statement,PreparedStatement,CallableStatement
 
 - Statement用于执行不带参数的简单SQL语句,并返回它所生成结果的对象,每次执行SQL语句时,数据库都要编译该SQL语句。
 
@@ -143,7 +143,7 @@ Connection接口对象.setAutoCommit(false) ; 设置为手动提交事务。
 
   - OUT参数使用CallableStatement.registerOutParameter()设置,使用CallableStatement.getXxx()获取输出参数。
 
-  - 执行使用execute(),或者executeUpdate()、executeQuery()。
+  - 执行使用execute(),或者executeUpdate(),executeQuery()。
 
 Statement对象与PreparedStatement对象能够完成相同的功能,PreparedStatement具有以下优点:
 

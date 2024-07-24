@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-06-13T21:02:48
-updatedDate: 2024-06-13T21:02:48
+updatedDate: 2024-07-24T17:14:46
 title: Open Feign 动态代理
 draft: false
 heroImage: /src/assets/images/cat-32.jpeg
@@ -43,7 +43,7 @@ public interface MyService {
 
 代理对象使用 Feign 的 `RequestTemplate` 根据接口方法上的注解和传入的参数构建 HTTP 请求。这包括:
 
-- 确定请求方法(GET、POST 等)。
+- 确定请求方法(GET,POST 等)。
 - 组装请求 URL。
 - 设置请求头。
 - 序列化请求参数和请求体。
@@ -66,7 +66,7 @@ public interface MyService {
 
 ### 动态代理的具体实现
 
-Feign 动态代理的具体实现核心是 `FeignInvocationHandler`,这个类实现了 `InvocationHandler` 接口,负责拦截接口方法调用,并执行上述请求构建、发送和响应处理的逻辑。
+Feign 动态代理的具体实现核心是 `FeignInvocationHandler`,这个类实现了 `InvocationHandler` 接口,负责拦截接口方法调用,并执行上述请求构建,发送和响应处理的逻辑。
 
 ```java
 public class FeignInvocationHandler implements InvocationHandler {
@@ -97,6 +97,6 @@ public class FeignInvocationHandler implements InvocationHandler {
 3. **拦截调用**: 代理对象拦截接口方法调用,构建并发送 HTTP 请求。
 4. **处理响应**: 代理对象处理 HTTP 响应,并将结果返回给调用者。
 
-通过动态代理,OpenFeign 将 HTTP 请求抽象成接口方法调用,使得开发者可以更加方便、优雅地调用远程服务。
+通过动态代理,OpenFeign 将 HTTP 请求抽象成接口方法调用,使得开发者可以更加方便,优雅地调用远程服务。
 
 总的来说,代理模式在 OpenFeign 中的作用是将客户端接口转换为对应的 HTTP 请求并发送到服务端,同时封装了 HTTP 请求和响应的逻辑,并支持负载均衡和服务发现等功能。这样,开发者可以像调用本地方法一样来调用远程服务,而无需关注底层的 HTTP 请求和通信细节。

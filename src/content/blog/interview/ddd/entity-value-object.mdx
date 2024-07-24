@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-07-10T15:32:54
-updatedDate: 2024-07-18T18:00:28
+updatedDate: 2024-07-24T17:14:43
 title: 实体
 draft: false
 heroImage: /src/assets/images/pexels-pixabay-45201.jpg
@@ -26,7 +26,7 @@ description: 什么是实体,什么是值对象
 3. **可变性**:实体的状态和属性可以随时间发生变化。
 
 **例子:**
-在一个电子商务系统中,用户(User)是一个实体,因为每个用户都有一个唯一的用户ID,并且用户的属性(例如名字、电子邮件地址)可能会随时间变化。
+在一个电子商务系统中,用户(User)是一个实体,因为每个用户都有一个唯一的用户ID,并且用户的属性(例如名字,电子邮件地址)可能会随时间变化。
 
 ```java
 public class User {
@@ -34,7 +34,7 @@ public class User {
     private String name;
     private String email;
 
-    // 构造函数、getters、setters
+    // 构造函数,getters,setters
 }
 ```
 
@@ -49,7 +49,7 @@ public class User {
 3. **用来描述特定概念**:值对象通常用于描述某个具体的概念或属性,而不需要单独存在。
 
 **例子:**
-在一个电子商务系统中,地址(Address)可以是一个值对象,因为地址只是描述一个具体的地点,并且它的属性(如街道、城市、邮政编码)一旦确定就不会改变。
+在一个电子商务系统中,地址(Address)可以是一个值对象,因为地址只是描述一个具体的地点,并且它的属性(如街道,城市,邮政编码)一旦确定就不会改变。
 
 ```java
 public class Address {
@@ -57,7 +57,7 @@ public class Address {
     private String city;
     private String postalCode;
 
-    // 构造函数、getters
+    // 构造函数,getters
 }
 ```
 
@@ -73,7 +73,7 @@ public class Address {
 
 假设我们正在设计一个电商系统,需要设计一个订单类。订单包含多个订单项,每个订单项对应着购买了某个商品的数量和价格。
 
-首先,我们定义一个订单项类,它包含订单号、商品名称、数量和单价4个属性,并且它们都是可变的,因为每个订单项都可以修改:
+首先,我们定义一个订单项类,它包含订单号,商品名称,数量和单价4个属性,并且它们都是可变的,因为每个订单项都可以修改:
 
 ```java
 public class OrderItem {
@@ -85,7 +85,7 @@ public class OrderItem {
 }
 ```
 
-然后,我们定义一个订单类,它包含订单号、订单项列表、订单状态和订单总价四个属性。
+然后,我们定义一个订单类,它包含订单号,订单项列表,订单状态和订单总价四个属性。
 
 ```java
 public class Order {

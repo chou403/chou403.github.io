@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-02-22T15:00:03
-updatedDate: 2024-06-14T16:24:08
+updatedDate: 2024-07-24T17:14:47
 title: Feign & openFeign
 draft: false
 heroImage: /src/assets/images/cat-4.jpg
@@ -14,13 +14,13 @@ description: feign & openFeign 介绍以及使用
 
 ## 什么是Feign
 
-Netflix Feign 是 Netflix 公司发布的一种实现负载均衡和服务调用的开源组件。Spring Cloud 将其与 Netflix 中的其他开源服务组件(例如 Eureka、Ribbon 以及 Hystrix 等)一起整合进 Spring Cloud Netflix 模块中,整合后全称为 Spring Cloud Netflix Feign Feign 对 [Ribbon](http://c.biancheng.net/springcloud/ribbon.html)进行了集成,利用 Ribbon 维护了一份可用服务清单,并通过 Ribbon 实现了客户端的负载均衡。Feign 是一种声明式服务调用组件,它在 RestTemplate 的基础上做了进一步的封装。通过 Feign,我们只需要声明一个接口并通过注解进行简单的配置(类似于 Dao 接口上面的 Mapper 注解一样)即可实现对 HTTP 接口的绑定。通过 Feign,我们可以像调用本地方法一样来调用远程服务,而完全感觉不到这是在进行远程调用。Feign 支持多种注解,例如 Feign 自带的注解以及 JAX-RS 注解等,但遗憾的是 Feign 本身并不支持 Spring MVC 注解,这无疑会给广大 Spring 用户带来不便。
+Netflix Feign 是 Netflix 公司发布的一种实现负载均衡和服务调用的开源组件。Spring Cloud 将其与 Netflix 中的其他开源服务组件(例如 Eureka,Ribbon 以及 Hystrix 等)一起整合进 Spring Cloud Netflix 模块中,整合后全称为 Spring Cloud Netflix Feign Feign 对 [Ribbon](http://c.biancheng.net/springcloud/ribbon.html)进行了集成,利用 Ribbon 维护了一份可用服务清单,并通过 Ribbon 实现了客户端的负载均衡。Feign 是一种声明式服务调用组件,它在 RestTemplate 的基础上做了进一步的封装。通过 Feign,我们只需要声明一个接口并通过注解进行简单的配置(类似于 Dao 接口上面的 Mapper 注解一样)即可实现对 HTTP 接口的绑定。通过 Feign,我们可以像调用本地方法一样来调用远程服务,而完全感觉不到这是在进行远程调用。Feign 支持多种注解,例如 Feign 自带的注解以及 JAX-RS 注解等,但遗憾的是 Feign 本身并不支持 Spring MVC 注解,这无疑会给广大 Spring 用户带来不便。
 
 ## 什么是openFeign
 
 2019 年 Netflix 公司宣布 Feign 组件正式进入停更维护状态,于是 Spring 官方便推出了一个名为 OpenFeign 的组件作为 Feign 的替代方案。
 
-OpenFeign 全称 Spring Cloud OpenFeign,它是 Spring 官方推出的一种声明式服务调用与负载均衡组件,它的出现就是为了替代进入停更维护状态的 Feign。OpenFeign 是 Spring Cloud 对 Feign 的二次封装,它具有 Feign 的所有功能,并在 Feign 的基础上增加了对 Spring MVC 注解的支持,例如 @RequestMapping、@GetMapping 和 @PostMapping 等。
+OpenFeign 全称 Spring Cloud OpenFeign,它是 Spring 官方推出的一种声明式服务调用与负载均衡组件,它的出现就是为了替代进入停更维护状态的 Feign。OpenFeign 是 Spring Cloud 对 Feign 的二次封装,它具有 Feign 的所有功能,并在 Feign 的基础上增加了对 Spring MVC 注解的支持,例如 @RequestMapping,@GetMapping 和 @PostMapping 等。
 
 常用注解
 | 注解 | 说明 |
@@ -154,9 +154,9 @@ public class ConfigBean {
 该配置的作用是通过配置的 Logger.Level 对象告诉 OpenFeign 记录哪些日志内容。Logger.Level 的具体级别如下:
 
 - NONE: 不记录任何信息。
-- BASIC: 仅记录请求方法、URL 以及响应状态码和执行时间。
+- BASIC: 仅记录请求方法,URL 以及响应状态码和执行时间。
 - HEADERS: 除了记录 BASIC 级别的信息外,还会记录请求和响应的头信息。
-- FULL: 记录所有请求与响应的明细,包括头信息、请求体、元数据等等。
+- FULL: 记录所有请求与响应的明细,包括头信息,请求体,元数据等等。
 
 ## OpenFeign 实现 RequestInterceptor
 
@@ -314,7 +314,7 @@ hystrix:
             timeoutInMilliseconds: 30000
 ```
 
-做完上述配置后,**Feign 接口的熔断机制为: 线程模式**。如果我们自定义了一个 `RequestInterceptor` 实现类,就会导致 hystrix 熔断机制失效,接口调用异常(404、null)。
+做完上述配置后,**Feign 接口的熔断机制为: 线程模式**。如果我们自定义了一个 `RequestInterceptor` 实现类,就会导致 hystrix 熔断机制失效,接口调用异常(404,null)。
 
 #### 原因分析
 
@@ -344,7 +344,7 @@ hystrix:
 |             | 线程池                                     | 信号量                                   |
 | ----------- | ------------------------------------------ | ---------------------------------------- |
 | 线程        | 请求线程和调用 provider 线程不是同一条线程 | 请求线程和调用 provider 线程是同一条线程 |
-| 开销        | 排队、调用、上下文切换等                   | 无线程切换,开销低                        |
+| 开销        | 排队,调用,上下文切换等                     | 无线程切换,开销低                        |
 | 异步        | 支持                                       | 不支持                                   |
 | 并发支持    | 支持: 最大线程池大小                       | 支持: 最大信号量上限                     |
 | 传递 Header | 不支持                                     | 支持                                     |
@@ -372,7 +372,7 @@ hystrix:
 2. Decoder(ResponseEntityDecoder)
    Decoder 解码器,当接口收到一个 JSON 对象后,Feign 需要对这个对象进行 decode 解码,即: decoder 负责将 JSON 字符串转换成 JavaBean 对象。
 3. Contract(SpringMvcContract)
-   一般来说 Feign 的@FeignClient 注解需要和 Spring Web MVC 支持的@PathVariable、@RequestMapping、@pRequestParam 等注解结合起来使用,但是 Feign 本身是不支持 Spring Web MVC 注解的,所以需要有一个契约组件(Contract),负责解释 Spring MVC 的注解,让 Feign 可以和 Spring MVC 注解结合起来使用。
+   一般来说 Feign 的@FeignClient 注解需要和 Spring Web MVC 支持的@PathVariable,@RequestMapping,@pRequestParam 等注解结合起来使用,但是 Feign 本身是不支持 Spring Web MVC 注解的,所以需要有一个契约组件(Contract),负责解释 Spring MVC 的注解,让 Feign 可以和 Spring MVC 注解结合起来使用。
 4. Logger(Slf4jLogger)
    Logger 为打印 Feign 接口请求调用日志的日志组件,默认为 Slf4jLogger。
 
@@ -425,7 +425,7 @@ public @interface FeignClient {
     String url() default "";
     // 当调用请求发生 404 错误时,如果 decode404 的值为 true,会执行 decode 解码用 404 代替抛出 FeignException 异常,否则直接抛出异常
     boolean decode404() default false;
-    // OpenFeign 的配置类,在配置类中可以自定义 Feign 的 Encoder、Decoder、LogLevel、Contract 等
+    // OpenFeign 的配置类,在配置类中可以自定义 Feign 的 Encoder,Decoder,LogLevel,Contract 等
     Class<?>[] configuration() default {};
     // 定义容错的处理类(回退逻辑),fallback 类必须实现 FeignClient 的接口
     Class<?> fallback() default void.class;
@@ -478,7 +478,7 @@ public class ServiceAConfiguration {
 
 ### @EnableFeignClients 解析
 
-`@EnableFeignClients` 注解用于开启 openfeign,可以猜测,@EnableFeignClients 注解会触发 openfeign 的核心机制: 扫描所有包下面的 @FeignClient 注解的接口、生成 @FeignClient 标注接口的动态代理类。
+`@EnableFeignClients` 注解用于开启 openfeign,可以猜测,@EnableFeignClients 注解会触发 openfeign 的核心机制: 扫描所有包下面的 @FeignClient 注解的接口,生成 @FeignClient 标注接口的动态代理类。
 
 基于这两个猜测解析 @EnableFeignClients。
 
@@ -500,7 +500,7 @@ public @interface EnableFeignClients {
 }
 ```
 
-`@EnableFeignClients` 注解中通过 `@Import` 导入了一个 `FeignClientsRegistrar` 类,FeignClientsRegistrar 负责 FeignClient 的注册(即: 扫描指定包下的 @FeignClient 注解标注的接口、生成 FeignClient 动态代理类、触发后面的其他流程)。
+`@EnableFeignClients` 注解中通过 `@Import` 导入了一个 `FeignClientsRegistrar` 类,FeignClientsRegistrar 负责 FeignClient 的注册(即: 扫描指定包下的 @FeignClient 注解标注的接口,生成 FeignClient 动态代理类,触发后面的其他流程)。
 
 #### FeignClientsRegistrar 类
 
@@ -517,7 +517,7 @@ public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionR
 }
 ```
 
-`registerBeanDefinitions()` 方法是 Feign 的核心入口方法,其中会做两件事: 注册默认的配置、注册所有的 FeignClient。
+`registerBeanDefinitions()` 方法是 Feign 的核心入口方法,其中会做两件事: 注册默认的配置,注册所有的 FeignClient。
 
 ##### 注册默认配置
 
@@ -709,7 +709,7 @@ protected Set<String> getBasePackages(AnnotationMetadata importingClassMetadata)
 
 ##### 扫描所有的 FeignClient
 
-ClassPathScanningCandidateComponentProvider#findCandidateComponents(String basePackage)方法负责扫描出指定目录下的所有标注了@FeignClient注解的Class类(包括interface、正常的Class)。
+ClassPathScanningCandidateComponentProvider#findCandidateComponents(String basePackage)方法负责扫描出指定目录下的所有标注了@FeignClient注解的Class类(包括interface,正常的Class)。
 
 ```java
 public Set<BeanDefinition> findCandidateComponents(String basePackage) {
@@ -874,7 +874,7 @@ private void registerFeignClient(BeanDefinitionRegistry registry, AnnotationMeta
 
 注册FeignClient实际就是构建一个FeignClient对应的BeanDefinition,然后将FeignClient的一些属性配置设置为BeanDefinition的property,最后将BeanDefinition注册到Spring的临时容器。在处理FeignClient的属性配置时,如果@FeignClient中配置了qualifier,则使用qualifier作为beanName。
 
-到这里已经完成了包的扫描、FeignClient的解析、FeignClient数据以BeanDefinition的形式存储到spring框架中的BeanDefinitionRegistry中。
+到这里已经完成了包的扫描,FeignClient的解析,FeignClient数据以BeanDefinition的形式存储到spring框架中的BeanDefinitionRegistry中。
 
 ### FeignClient 的动态代理类
 
@@ -984,7 +984,7 @@ FeignContext context = applicationContext.getBean(FeignContext.class);
 获取 feign 的上下文 FeignClient。
 这里的 applicationContext 是 AnnotationConfigServletWebApplicationContext。
 
-> ribbon里有一个SpringClientFactory,就是对每个服务的调用,都会有一个独立的ILoadBalancer,IoadBalancer里面的IRule、IPing都是独立的组件,也就是说ribbon要调用的每个服务都对应一个独立的spring容器;从那个独立的spring容器中,可以取出某个服务关联的属于自己的LoadBalancer、IRule、IPing等。
+> ribbon里有一个SpringClientFactory,就是对每个服务的调用,都会有一个独立的ILoadBalancer,IoadBalancer里面的IRule,IPing都是独立的组件,也就是说ribbon要调用的每个服务都对应一个独立的spring容器;从那个独立的spring容器中,可以取出某个服务关联的属于自己的LoadBalancer,IRule,IPing等。
 
 FeignClient 也是类似的上下文:
 
@@ -1020,7 +1020,7 @@ get(FeignContext context, Class type)方法要做的事情如下:
 
 ##### 从 FeignClient 中获取 Feign.Builder
 
-这里和上面获取 FeignLoggerFactory 一样,在 spring-cloud-openfeign-core 项目的 FeignClientsConfiguration 类中会找到两个 Feign.Builder(一个和 Hystrix 相关,另外一个 Retryer 相关的(请求超时、失败重试))的注册逻辑:
+这里和上面获取 FeignLoggerFactory 一样,在 spring-cloud-openfeign-core 项目的 FeignClientsConfiguration 类中会找到两个 Feign.Builder(一个和 Hystrix 相关,另外一个 Retryer 相关的(请求超时,失败重试))的注册逻辑:
 
 ![202403011729059](https://cdn.jsdelivr.net/gh/chou401/pic-md@main//img/202403011729059.png)
 
@@ -1060,7 +1060,7 @@ protected void configureFeign(FeignContext context, Feign.Builder builder) {
 **逻辑解析: **
 
 > 1. FeignClientProperties是针对FeignClient的配置;
-> 2. 先读取application.yml中的feign.client打头的一些参数,包括了connectionTimeout、readTimeout之类的参数;如果application.yml中没有配置feign.client相关参数,则使用默认配置(Retryer retryer、ErrorDecoder、Request.Options等);
+> 2. 先读取application.yml中的feign.client打头的一些参数,包括了connectionTimeout,readTimeout之类的参数;如果application.yml中没有配置feign.client相关参数,则使用默认配置(Retryer retryer,ErrorDecoder,Request.Options等);
 > 3. 然后读取application.yml中针对当前要调用服务的配置。
 >
 > 所以如果在 application.yml 文件中同时配置了针对全部服务和单个服务的配置,则针对单个服务的配置优先级更高,因为在代码解析中它是放在后面解析的,会覆盖前面解析的内容。
@@ -1079,7 +1079,7 @@ protected void configureFeign(FeignContext context, Feign.Builder builder) {
 >
 > 1. Feign.Builder builder --> FeignClient构造器
 > 2. FeignContext context --> Feign上下文
-> 3. HardCodedTarget&lt;T&gt; target,target是一个HardCodedTarget,硬编码的Target,里面包含了接口类型(com.zhss.service.ServiceAClient)、服务名称(ServiceA)、url地址(http://ServiceA)
+> 3. HardCodedTarget&lt;T&gt; target,target是一个HardCodedTarget,硬编码的Target,里面包含了接口类型(com.zhss.service.ServiceAClient),服务名称(ServiceA),url地址(http://ServiceA)
 
 ```java
 protected <T> T loadBalance(Feign.Builder builder, FeignContext context, Target.HardCodedTarget<T> target) {
@@ -1172,7 +1172,7 @@ protected static class HystrixFeignTargeterConfiguration {
 > 1. 如果有 feign.hystrix.HystrixFeign 这个类的话,那么就会构造一个 HystrixTargeter 出来
 > 2. 如果没有 feign.hystrix.HystrixFeign 这个类的话,那么就会构造一个 DefaultTargeter 出来
 
-HystrixTargeter 是用来让 Feign 和 Hystrix 整合使用的,在发送请求的时候可以基于 Hystrix 实现熔断、限流、降级。
+HystrixTargeter 是用来让 Feign 和 Hystrix 整合使用的,在发送请求的时候可以基于 Hystrix 实现熔断,限流,降级。
 
 - 生产环境如果启用 `feign.hystrix.HystrixFeign`,则 Feign.Builder 也会变成 HystrixFeign.Builder,默认还是 Feign 自己的 Feign.Builder。
 
@@ -1220,7 +1220,7 @@ ReflectiveFeign#newInstance() 源码如下
 
 ```java
 public <T> T newInstance(Target<T> target) {
-    // 基于我们配置的Contract、Encoder等一堆组件,加上Target对象(知道是ServiceAClient接口),去进行接口的所有spring mvc注解的解析,以及接口中各个方法的一些解析,获取了这个接口中有哪些方法
+    // 基于我们配置的Contract,Encoder等一堆组件,加上Target对象(知道是ServiceAClient接口),去进行接口的所有spring mvc注解的解析,以及接口中各个方法的一些解析,获取了这个接口中有哪些方法
     Map<String, MethodHandler> nameToHandler = targetToHandlersByName.apply(target);
     Map<Method, MethodHandler> methodToHandler = new LinkedHashMap<Method, MethodHandler>();
     List<DefaultMethodHandler> defaultMethodHandlers = new LinkedList<DefaultMethodHandler>();
@@ -1258,7 +1258,7 @@ public <T> T newInstance(Target<T> target) {
 }
 ```
 
-方法中有两个Map类型的局部变量: nameToHandler、methodToHandler:
+方法中有两个Map类型的局部变量: nameToHandler,methodToHandler:
 
 > 1. nameToHandler 释义: 接口中的每个方法的名称,对应一个处理这个方法的SynchronousMethodHandler;由ReflectiveFeign的内部类ParseHandlersByName的apply(target)方法获取。
 > 2. methodToHandler 释义: 接口中的每个方法(Method对象),对应一个处理这个方法的SynchronousMethodHandler;
@@ -1352,7 +1352,7 @@ public MethodHandler create(Target<?> target,
 
 方法逻辑:
 
-> 1. 针对父类 Object 的 equals、hashCode、toString 方法直接处理
+> 1. 针对父类 Object 的 equals,hashCode,toString 方法直接处理
 > 2. 其他方法则从 dispatch 中获取 Method 对应的 MethodHandler,然后将方法的执行交给 MethodHandler 来处理
 > 3. dispatch 是一个以 Method 为 key,MethodHandler 为 value 的 Map 类型(Map&lt;Method, MethodHandler&gt;),其是在构建 FeignInvocationHandler 时,记录了每个 FeignClient 对应的所有方法 MethodHandler 的映射
 
@@ -1391,7 +1391,7 @@ invoke() 方法中通过方法名找到 Method 对应的 MethodHandler,这里的
   }
 ```
 
-`SynchronousMethodHandler#invoke()` 方法中主要包括两大块: 创建请求模版、执行请求并返回 decode 后的结果。
+`SynchronousMethodHandler#invoke()` 方法中主要包括两大块: 创建请求模版,执行请求并返回 decode 后的结果。
 
 这里的重试机制,其实就是依靠 Retryer#continueOrPropagate() 方法中对重试次数的判断,超过最大重试次数抛异常结束流程。
 
@@ -1470,7 +1470,7 @@ private Object expandElements(Expander expander, Object value) {
 
 ![202403051728793](https://cdn.jsdelivr.net/gh/chou401/pic-md@main//img/202403051728793.png)
 
-接着需要根据 varBuilder 的内容构建出一个完整的 REST 请求(即: 将 SpringMVC 注解标注的参数全部用 value 值替换、添加到请求中)
+接着需要根据 varBuilder 的内容构建出一个完整的 REST 请求(即: 将 SpringMVC 注解标注的参数全部用 value 值替换,添加到请求中)
 
 ![202403051736823](https://cdn.jsdelivr.net/gh/chou401/pic-md@main//img/202403051736823.png)
 
@@ -1490,7 +1490,7 @@ private Object expandElements(Expander expander, Object value) {
 
 ![202403051804120](https://cdn.jsdelivr.net/gh/chou401/pic-md@main//img/202403051804120.png)
 
-方法中主要做三件事: 应用所有的 RequestInterceptor(即执行 RequestInterceptor#apply()方法)、通过 LoadBalancerFeignClient 做负载均衡执行请求,使用 Decoder 对请求返回结果解码或处理返回结果。
+方法中主要做三件事: 应用所有的 RequestInterceptor(即执行 RequestInterceptor#apply()方法),通过 LoadBalancerFeignClient 做负载均衡执行请求,使用 Decoder 对请求返回结果解码或处理返回结果。
 
 下面分开来看
 
@@ -1543,12 +1543,12 @@ public Response execute(Request request, Request.Options options) throws IOExcep
 > 1. 首先将请求的url封装成一个URI,然后从请求URL地址中,获取到要访问的服务名称clientName(示例为ServiceA)
 > 2. 然后将请求URI中的服务名称剔除,比如这里的 &lt;http://Service-A/user/sayHello/&gt; 变为 http:///user/sayHello/
 > 3. 接着基于去除了服务名称的uri地址,创建了一个适用于Ribbon的请求(FeignLoadBalancer.RibbonRequest)
-> 4. 根据服务名从SpringClientFactory(Feign上下文)中获取Ribbon相关的配置IClientConfig,比如(连接超时时间、读取数据超时时间),如果获取不到,则创建一个FeignOptionsClientConfig
+> 4. 根据服务名从SpringClientFactory(Feign上下文)中获取Ribbon相关的配置IClientConfig,比如(连接超时时间,读取数据超时时间),如果获取不到,则创建一个FeignOptionsClientConfig
 > 5. 最后根据服务名从CachingSpringLoadBalancerFactory获取对应的FeignLoadBalancer;在FeignLoadBalancer里封装了ribbon的ILoadBalancer
 
 既然Feign中集成了Ribbon,那它们是怎么整合到一起的?FeignLoadBalancer中用了Ribbon的那个ILoadBalancer?Feign如何使用Ribbon进行负载均衡?最终发送出去的请求URI是什么样的?
 
-**1> Feign 是如何和 Ribbon、eureka 整合在一起的?FeignLoadBalancer 中用了 Ribbon 的那个 ILoadBalancer?**
+**1> Feign 是如何和 Ribbon,eureka 整合在一起的?FeignLoadBalancer 中用了 Ribbon 的那个 ILoadBalancer?**
 
 1. FeignLoadBalancer中用了Ribbon的那个ILoadBalancer?
 
@@ -1681,7 +1681,7 @@ public URI reconstructURIWithServer(Server server, URI original) {
 
 方法逻辑解析:
 
-> 根据之前处理好的请求URI和Server的地址拼接出真实的地址; 依次拼接http://,服务的IP、服务的Port、请求路径、查询参数,最终体现为:
+> 根据之前处理好的请求URI和Server的地址拼接出真实的地址; 依次拼接http://,服务的IP,服务的Port,请求路径,查询参数,最终体现为:
 >
 > - 原request的uri: GET http:///user/sayHello/1?name=saint&age=18 HTTP/1.1
 > - server地址: 192.168.1.3:8082
@@ -1774,7 +1774,7 @@ deocode()方法中会用到一个Decoder,decoder默认是OptionalDecoder,针对J
 > 1. 请求达到FeignClient时,会进入到JDK动态代理类,由ReflectiveFeign#FeignInvocationHandler分发处理请求;找到接口方法对应的SynchronousMethodHandler;
 > 2. SynchronousMethodHandler中首先使用SpringMvcContract解析标注了SpringMvc注解的参数;然后使用encoder对请求进行编码;
 > 3. RequestInterceptor对Request进行拦截处理;
-> 4. LoadBalancerFeignClient通过集成的Ribbon的负载均衡器(`ZoneAwareLoadBalancer`)实现负载均衡找到一个可用的Server,交给RibbonRequest组合的Client去做HTTP请求,这里的Client可以是HttpUrlConnection、HttpClient、OKHttp。
+> 4. LoadBalancerFeignClient通过集成的Ribbon的负载均衡器(`ZoneAwareLoadBalancer`)实现负载均衡找到一个可用的Server,交给RibbonRequest组合的Client去做HTTP请求,这里的Client可以是HttpUrlConnection,HttpClient,OKHttp。
 > 5. 最后Decoder对Response响应进行解码。
 
 ## OpenFeign新版本和旧版本之间的差异(高版本OpenFeign底层不使用Ribbon做负载均衡)
@@ -1782,7 +1782,7 @@ deocode()方法中会用到一个Decoder,decoder默认是OptionalDecoder,针对J
 ### @FeignClientsRegistrar开启对FeignClient的扫描
 
 **此处主流程上无区别:**
-在SpringBoot启动流程中 @FeignClientsRegistrar 注解开启OpenFeign的入口、OpenFeign扫描所有的FeignClient的流程,高版本和低版本基本一样。
+在SpringBoot启动流程中 @FeignClientsRegistrar 注解开启OpenFeign的入口,OpenFeign扫描所有的FeignClient的流程,高版本和低版本基本一样。
 
 主要流程如下:
 

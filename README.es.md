@@ -54,33 +54,33 @@
 
 1. Clona o haz un [fork](https://github.com/danielcgilibert/blog-template/fork) del repositorio:
 
-```bash
-git@github.com:danielcgilibert/blog-template.git
-```
+   ```sh
+   git@github.com:danielcgilibert/blog-template.git
+   ```
 
 2. Instala las dependencias:
 
-```bash
-npm install
-# or
-yarn install
-# or
-pnpm install
-```
+   ```sh
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
 
 3. Ejecuta el servidor de desarrollo:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+   ```sh
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
 
 ## 🗂️ Estructura del proyecto
 
-```
+```plaintext
 ├── public/
 ├── src/
 │   ├── assets/

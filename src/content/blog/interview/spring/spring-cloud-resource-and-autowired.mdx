@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-06-14T08:52:32
-updatedDate: 2024-06-14T08:52:32
+updatedDate: 2024-07-24T17:14:45
 title: spring cloud resource 和 Autowired
 draft: false
 heroImage: /src/assets/images/cheetah-1.jpg
@@ -23,7 +23,7 @@ description: spring cloud resource 和 Autowired 什么区别
 
 1. **按类型装配**: 默认情况下,`@Autowired` 按照类型(by type)进行装配。如果有多个相同类型的 bean,Spring 会根据其他因素(如 `@Primary` 或 `@Qualifier`)进行装配。
 2. **Spring 特有**: `@Autowired` 是 Spring 框架特有的注解。
-3. **可用于构造函数、字段和方法**: 可以使用在构造函数、字段、Setter 方法和任意方法上。
+3. **可用于构造函数,字段和方法**: 可以使用在构造函数,字段,Setter 方法和任意方法上。
 4. **可选属性**: 可以设置 `required` 属性来指示是否必须注入(默认为 `true`)。
 
 #### 示例
@@ -95,7 +95,7 @@ public void setMyService(MyService myService) {
 
 3. **灵活性**:
 
-   - `@Autowired`: 可以在构造函数、字段和方法上使用,并且支持 `@Qualifier` 注解来进一步指定需要注入的 bean。
+   - `@Autowired`: 可以在构造函数,字段和方法上使用,并且支持 `@Qualifier` 注解来进一步指定需要注入的 bean。
    - `@Resource`: 主要用于字段和 Setter 方法注入,可以通过 `name` 属性明确指定要注入的 bean。
 
 4. **依赖注入容器的行为**:

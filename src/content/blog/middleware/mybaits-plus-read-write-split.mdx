@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-01-27T15:56:54
-updatedDate: 2024-06-14T16:24:09
+updatedDate: 2024-07-24T17:14:47
 title: Mybatis Plus
 draft: false
 heroImage: /src/assets/images/cat-10.jpeg
@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
 
 ## 使用AOP 判断方法名方式
 
-采用 AOP的方式,通过方法名判断,方法名中有 get、select 开头的则连接 slave,其他的则连接 master 数据库。
+采用 AOP的方式,通过方法名判断,方法名中有 get,select 开头的则连接 slave,其他的则连接 master 数据库。
 
 ### AOP 配置数据源
 
@@ -319,7 +319,7 @@ resources 文件夹添加 sharding-config.yaml 配置读写分离
 ```yaml
 # 不配置则默认单机模式
 mode:
-  # 运行模式类型。可选配置: Standalone、Cluster
+  # 运行模式类型。可选配置: Standalone,Cluster
   type: Standalone
   # 持久化仓库配置
   repository:
@@ -363,7 +363,7 @@ rules:
         readDataSourceNames:
           - slave_0
           - slave_1
-        # 事务内读请求的路由策略,可选值: PRIMARY(路由至主库)、FIXED(同一事务内路由至固定数据源)、DYNAMIC(同一事务内路由至非固定数据源)。默认值: DYNAMIC
+        # 事务内读请求的路由策略,可选值: PRIMARY(路由至主库),FIXED(同一事务内路由至固定数据源),DYNAMIC(同一事务内路由至非固定数据源)。默认值: DYNAMIC
         transactionalReadQueryStrategy: PRIMARY
         # 负载均衡算法名称
         loadBalancerName: random

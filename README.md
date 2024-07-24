@@ -70,19 +70,19 @@
 
 1. 克隆或者 [fork](https://github.com/chou401/chou401.github.io/fork) 仓库
 
-   ```bash
+   ```sh
    git@github.com:chou401/chou401.github.io.git
    ```
 
 2. 安装依赖:
 
-   ```bash
+   ```sh
    pnpm install
    ```
 
 3. 本地启动:
 
-   ```bash
+   ```sh
    pnpm dev
    ```
 

@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-06-14T09:32:32
-updatedDate: 2024-06-14T09:32:32
+updatedDate: 2024-07-24T17:14:44
 title: Mybatis-Plus 如何操作更新创建人
 draft: false
 heroImage: /src/assets/images/cat-23.jpg
@@ -13,7 +13,7 @@ description: Mybatis-Plus 如何操作更新创建人
 
 ## Mybatis-Plus 如何操作更新创建人这些东西具体实现方法类
 
-在使用 MyBatis-Plus 时,可以通过插件、拦截器和注解来自动处理字段的填充,例如更新和创建人、创建时间和更新时间等。MyBatis-Plus 提供了自动填充功能,通过实现`MetaObjectHandler`接口来实现自动填充功能。
+在使用 MyBatis-Plus 时,可以通过插件,拦截器和注解来自动处理字段的填充,例如更新和创建人,创建时间和更新时间等。MyBatis-Plus 提供了自动填充功能,通过实现`MetaObjectHandler`接口来实现自动填充功能。
 
 以下是具体实现步骤:
 
@@ -126,7 +126,7 @@ public class MyBatisPlusConfig {
 
 ### 5. 验证自动填充功能
 
-现在,当你使用 MyBatis-Plus 执行插入或更新操作时,`createBy`、`createTime`、`updateBy` 和 `updateTime` 字段会自动填充,无需手动设置。
+现在,当你使用 MyBatis-Plus 执行插入或更新操作时,`createBy`,`createTime`,`updateBy` 和 `updateTime` 字段会自动填充,无需手动设置。
 
 ### 示例测试代码
 

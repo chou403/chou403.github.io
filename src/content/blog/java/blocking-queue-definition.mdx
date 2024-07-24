@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2022-09-25T15:20:35
-updatedDate: 2024-06-14T16:24:08
+updatedDate: 2024-07-24T17:14:46
 title: 阻塞队列
 draft: false
 heroImage: /src/assets/images/cat-2.jpeg
@@ -42,7 +42,7 @@ description: 开发使用到的阻塞队列
 
 > 生产
 >
-> add、offer、put这三个方法都是往队列尾部添加元素,区别如下:
+> add,offer,put这三个方法都是往队列尾部添加元素,区别如下:
 >
 > - add: 不会阻塞,添加成功时返回true,不响应中断,当队列已满导致添加失败时抛出IllegalStateException。
 > - offer: 不会阻塞,添加成功时返回true,因队列已满导致添加失败时返回false,不响应中断。
@@ -50,7 +50,7 @@ description: 开发使用到的阻塞队列
 >
 > 消费
 >
-> take、poll方法能获取队列头部第一个元素,区别如下:
+> take,poll方法能获取队列头部第一个元素,区别如下:
 >
 > - take: 会响应中断,会一直阻塞直到取得元素或当前线程中断。
 > - poll: 会响应中断,会阻塞,阻塞时间参照方法里参数timeout.timeUnit,当阻塞时间到了还没取得元素会返回null。
@@ -77,10 +77,10 @@ description: 开发使用到的阻塞队列
     //存储数据
     final Object[] items;
 
-    //返回获取数据的索引,主要用于take、poll、peek、remove方法
+    //返回获取数据的索引,主要用于take,poll,peek,remove方法
     int takeIndex;
 
-    //返回添加数据的索引,主要用于 put、offer、add 方法
+    //返回添加数据的索引,主要用于 put,offer,add 方法
     int putIndex;
 
     // 队列元素的个数
@@ -357,9 +357,9 @@ void removeAt(final int removeIndex) {
 
 - 存取调用同一个方法: transfer。
 
-  - put、offer为生产者,携带数据e,为Data模式,设置到QNode属性中。
+  - put,offer为生产者,携带数据e,为Data模式,设置到QNode属性中。
 
-  - take、poll为消费者,不携带数据,为Request模式,设置到QNode属性中。
+  - take,poll为消费者,不携带数据,为Request模式,设置到QNode属性中。
 
 - 数据结构: 链表Node。
 

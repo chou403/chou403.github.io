@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-06-14T09:11:33
-updatedDate: 2024-06-14T09:11:33
+updatedDate: 2024-07-24T17:14:42
 title: ArrayList线程安全
 draft: false
 heroImage: /src/assets/images/bird-4.jpg
@@ -66,7 +66,7 @@ description: Arraylist 是不是线程安全的 哪些是线程安全的
 ### 总结
 
 - `ArrayList` 不是线程安全的,不能在多线程环境中直接使用。
-- 线程安全的替代方案包括 `Collections.synchronizedList`、`CopyOnWriteArrayList` 和 `Vector`。
+- 线程安全的替代方案包括 `Collections.synchronizedList`,`CopyOnWriteArrayList` 和 `Vector`。
 - 根据具体使用场景选择合适的线程安全集合实现。
 
 选择合适的线程安全集合实现有助于在多线程环境中确保数据的一致性和操作的安全性。

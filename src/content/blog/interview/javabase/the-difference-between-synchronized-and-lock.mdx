@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-06-14T09:28:33
-updatedDate: 2024-06-14T09:28:33
+updatedDate: 2024-07-24T17:14:43
 title: synchronized 和 lock
 draft: false
 heroImage: /src/assets/images/triger-2.jpeg
@@ -13,7 +13,7 @@ description: synchronized和lock的区别具体实现
 
 ## synchronized和lock的区别具体实现
 
-在 Java 中,`synchronized` 和 `Lock` 是两种常用的并发控制机制,用于管理多线程对共享资源的访问。虽然它们都能实现线程同步,但它们在使用方式、功能和性能上有许多不同之处。
+在 Java 中,`synchronized` 和 `Lock` 是两种常用的并发控制机制,用于管理多线程对共享资源的访问。虽然它们都能实现线程同步,但它们在使用方式,功能和性能上有许多不同之处。
 
 ### synchronized
 
@@ -54,7 +54,7 @@ public class SynchronizedExample {
 
 #### Lock特点
 
-1. **灵活性**: 提供了比 `synchronized` 更加丰富的功能,如可中断的锁获取、超时获取锁、非块结构的锁释放等。
+1. **灵活性**: 提供了比 `synchronized` 更加丰富的功能,如可中断的锁获取,超时获取锁,非块结构的锁释放等。
 2. **需要手动释放锁**: 必须显式调用 `unlock()` 方法来释放锁。
 3. **可响应中断**: 线程在等待获取锁时可以被中断。
 4. **多种实现**: 例如 `ReentrantLock`,支持公平锁和非公平锁。
@@ -154,9 +154,9 @@ public class LockExample {
 ### 选择使用 synchronized 还是 Lock
 
 1. **简单同步**: 如果只需要简单的同步,`synchronized` 更加方便且性能较好。
-2. **高级功能**: 如果需要更高级的功能(如可中断锁获取、超时锁获取等),使用 `Lock` 会更合适。
+2. **高级功能**: 如果需要更高级的功能(如可中断锁获取,超时锁获取等),使用 `Lock` 会更合适。
 3. **性能考虑**: 在高并发环境下,`Lock` 可能会有更好的性能和扩展性,特别是使用 `ReentrantLock` 的公平锁机制,可以避免线程饥饿问题。
 
 ### 锁选择总结
 
-`synchronized` 和 `Lock` 各有优劣,选择哪种机制取决于具体需求和应用场景。在需要简单、可靠的同步时,`synchronized` 是首选;在需要更灵活的锁控制或在复杂的并发场景中,`Lock`(尤其是 `ReentrantLock`)提供了更丰富的功能和更好的性能。
+`synchronized` 和 `Lock` 各有优劣,选择哪种机制取决于具体需求和应用场景。在需要简单,可靠的同步时,`synchronized` 是首选;在需要更灵活的锁控制或在复杂的并发场景中,`Lock`(尤其是 `ReentrantLock`)提供了更丰富的功能和更好的性能。

@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-06-14T09:22:59
-updatedDate: 2024-06-14T09:22:59
+updatedDate: 2024-07-24T17:14:45
 title: jwt 如何实现
 draft: false
 heroImage: /src/assets/images/cat-18.jpeg
@@ -13,7 +13,7 @@ description: jwt是怎么实现的
 
 ## jwt是怎么实现的
 
-JSON Web Token (JWT) 是一种基于 JSON 的开放标准(RFC 7519)用于在网络应用环境间传递声明。JWT 是一种紧凑的、URL 安全的方式,用于表示一组信息。它由三部分组成: 头部(Header)、载荷(Payload)和签名(Signature)。以下是 JWT 的实现细节及其工作原理:
+JSON Web Token (JWT) 是一种基于 JSON 的开放标准(RFC 7519)用于在网络应用环境间传递声明。JWT 是一种紧凑的,URL 安全的方式,用于表示一组信息。它由三部分组成: 头部(Header),载荷(Payload)和签名(Signature)。以下是 JWT 的实现细节及其工作原理:
 
 ### JWT 组成部分
 
@@ -40,7 +40,7 @@ JSON Web Token (JWT) 是一种基于 JSON 的开放标准(RFC 7519)用于在网�
    }
    ```
 
-3. **Signature**: 签名部分是通过将编码后的头部、编码后的载荷,以及一个密钥组合在一起,然后使用指定的签名算法生成的。
+3. **Signature**: 签名部分是通过将编码后的头部,编码后的载荷,以及一个密钥组合在一起,然后使用指定的签名算法生成的。
 
    ```java
    HMACSHA256(

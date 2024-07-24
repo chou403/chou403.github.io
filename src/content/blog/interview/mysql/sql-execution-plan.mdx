@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-06-14T09:39:04
-updatedDate: 2024-06-14T09:39:04
+updatedDate: 2024-07-24T17:14:44
 title: SQL执行计划
 draft: false
 heroImage: /src/assets/images/cheetah-3.jpeg
@@ -71,7 +71,7 @@ GO
 
 1. **使用合适的索引**:
 
-   - 确保在查询条件中使用的列上创建了索引,尤其是 WHERE 子句、JOIN 子句、ORDER BY 和 GROUP BY 子句中使用的列。
+   - 确保在查询条件中使用的列上创建了索引,尤其是 WHERE 子句,JOIN 子句,ORDER BY 和 GROUP BY 子句中使用的列。
    - 使用复合索引来覆盖多个列。
 
    ```sql
@@ -202,4 +202,4 @@ EXPLAIN SELECT * FROM employees WHERE age > 30;
 
 ### 总结
 
-通过查看 SQL 执行计划,您可以识别查询的性能瓶颈并采取适当的优化措施。关键在于理解执行计划中的每个部分以及如何通过索引优化、避免全表扫描、优化 JOIN、使用覆盖索引等方法来提高查询性能。
+通过查看 SQL 执行计划,您可以识别查询的性能瓶颈并采取适当的优化措施。关键在于理解执行计划中的每个部分以及如何通过索引优化,避免全表扫描,优化 JOIN,使用覆盖索引等方法来提高查询性能。

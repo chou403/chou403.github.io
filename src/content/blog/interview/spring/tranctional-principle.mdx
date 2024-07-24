@@ -1,7 +1,7 @@
 ---
 author: chou401
 publishDate: 2024-06-14T09:01:43
-updatedDate: 2024-06-14T09:01:43
+updatedDate: 2024-07-24T17:14:45
 title: Transactional 注解原理
 draft: false
 heroImage: /src/assets/images/wolf-3.jpeg
@@ -13,14 +13,14 @@ description: Transactional 原理 为什么加上这个 就会实现所有数据
 
 ## @Transactional 原理 为什么加上这个 就会实现所有数据库操作在一起
 
-`@Transactional` 是 Spring 中用于声明式事务管理的注解。当在方法或类上使用 `@Transactional` 时,Spring 会确保该方法内的所有数据库操作在一个事务中执行。实现这个功能的原理涉及到 Spring 的事务管理机制、AOP(面向切面编程)和代理模式。
+`@Transactional` 是 Spring 中用于声明式事务管理的注解。当在方法或类上使用 `@Transactional` 时,Spring 会确保该方法内的所有数据库操作在一个事务中执行。实现这个功能的原理涉及到 Spring 的事务管理机制,AOP(面向切面编程)和代理模式。
 
 ### @Transactional 的工作原理
 
 1. **AOP(面向切面编程)**:
 
    - `@Transactional` 注解使用 AOP 来拦截方法调用。
-   - Spring AOP 通过动态代理拦截目标方法的执行,在方法执行之前、之后以及异常发生时,插入事务管理逻辑。
+   - Spring AOP 通过动态代理拦截目标方法的执行,在方法执行之前,之后以及异常发生时,插入事务管理逻辑。
 
 2. **代理模式**:
 
@@ -29,7 +29,7 @@ description: Transactional 原理 为什么加上这个 就会实现所有数据
 
 3. **事务管理器**:
    - `@Transactional` 依赖于 Spring 的 `PlatformTransactionManager` 来管理事务。
-   - 事务管理器负责开启、提交和回滚事务,具体实现包括 `DataSourceTransactionManager`(用于 JDBC)、`JpaTransactionManager`(用于 JPA)等。
+   - 事务管理器负责开启,提交和回滚事务,具体实现包括 `DataSourceTransactionManager`(用于 JDBC),`JpaTransactionManager`(用于 JPA)等。
 
 ### 事务传播机制
 
@@ -86,7 +86,7 @@ public class MyService {
 
 ### @Transactional 总结
 
-`@Transactional` 通过 AOP、代理模式和事务管理器的结合,确保标注的方法在一个事务中执行,从而实现了所有数据库操作要么一起成功,要么一起失败的事务特性。这种机制大大简化了开发者的工作,使得事务管理变得更加透明和易于使用。
+`@Transactional` 通过 AOP,代理模式和事务管理器的结合,确保标注的方法在一个事务中执行,从而实现了所有数据库操作要么一起成功,要么一起失败的事务特性。这种机制大大简化了开发者的工作,使得事务管理变得更加透明和易于使用。
 
 ## 事务传播行为有哪些
 

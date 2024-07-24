@@ -1,0 +1,181 @@
+---
+author: chou401
+publishDate: 2024-07-24T11:31:28
+updatedDate: 2024-07-24T11:31:28
+title: Logging Affects Performance
+draft: false
+heroImage: /src/assets/images/pexels-ralph-407274-2263936.jpg
+category: Interview
+tags:
+  - log
+  - java
+description: 记录日志影响性能怎么办?
+---
+
+## 介绍
+
+很多时候,日志的记录都经常被大家忽略,因为对于性能要求不高的场景中,记录日志确实是可以忽略的。
+
+但是在很多核心业务链路中,1-2ms的影响都很大,所以就会考虑对写日志环境进行性能优化。
+
+解决日志慢的问题,主要有两种方案,一个是异步,一个是降级。
+
+因为日志写入操作通常是一个相对耗时的IO操作,如果每次日志记录都同步写入磁盘,可能会导致主线程阻塞,影响应用程序的性能。通过使用异步日志,主线程可以继续执行其他任务,而日志写入操作则由后台线程负责处理,提高了应用程序的响应性和吞吐量。
+
+目前常用的日志框架,如Log4j2,Logback等都是支持异步日志的。都提供了AsyncAppender来实现异步的日志写入。
+
+以下是一些优化日志记录以最小化性能影响的策略:
+
+### 1. **异步日志记录**
+
+异步日志记录可以显著减少对应用程序性能的影响。它允许日志记录操作在单独的线程中进行,从而不阻塞应用程序的主要业务逻辑。
+
+- **Logback** 中的异步日志记录:
+
+```xml
+<configuration>
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE"/>
+    </appender>
+</configuration>
+```
+
+- **Log4j2** 中的异步日志记录:
+
+```xml
+<Configuration>
+    <Appenders>
+        <Async name="AsyncAppender">
+            <AppenderRef ref="File"/>
+        </Async>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="AsyncAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>
+```
+
+### 2. **日志级别**
+
+仅记录必要级别的日志。避免在生产环境中记录 `DEBUG` 或 `TRACE` 级别的日志,因为这些日志级别会生成大量日志数据。
+
+- 将日志级别设置为 `INFO` 或更高:
+
+```xml
+<configuration>
+    <root level="info">
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>
+```
+
+### 3. **日志采样**
+
+对高频率的日志进行采样,只记录部分日志条目,以减少日志记录的总量。
+
+- **Log4j2** 中的日志采样:
+
+```xml
+<Configuration>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d [%t] %-5level: %msg%n%throwable"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>
+```
+
+### 4. **批量日志记录**
+
+将日志数据批量写入磁盘,而不是每次日志记录都进行写操作,这样可以减少 I/O 操作的频率,提高性能。
+
+- **Log4j2** 中的批量日志记录:
+
+```xml
+<Configuration>
+    <Appenders>
+        <File name="File" fileName="logs/app.log">
+            <PatternLayout pattern="%d [%t] %-5level: %msg%n%throwable"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="File"/>
+        </Root>
+    </Loggers>
+</Configuration>
+```
+
+### 5. **优化日志格式**
+
+使用简洁的日志格式,避免复杂的日志消息拼接和格式化操作。
+
+- **优化后的日志格式**:
+
+```xml
+<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5p %c{1}:%L - %m%n"/>
+```
+
+### 6. **减少同步块**
+
+尽量避免在日志记录中使用同步块,因为这可能会导致线程竞争和性能瓶颈。
+
+### 7. **日志轮转**
+
+设置日志轮转策略,防止日志文件过大影响性能。
+
+- **Logback** 中的日志轮转:
+
+```xml
+<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logs/app.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>logs/app.%d{yyyy-MM-dd}.log</fileNamePattern>
+        <maxHistory>30</maxHistory>
+    </rollingPolicy>
+    <encoder>
+        <pattern>%d [%t] %-5level: %msg%n</pattern>
+    </encoder>
+</appender>
+```
+
+### 8. **日志存储系统优化**
+
+使用高效的日志存储系统(如 Elasticsearch,Logstash,Kibana)并进行适当的配置优化,以确保日志存储和查询的高性能。
+
+### 9. **避免敏感操作的日志**
+
+在性能敏感的代码中,避免过多的日志记录操作。例如,在高频调用的函数中减少日志记录。
+
+### 总结
+
+通过异步日志记录,设置适当的日志级别,批量日志记录,优化日志格式,减少同步块,日志轮转等技术,可以有效地降低日志记录对系统性能的影响。在实际应用中,结合多种方法,根据具体需求和系统性能表现进行调整和优化,以实现最佳的日志记录性能。
+
+## 扩展知识
+
+### 异步日志的限制
+
+在很多时候,我们会在日志中打印一个链路追踪的信息,如trace_id,但是因为这里是异步打印的,ThreadLocal中存储的trace_id就无法获取了,就会导致日志中无法记录trace_id了。
+
+所以需要特殊解决一下,方法也比较简单,就是自己定义一个Appender的实现类,在这各类里面进行设置这个trace_id:
+
+```java
+MDC.put("traceId",  threadPoolTaskData.toString());
+```
+
+或者使用 https://github.com/ofpay/logback-mdc-ttl 来解决。
