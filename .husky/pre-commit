@@ -4,5 +4,15 @@
 # npm
 # npx lint-staged
 
+# 使用特定版本的 Python
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+pyenv shell 3.11.8
+
+python replace_punctuation.py
+
 # pnpm
 pnpm exec lint-staged

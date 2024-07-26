@@ -1,0 +1,135 @@
+---
+author: chou401
+publishDate: 2024-07-25T17:18:45
+updatedDate: 2024-07-25T17:18:45
+title: How to make a single test Mock
+draft: false
+heroImage: /src/assets/images/pexels-catscoming-674570.jpg
+category: Interview
+tags:
+  - unit test
+  - mock
+  - java
+description: 什么是Mock?怎么做单测的Mock?
+---
+
+## 介绍
+
+在软件测试中,Mock(模拟对象)是一种用于替代真实对象的测试技术,通常用于单元测试。Mock对象模拟了真实对象的行为,使测试能够在隔离的环境中进行,而无需依赖外部资源或复杂的依赖关系。
+
+### Mock 的作用
+
+- **隔离**:使测试能够独立于外部系统(如数据库,网络服务等)运行。
+- **控制**:允许测试者精确控制被测对象的行为和状态。
+- **速度**:通过避免与外部系统的交互,加快测试运行速度。
+- **可靠性**:消除外部系统的不确定性对测试结果的影响。
+
+### 在 Java 中使用 Mock
+
+市面上也有很多工具可以方便的帮助我们进行单元测试的mock,如Easymock,jMock,Mockito,Unitils Mock,PowerMock,JMockit等,常用的 Mock 库包括 Mockito 和 EasyMock。下面以 Mockito 为例,展示如何在单元测试中使用 Mock 对象。
+
+#### 1. 添加 Mockito 依赖
+
+如果使用 Maven,添加以下依赖到 `pom.xml` 文件:
+
+```xml
+<dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-core</artifactId>
+    <version>3.11.2</version>
+    <scope>test</scope>
+</dependency>
+```
+
+如果使用 Gradle,添加以下依赖到 `build.gradle` 文件:
+
+```groovy
+testImplementation 'org.mockito:mockito-core:3.11.2'
+```
+
+#### 2. 编写使用 Mock 的单元测试
+
+假设我们有一个服务类 `UserService`,其中调用了 `UserRepository` 来获取用户数据。我们希望测试 `UserService`,但不希望依赖实际的 `UserRepository` 实现。
+
+**UserService.java:**
+
+```java
+public class UserService {
+    private UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id);
+    }
+}
+```
+
+**UserRepository.java:**
+
+```java
+public interface UserRepository {
+    User findById(Long id);
+}
+```
+
+**User.java:**
+
+```java
+public class User {
+    private Long id;
+    private String name;
+
+    // Constructor, getters and setters
+}
+```
+
+**UserServiceTest.java:**
+
+```java
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+public class UserServiceTest {
+
+    @Mock
+    private UserRepository userRepository;
+
+    private UserService userService;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+        userService = new UserService(userRepository);
+    }
+
+    @Test
+    public void testGetUserById() {
+        User mockUser = new User(1L, "John Doe");
+        when(userRepository.findById(1L)).thenReturn(mockUser);
+
+        User user = userService.getUserById(1L);
+        assertNotNull(user);
+        assertEquals("John Doe", user.getName());
+
+        verify(userRepository, times(1)).findById(1L);
+    }
+}
+```
+
+### 代码解释
+
+1. **依赖注入**:在 `UserService` 中通过构造函数注入 `UserRepository`。
+2. **Mockito 设置**:在测试类中使用 `@Mock` 注解声明 `UserRepository` 的 Mock 对象,并在 `setUp` 方法中初始化 Mockito。
+3. **定义行为**:使用 `when` 和 `thenReturn` 指定当 `findById` 方法被调用时,返回一个特定的 `User` 对象。
+4. **测试方法**:调用 `userService.getUserById(1L)`,并使用断言检查返回的 `User` 对象。
+5. **验证交互**:使用 `verify` 方法验证 `findById` 方法是否被调用过一次。
+
+通过使用 Mock 对象,我们可以在不依赖实际 `UserRepository` 实现的情况下,测试 `UserService` 的逻辑。这使得测试更加可靠和快速。
