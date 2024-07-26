@@ -1,5 +1,4 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
 
 # npm
 # npx lint-staged
@@ -13,6 +12,9 @@ eval "$(pyenv virtualenv-init -)"
 pyenv shell 3.11.8
 
 python replace_punctuation.py
+
+
+. "$(dirname "$0")/_/husky.sh"
 
 # pnpm
 pnpm exec lint-staged
