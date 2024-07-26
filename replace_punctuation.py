@@ -54,8 +54,5 @@ def process_folder(folder_path):
 
 if __name__ == "__main__":
     # 指定要处理的文件夹路径
-    folder_path = '/Users/chouchou/development/owner/chou403.github.io/src/content/blog'
-
-    print(f"Processed file: 3333333333333")
-
+    folder_path = '/Users/chouchou/development/owner/chou401.github.io/src/content/blog'
     process_folder(folder_path)
