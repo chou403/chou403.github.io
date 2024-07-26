@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import subprocess
 
 # 替换规则字典
 replace_dict = {
@@ -41,6 +42,7 @@ def process_file(file_path):
         # 将替换后的内容写回文件
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(new_content)
+            subprocess.run("git add" + file_path, shell=True, text=True, capture_output=True)
 
         print(f"Processed file: {file_path}")
     except Exception as e:
