@@ -1,7 +1,7 @@
 ---
-author: chou401
+author: chou403
 publishDate: 2024-01-27T15:56:54
-updatedDate: 2024-07-24T17:14:47
+updatedDate: 2024-08-07T15:33:13
 title: Mybatis Plus
 draft: false
 heroImage: /src/assets/images/cat-10.jpeg
@@ -265,22 +265,22 @@ public class MybatisPlusConfig {
 @Component
 public class ReadWriteDataSourceAop {
 
-    @Pointcut("!@annotation(io.chou401.framework.annotation.Writer) " +
-            "&& (execution(* io.chou401..*.select*(..)) " +
-            "|| execution(* io.chou401..*.get*(..)) " +
-            "|| execution(* io.chou401..*.find*(..)))")
+    @Pointcut("!@annotation(io.chou403.framework.annotation.Writer) " +
+            "&& (execution(* io.chou403..*.select*(..)) " +
+            "|| execution(* io.chou403..*.get*(..)) " +
+            "|| execution(* io.chou403..*.find*(..)))")
     public void readPointcut() {
 
     }
 
-    @Pointcut("@annotation(io.chou401.framework.annotation.Writer) " +
-            "|| execution(* io.chou401..*.insert*(..)) " +
-            "|| execution(* io.chou401..*.save*(..)) " +
-            "|| execution(* io.chou401..*.add*(..)) " +
-            "|| execution(* io.chou401..*.update*(..)) " +
-            "|| execution(* io.chou401..*.edit*(..)) " +
-            "|| execution(* io.chou401..*.delete*(..)) " +
-            "|| execution(* io.chou401..*.remove*(..))")
+    @Pointcut("@annotation(io.chou403.framework.annotation.Writer) " +
+            "|| execution(* io.chou403..*.insert*(..)) " +
+            "|| execution(* io.chou403..*.save*(..)) " +
+            "|| execution(* io.chou403..*.add*(..)) " +
+            "|| execution(* io.chou403..*.update*(..)) " +
+            "|| execution(* io.chou403..*.edit*(..)) " +
+            "|| execution(* io.chou403..*.delete*(..)) " +
+            "|| execution(* io.chou403..*.remove*(..))")
     public void writePointcut() {
 
     }

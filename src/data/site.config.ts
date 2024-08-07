@@ -9,7 +9,7 @@ interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-	author: "chou401", // Site author
+	author: "chou403", // Site author
 	title: "知道的越多,才知知道的越少", // Site title.
 	description: "花易谢、雾易失、梦易逝、云易散", // Description to display in the meta tags
 	lang: "en-EN",

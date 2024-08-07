@@ -1,5 +1,5 @@
 {
-	"name": "chou401",
+	"name": "chou403",
 	"type": "module",
 	"version": "1.1.0",
 	"description": "A template for creating a blog with Astro",
@@ -7,7 +7,7 @@
 	"license": "GPL-3.0-only",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/chou401/chou401.github.io"
+		"url": "https://github.com/chou403/chou403.github.io"
 	},
 	"keywords": [
 		"astro",
@@ -17,7 +17,7 @@
 		"astro-b"
 	],
 	"bugs": {
-		"url": "https://github.com/chou401/chou401.github.io/issues"
+		"url": "https://github.com/chou403/chou403.github.io/issues"
 	},
 	"scripts": {
 		"dev": "npx tinacms dev -c \"astro dev\"",

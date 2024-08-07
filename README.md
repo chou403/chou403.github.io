@@ -68,10 +68,10 @@
 - [Tailwind CSS 智能感知](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss).
 - [Astro](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode).
 
-1. 克隆或者 [fork](https://github.com/chou401/chou401.github.io/fork) 仓库
+1. 克隆或者 [fork](https://github.com/chou403/chou403.github.io/fork) 仓库
 
    ```sh
-   git@github.com:chou401/chou401.github.io.git
+   git@github.com:chou403/chou403.github.io.git
    ```
 
 2. 安装依赖:
@@ -125,7 +125,7 @@ export  const  CATEGORIES  =  [
 示例 :
 
 ```ts
-author: chou401
+author: chou403
 publishDate: 2022-09-25T15:20:35Z
 updatedDate: 2024-02-22T00:37:27Z
 title: CompletableFuture
