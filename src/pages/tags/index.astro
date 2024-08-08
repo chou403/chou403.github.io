@@ -1,18 +1,18 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout'
-import TitlePage from '@/components/TitlePage'
-import { getTags } from '@/utils'
-const tags = await getTags()
+import BaseLayout from "@/layouts/BaseLayout";
+import TitlePage from "@/components/TitlePage";
+import { getTags } from "@/utils";
+const tags = await getTags();
 ---
 
-<BaseLayout title='Tags'>
-	<TitlePage title='Tags' />
-	<div class='flex justify-center flex-wrap gap-4'>
+<BaseLayout title="Tags">
+	<TitlePage title="Tags" />
+	<div class="flex flex-wrap justify-center gap-4">
 		{
 			tags.map((tag) => (
 				<a
 					href={`/tags/${tag}`}
-					class='inline-block bg-gray-200  rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2'
+					class="mb-2 mr-2 inline-block rounded-full bg-gray-200 bg-transparent px-3 py-1 text-sm font-semibold text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
 				>
 					#{tag}
 				</a>
