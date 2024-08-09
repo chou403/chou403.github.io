@@ -1,7 +1,7 @@
 ---
 author: chou403
 publishDate: 2024-03-16T20:43:41
-updatedDate: 2024-08-09T14:46:22
+updatedDate: 2024-08-09T14:54:22
 title: MybatisPlus generator
 draft: false
 heroImage: /src/assets/images/eightkun.jpg
@@ -638,7 +638,7 @@ $!callback.setSavePath($tool.append($modulePath, "/src/main/resources/mapper/${m
 
 define.vm 增减了部分全局变量
 
-```vm
+```java
 ##定义全局变量配置
 #macro(getGlobalConfig)
     #if(!$tableInfo.pkColumn.isEmpty())
