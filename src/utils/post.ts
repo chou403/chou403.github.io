@@ -1,4 +1,5 @@
 import { type CollectionEntry, getCollection } from "astro:content";
+import { assignImagesToObjects } from "./file";
 
 export const getCategories = async () => {
 	const posts = await getCollection("blog");
@@ -7,7 +8,7 @@ export const getCategories = async () => {
 };
 
 export const getPosts = async (max?: number) => {
-	return (await getCollection("blog"))
+	let blogObj = (await getCollection("blog"))
 		.filter((post) => !post.data.draft)
 		.sort((a, b) => {
 			const aDate = getPostSortDate(a).valueOf();
@@ -15,6 +16,8 @@ export const getPosts = async (max?: number) => {
 			return bDate - aDate;
 		})
 		.slice(0, max);
+	assignImagesToObjects(blogObj);
+	return blogObj;
 };
 
 export const getTags = async () => {
