@@ -7,7 +7,7 @@ import path from "path";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-let filePath = "./dist/_astro";
+let filePath = "./_astro";
 let shuffledImages: any = []; // 存储打乱的图片列表
 let currentIndex = 0; // 当前索引
 let imageFiles: any = []; // 存储所有图片列表
@@ -38,7 +38,7 @@ function getAllFiles(filePath: any) {
 // 初始化随机图片列表
 function initializeShuffledImages() {
 	imageFiles = getAllFiles(filePath);
-	// console.log("imageFiles",imageFiles);
+	console.log("imageFiles", imageFiles);
 
 	shuffledImages = [...imageFiles];
 	shuffleArray(shuffledImages); // 打乱数组
