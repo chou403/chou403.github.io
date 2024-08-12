@@ -7,7 +7,7 @@ import path from "path";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-let filePath = "./_astro";
+let filePath = "./src/assets/images";
 let shuffledImages: any = []; // 存储打乱的图片列表
 let currentIndex = 0; // 当前索引
 let imageFiles: any = []; // 存储所有图片列表
