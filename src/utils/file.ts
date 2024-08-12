@@ -1,8 +1,6 @@
 import type { any } from "astro/zod";
 import fs from "fs";
-import { copyFileSync, existsSync } from "fs";
-import { resolve, join } from "path";
-import { fileURLToPath, URL } from "url";
+import { fileURLToPath } from "url";
 import path from "path";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -20,13 +18,13 @@ function getAllFiles(filePath: any) {
 		const filteredFileList = files.filter((file) => validExtensions.test(file));
 		for (let i = 0; i < filteredFileList.length; i++) {
 			let file = filteredFileList[i];
-			// let currentFilePath = filePath + "/" + file;
-			// let stats = fs.lstatSync(currentFilePath);
-			// if (stats.isDirectory()) {
-			// 	imageFiles = imageFiles.concat(getAllFiles(currentFilePath));
-			// } else {
-			imageFiles.push("/" + file);
-			// }
+			let currentFilePath = filePath + "/" + file;
+			let stats = fs.lstatSync(currentFilePath);
+			if (stats.isDirectory()) {
+				imageFiles = imageFiles.concat(getAllFiles(currentFilePath));
+			} else {
+				imageFiles.push("/" + file);
+			}
 		}
 	} else {
 		console.warn(`指定的目录${filePath}不存在！`);
@@ -38,8 +36,6 @@ function getAllFiles(filePath: any) {
 // 初始化随机图片列表
 function initializeShuffledImages() {
 	imageFiles = getAllFiles(filePath);
-	console.log("imageFiles", imageFiles);
-
 	shuffledImages = [...imageFiles];
 	shuffleArray(shuffledImages); // 打乱数组
 	currentIndex = 0;
@@ -65,37 +61,16 @@ function getNextImageUrl() {
 export const assignImagesToObjects = async (objects: any) => {
 	initializeShuffledImages();
 
-	// console.log("shuffledImages",shuffledImages);
 	let filterObjs = objects.filter((item: any) => !item.data.fixed);
-
-	// console.log("filterObjs",filterObjs);
-
 	for (let obj of filterObjs) {
 		// 获取新图片路径
 		const newImageUrl = getNextImageUrl();
-		console.log("newImageUrl", newImageUrl);
-
-		console.log("obj.data.heroImage before:", obj.data.heroImage.src);
-
 		// 构建后的路径需要考虑到 _astro 目录
 		const newImagePath = obj.data.heroImage.src.replace(
 			/\/[^\/]+(\.(jpe?g|png))/,
 			`${newImageUrl}`,
 		);
 
-		const distDir = resolve("", "dist");
-		const fullPath = join(distDir, newImagePath);
-
-		console.log(`Checking path: ${fullPath}`);
-
-		console.log("obj.data.heroImage after:", newImagePath);
-
-		// 检查新图片是否存在
-		// if (existsSync(newImagePath)) {
-
 		obj.data.heroImage.src = newImagePath;
-		// } else {
-		//   console.warn(`Image not found: ${newImagePath}`);
-		// }
 	}
 };

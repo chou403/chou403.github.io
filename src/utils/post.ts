@@ -16,7 +16,9 @@ export const getPosts = async (max?: number) => {
 			return bDate - aDate;
 		})
 		.slice(0, max);
+
 	assignImagesToObjects(blogObj);
+
 	return blogObj;
 };
 
