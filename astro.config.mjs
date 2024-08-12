@@ -5,6 +5,8 @@ import tailwind from '@astrojs/tailwind'
 import react from '@astrojs/react'
 import vue from '@astrojs/vue'
 import { remarkReadingTime } from './src/utils/readTime.ts'
+import { copyStaticFiles } from './vite-plugin-copy-static-files';
+
 
 // https://astro.build/config
 export default defineConfig({
@@ -36,5 +38,8 @@ export default defineConfig({
 		tailwind(),
     react(),
     vue()
-	]
+	],
+  vite: {
+    plugins: [copyStaticFiles()],
+  },
 })
