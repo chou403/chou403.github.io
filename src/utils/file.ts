@@ -80,7 +80,7 @@ export const assignImagesToObjects = async (objects: any) => {
 		// 构建后的路径需要考虑到 _astro 目录
 		const newImagePath = obj.data.heroImage.src.replace(
 			/\/src\/assets\/images\/[^\/]+(\.(jpe?g|png))/,
-			`/dist/_astro${newImageUrl}`,
+			`/_astro${newImageUrl}`,
 		);
 
 		const distDir = resolve("", "dist");
