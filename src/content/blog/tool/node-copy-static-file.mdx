@@ -1,0 +1,61 @@
+---
+author: chou403
+publishDate: 2024-08-09T16:24:48
+updatedDate: 2024-08-09T16:24:48
+title: node copy static file
+draft: false
+fixed: false
+heroImage: /src/assets/images/eightkun.jpg
+category: Tool
+tags:
+  - tool
+  - node
+description: node 构建之后复制静态文件到 dist 目录
+---
+
+## 手动复制文件
+
+如果不想使用插件，你也可以在构建脚本中添加一个 Node.js 脚本来手动复制文件。这样做可以确保在构建后立即执行文件复制操作。
+
+### 创建手动复制脚本
+
+在项目根目录下创建一个脚本文件，比如 copy-static-files.js：
+
+```js
+const { copyFileSync, mkdirSync, readdirSync, statSync } = require("fs");
+const path = require("path");
+
+const srcDir = path.resolve(__dirname, "src/assets");
+const destDir = path.resolve(__dirname, "dist/_astro");
+
+function copyRecursiveSync(src, dest) {
+	const entries = readdirSync(src, { withFileTypes: true });
+
+	for (const entry of entries) {
+		const srcPath = path.resolve(src, entry.name);
+		const destPath = path.resolve(dest, entry.name);
+
+		if (entry.isDirectory()) {
+			mkdirSync(destPath, { recursive: true });
+			copyRecursiveSync(srcPath, destPath);
+		} else if (entry.isFile()) {
+			copyFileSync(srcPath, destPath);
+		}
+	}
+}
+
+copyRecursiveSync(srcDir, destDir);
+console.log("Static files copied to dist/_astro");
+```
+
+在 package.json 中添加构建脚本
+
+```json
+{
+	"scripts": {
+		"build": "vite build && node copy-static-files.js"
+	}
+}
+```
+
+这样，每次你运行 pnpm build 时，Vite 将会构建项目，并在构建后执行文件复制操作。
