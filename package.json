@@ -33,13 +33,16 @@
 		"prepare": "husky install"
 	},
 	"dependencies": {
-		"@astrojs/react": "^3.5.0",
+		"@astrojs/react": "^3.6.2",
 		"@astrojs/rss": "4.0.1",
 		"@astrojs/vue": "^4.4.0",
-		"astro": "4.0.8",
+		"@babel/plugin-transform-object-rest-spread": "^7.24.7",
+		"astro": "4.14.6",
 		"astro-font": "^0.0.72",
+		"i18next": "^23.14.0",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
+		"react-i18next": "^15.0.1",
 		"vue": "^3.4.27"
 	},
 	"devDependencies": {

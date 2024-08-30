@@ -1,0 +1,30 @@
+---
+// LanguageSwitcher.astro
+
+const locales = ["en", "es", "pt-br"]; // 定义支持的语言
+const currentLocale = Astro.url.pathname.split("/")[1]; // 从当前路径中获取当前语言
+const currentPath = Astro.url.pathname.split("/").slice(2).join("/"); // 获取当前语言之外的路径
+
+// 创建一个函数，用于生成切换语言的链接
+const generateLocaleLink = (locale) => {
+	// 如果路径已经包含了 locale，需要替换它
+	const newPath = `/${locale}/${currentPath}`;
+	return newPath;
+};
+---
+
+<div>
+	<select
+		onChange="window.location.href=this.value"
+		aria-label="Select language"
+		value={`/${currentLocale}/`}
+	>
+		{
+			locales.map((locale) => (
+				<option key={locale} value={generateLocaleLink(locale)}>
+					{locale}
+				</option>
+			))
+		}
+	</select>
+</div>
