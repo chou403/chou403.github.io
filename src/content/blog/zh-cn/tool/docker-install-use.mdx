@@ -1,0 +1,433 @@
+---
+author: chou403
+publishDate: 2022-09-25T15:20:35
+updatedDate: 2024-08-09T14:46:21
+title: Docker
+draft: false
+heroImage: /src/assets/images/eightkun.jpg
+category: Tool
+tags:
+  - tool
+  - docker
+description: linux 安装 docker 以及使用
+---
+
+在 Linux 上安装 Docker 并开始使用 Docker 是实现容器化应用程序的一种流行方法。以下是详细的步骤,包括具体命令操作。
+
+## Docker 安装
+
+### 1. 准备工作
+
+更新现有的软件包和包缓存:
+
+```sh
+sudo apt update
+sudo apt upgrade -y
+```
+
+### 2. 安装必要的依赖
+
+```sh
+sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+```
+
+### 3. 添加 Docker 的官方 GPG 密钥
+
+```sh
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+```
+
+### 4. 设置 Docker 的 APT 源
+
+```sh
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+```
+
+### 5. 安装 Docker
+
+更新包索引并安装 Docker CE:
+
+```sh
+sudo apt update
+sudo apt install docker-ce -y
+```
+
+### 6. 启动 Docker 并设置开机自启动
+
+```sh
+sudo systemctl start docker
+sudo systemctl enable docker
+```
+
+### 7. 验证 Docker 安装
+
+```sh
+sudo docker --version
+```
+
+你应该看到类似于 `Docker version 20.10.7, build f0df350` 的输出。
+
+### 8. 非 root 用户运行 Docker
+
+将当前用户添加到 `docker` 组以便无需 `sudo` 运行 Docker 命令:
+
+```sh
+sudo usermod -aG docker $USER
+```
+
+然后退出并重新登录或使用 `newgrp docker` 命令来立即应用该组更改:
+
+```sh
+newgrp docker
+```
+
+## Docker 使用
+
+### 1. 运行第一个容器
+
+运行一个简单的 Hello World 容器来验证 Docker 是否正常工作:
+
+```sh
+docker run hello-world
+```
+
+你应该看到 Docker 成功下载镜像并运行容器的消息。
+
+### 2. 基本命令
+
+#### **拉取镜像**
+
+从 Docker Hub 拉取一个官方的 Ubuntu 镜像:
+
+```sh
+docker pull ubuntu
+```
+
+#### **运行容器**
+
+以交互模式运行一个 Ubuntu 容器:
+
+```sh
+docker run -it ubuntu
+```
+
+这会启动一个 Ubuntu 容器并将你带到容器内部的 Shell。
+
+#### **列出容器**
+
+列出正在运行的容器:
+
+```sh
+docker ps
+```
+
+列出所有容器(包括停止的容器):
+
+```sh
+docker ps -a
+```
+
+#### **停止容器**
+
+停止一个正在运行的容器:
+
+```sh
+docker stop <container_id>
+```
+
+#### **删除容器**
+
+删除一个已经停止的容器:
+
+```sh
+docker rm <container_id>
+```
+
+#### **删除镜像**
+
+删除一个镜像:
+
+```sh
+docker rmi <image_id>
+```
+
+### 3. 使用 Dockerfile 创建自定义镜像
+
+#### **编写 Dockerfile**
+
+创建一个名为 `Dockerfile` 的文件,内容如下:
+
+```Dockerfile
+# 使用官方的 Ubuntu 基础镜像
+FROM ubuntu:latest
+
+# 更新包列表并安装 Python
+RUN apt-get update && apt-get install -y python3
+
+# 设置工作目录
+WORKDIR /app
+
+# 复制当前目录内容到 /app
+COPY . /app
+
+# 执行命令
+CMD ["python3", "hello.py"]
+```
+
+#### **编写示例 Python 脚本**
+
+在同一目录下创建一个名为 `hello.py` 的文件,内容如下:
+
+```python
+print("Hello, Docker!")
+```
+
+#### **构建镜像**
+
+运行以下命令构建镜像:
+
+```sh
+docker build -t my-python-app .
+```
+
+#### **运行镜像**
+
+使用新构建的镜像运行容器:
+
+```sh
+docker run my-python-app
+```
+
+你应该看到输出 `Hello, Docker!`。
+
+### 4. Docker Compose
+
+Docker Compose 是一个用于定义和运行多容器 Docker 应用程序的工具。
+
+#### **安装 Docker Compose**
+
+```sh
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
+验证安装:
+
+```sh
+docker-compose --version
+```
+
+#### **使用 Docker Compose**
+
+`docker-compose.yml` 文件用于定义和运行多容器 Docker 应用程序。以下是一个常见的 `docker-compose.yml` 文件示例,以及其中各个部分和参数的含义解释。
+
+#### 示例 `docker-compose.yml` 文件
+
+```yaml
+version: "3.8"
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./html:/usr/share/nginx/html
+    environment:
+      - NGINX_HOST=localhost
+    networks:
+      - webnet
+
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app:/app
+    environment:
+      - FLASK_ENV=development
+    depends_on:
+      - db
+    networks:
+      - webnet
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - webnet
+
+volumes:
+  db_data:
+
+networks:
+  webnet:
+```
+
+#### 参数含义
+
+##### `version`
+
+指定 Compose 文件的版本。不同版本支持不同的功能,通常使用最新版本。
+
+```yaml
+version: "3.8"
+```
+
+##### `services`
+
+定义多个服务,每个服务对应一个容器。服务内部可以定义镜像,构建选项,环境变量,网络,卷等。
+
+###### `web` 服务
+
+定义一个 Nginx 服务:
+
+```yaml
+web:
+  image: nginx:latest
+  ports:
+    - "8080:80"
+  volumes:
+    - ./nginx.conf:/etc/nginx/nginx.conf
+    - ./html:/usr/share/nginx/html
+  environment:
+    - NGINX_HOST=localhost
+  networks:
+    - webnet
+```
+
+- `image`: 使用 Nginx 官方镜像 `nginx:latest`。
+- `ports`: 将主机的 8080 端口映射到容器的 80 端口。
+- `volumes`: 挂载主机文件到容器内(例如配置文件和静态文件)。
+- `environment`: 设置环境变量。
+- `networks`: 指定容器连接到的网络。
+
+###### `app` 服务
+
+定义一个 Flask 应用服务:
+
+```yaml
+app:
+  build:
+    context: ./app
+    dockerfile: Dockerfile
+  ports:
+    - "5000:5000"
+  volumes:
+    - ./app:/app
+  environment:
+    - FLASK_ENV=development
+  depends_on:
+    - db
+  networks:
+    - webnet
+```
+
+- `build`: 从指定目录构建镜像。`context` 指定上下文路径,`dockerfile` 指定 Dockerfile 名称。
+- `ports`: 将主机的 5000 端口映射到容器的 5000 端口。
+- `volumes`: 挂载主机文件到容器内。
+- `environment`: 设置环境变量。
+- `depends_on`: 指定依赖关系,确保 `db` 服务在 `app` 服务启动前启动。
+- `networks`: 指定容器连接到的网络。
+
+###### `db` 服务
+
+定义一个 PostgreSQL 数据库服务:
+
+```yaml
+db:
+  image: postgres:latest
+  environment:
+    POSTGRES_DB: mydatabase
+    POSTGRES_USER: user
+    POSTGRES_PASSWORD: password
+  volumes:
+    - db_data:/var/lib/postgresql/data
+  networks:
+    - webnet
+```
+
+- `image`: 使用 PostgreSQL 官方镜像 `postgres:latest`。
+- `environment`: 设置数据库名称,用户和密码。
+- `volumes`: 使用命名卷存储数据库数据。
+- `networks`: 指定容器连接到的网络。
+
+##### `volumes`
+
+定义命名卷,用于数据持久化:
+
+```yaml
+volumes:
+  db_data:
+```
+
+##### `networks`
+
+定义网络,用于服务间通信:
+
+```yaml
+networks:
+  webnet:
+```
+
+#### 启动和管理
+
+##### 启动服务
+
+在 `docker-compose.yml` 文件所在目录运行以下命令启动服务:
+
+```sh
+docker-compose up
+```
+
+使用 `-d` 选项在后台运行服务:
+
+```sh
+docker-compose up -d
+```
+
+这将启动一个 Nginx 服务,监听本地的 8080 端口。
+
+访问 `http://localhost:8080`,你应该看到 Nginx 的欢迎页面。
+
+##### 停止服务
+
+使用以下命令停止服务:
+
+```sh
+docker-compose down
+```
+
+##### 查看服务状态
+
+查看正在运行的服务:
+
+```sh
+docker-compose ps
+```
+
+##### 查看服务日志
+
+查看特定服务的日志:
+
+```sh
+docker-compose logs <service_name>
+```
+
+例如:
+
+```sh
+docker-compose logs web
+```
+
+## 总结
+
+通过上述步骤,你可以在 Linux 上安装并开始使用 Docker。Docker 强大的容器化功能和灵活的工具链使其成为现代 DevOps 流程中不可或缺的一部分。你可以根据项目需求进一步探索 Docker 的高级功能,如网络,卷,和安全性配置。

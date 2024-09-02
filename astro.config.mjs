@@ -7,7 +7,6 @@ import vue from '@astrojs/vue'
 import { remarkReadingTime } from './src/utils/readTime.ts'
 import { copyStaticFiles } from './vite-plugin-copy-static-files';
 
-
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://blog-template-gray.vercel.app/', // Write here your website url
@@ -42,4 +41,8 @@ export default defineConfig({
   vite: {
     plugins: [copyStaticFiles()],
   },
+  i18n: {
+    defaultLocale: 'zh-cn',
+    locales: ['zh-cn', 'en']
+  }
 })

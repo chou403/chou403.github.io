@@ -4,19 +4,25 @@ import ListPosts from "@/components/ListPosts";
 import TitlePage from "@/components/TitlePage";
 import { getTags, getPostByTag } from "@/utils";
 import { any } from "astro/zod";
+import { LOCALES } from "@/data/locale";
 
 export async function getStaticPaths() {
-	const tags = await getTags();
+	const paths = [];
+	for (const locale of LOCALES) {
+		const tags = await getTags(locale);
+		let map = tags.map((tag) => ({
+			params: { tag },
+			props: { tag },
+		}));
 
-	return tags.map((tag) => ({
-		params: { tag },
-		props: { tag },
-	}));
+		paths.push(...map);
+	}
+	return paths;
 }
 
 const { tag } = Astro.props;
-
-const posts = await getPostByTag(tag);
+const currentLocale = Astro.currentLocale;
+const posts = await getPostByTag(currentLocale, tag);
 ---
 
 <BaseLayout title={tag}>

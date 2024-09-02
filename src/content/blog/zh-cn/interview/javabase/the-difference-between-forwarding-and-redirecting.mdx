@@ -1,0 +1,123 @@
+---
+author: chou403
+publishDate: 2024-06-14T09:30:59
+updatedDate: 2024-08-09T14:46:13
+title: 转发和重定向区别
+draft: false
+heroImage: /src/assets/images/eightkun.jpg
+category: Interview
+tags:
+  - java
+description: 转发和重定向区别 session会不会失效如何保证失效
+---
+
+## 转发和重定向区别 session会不会失效如何保证失效
+
+在 Web 开发中,转发(Forward)和重定向(Redirect)是两种常用的请求处理方式,它们在处理方式和应用场景上有显著区别。
+
+### 转发(Forward)
+
+转发是服务器端的操作,它将请求从一个 Servlet 或 JSP 转发到另一个 Servlet 或 JSP,整个过程发生在服务器端,浏览器不知道这次转发操作。
+
+#### 转发特点
+
+1. **URL 不变**: 浏览器地址栏的 URL 不会发生变化。
+2. **共享请求对象**: 原始请求和响应对象在整个转发过程中共享,参数和属性可以传递。
+3. **一次请求**: 转发在同一次请求和响应的生命周期内完成。
+
+#### 转发示例代码
+
+```java
+RequestDispatcher dispatcher = request.getRequestDispatcher("/anotherPage.jsp");
+dispatcher.forward(request, response);
+```
+
+### 重定向(Redirect)
+
+重定向是服务器通知浏览器重新发送一个新的请求,浏览器会根据服务器返回的重定向地址重新发起请求。
+
+#### 重定向特点
+
+1. **URL 改变**: 浏览器地址栏的 URL 会变为重定向的地址。
+2. **无法共享请求对象**: 原始请求和响应对象在重定向后不再存在,无法传递参数和属性。
+3. **两次请求**: 重定向会导致两次请求和响应。
+
+#### 重定向示例代码
+
+```java
+response.sendRedirect("anotherPage.jsp");
+```
+
+### Session 在转发和重定向中的表现
+
+#### 转发中的 Session
+
+在转发操作中,Session 不会失效。因为转发在同一次请求中处理,Session 信息保持不变。
+
+#### 重定向中的 Session
+
+在重定向操作中,Session 也不会失效。重定向虽然会产生新的请求,但同一个会话仍然存在,浏览器会自动携带原有的 Session ID,因此 Session 信息保持不变。
+
+### 确保 Session 失效的方法
+
+为了确保 Session 在适当的时候失效,可以采取以下几种方法:
+
+1. **手动使 Session 失效**:
+   可以在特定操作(如用户注销)时手动使 Session 失效。
+
+   ```java
+   HttpSession session = request.getSession();
+   session.invalidate();
+   ```
+
+2. **设置 Session 过期时间**:
+   可以在 web.xml 中配置 Session 过期时间。
+
+   ```xml
+   <session-config>
+       <session-timeout>30</session-timeout> <!-- 单位为分钟 -->
+   </session-config>
+   ```
+
+3. **配置 Session 过期时间**:
+   可以在代码中动态设置 Session 的过期时间。
+
+   ```java
+   HttpSession session = request.getSession();
+   session.setMaxInactiveInterval(1800); // 单位为秒
+   ```
+
+4. **使用 Filter**:
+   通过过滤器检查 Session 状态,决定是否重定向到登录页面或进行其他处理。
+
+   ```java
+   import javax.servlet.*;
+   import javax.servlet.http.HttpServletRequest;
+   import javax.servlet.http.HttpServletResponse;
+   import javax.servlet.http.HttpSession;
+   import java.io.IOException;
+
+   public class SessionFilter implements Filter {
+       @Override
+       public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+               throws IOException, ServletException {
+           HttpServletRequest req = (HttpServletRequest) request;
+           HttpServletResponse res = (HttpServletResponse) response;
+           HttpSession session = req.getSession(false);
+
+           if (session == null || session.getAttribute("user") == null) {
+               res.sendRedirect(req.getContextPath() + "/login.jsp");
+           } else {
+               chain.doFilter(request, response);
+           }
+       }
+
+       @Override
+       public void init(FilterConfig filterConfig) throws ServletException { }
+
+       @Override
+       public void destroy() { }
+   }
+   ```
+
+通过上述措施,可以有效管理和保证 Session 的有效性和失效,确保 Web 应用的安全性和用户体验。

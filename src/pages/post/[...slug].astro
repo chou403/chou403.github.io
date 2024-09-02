@@ -10,15 +10,22 @@ import { getPosts } from "@/utils";
 import SButton from "@/components/mdx/SButton";
 import Disqus from "@/components/Disqus";
 import { disqusConfig } from "@/data/disqus.config";
+import { LOCALES } from "@/data/locale";
 
-const posts = await getCollection("blog");
+const currentLocale = Astro.currentLocale;
+const posts = await getPosts(currentLocale);
 export async function getStaticPaths() {
-	const posts = await getPosts();
+	const paths = [];
+	for (const locale of LOCALES) {
+		const posts = await getPosts(locale);
+		let map = posts.map((post) => ({
+			params: { slug: post.slug },
+			props: post,
+		}));
 
-	return posts.map((post) => ({
-		params: { slug: post.slug },
-		props: post,
-	}));
+		paths.push(...map);
+	}
+	return paths;
 }
 type Props = CollectionEntry<"blog">;
 

@@ -1,0 +1,130 @@
+---
+author: chou403
+publishDate: 2024-06-14T09:10:39
+updatedDate: 2024-08-09T14:46:11
+title: 获取10000个数字中的最大10个数字
+draft: false
+heroImage: /src/assets/images/eightkun.jpg
+category: Interview
+tags:
+  - java
+description: 10000 取最大 10 个数 用什么算法最好
+---
+
+## 10000 取最大 10 个数 用什么算法最好
+
+从一个包含 10,000 个数的集合中取出最大的 10 个数,有几种高效的算法可以选择。以下是几种常用的方法及其适用情况:
+
+### 1. 基于堆的数据结构
+
+**算法: 最小堆**
+使用最小堆(Min-Heap)是最常见的解决方案之一。它的时间复杂度为 \(O(n \log k)\),其中 \(n\) 是集合中的元素个数,\(k\) 是需要取出的最大数的个数(在此情况下,\(k = 10\))。
+
+**步骤**:
+
+1. 创建一个大小为 10 的最小堆。
+2. 遍历整个集合:
+   - 如果当前元素大于堆顶元素(最小堆的堆顶是堆中最小的元素),则替换堆顶元素,并重新调整堆。
+3. 遍历结束后,堆中的元素即为最大的 10 个数。
+
+**示例代码(Java)**:
+
+```java
+import java.util.PriorityQueue;
+
+public class TopK {
+    public static int[] findTopK(int[] nums, int k) {
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>(k);
+        for (int num : nums) {
+            if (minHeap.size() < k) {
+                minHeap.offer(num);
+            } else if (num > minHeap.peek()) {
+                minHeap.poll();
+                minHeap.offer(num);
+            }
+        }
+        int[] result = new int[k];
+        for (int i = 0; i < k; i++) {
+            result[i] = minHeap.poll();
+        }
+        return result;
+    }
+}
+```
+
+### 2. 快速选择算法
+
+**算法: 快速选择(Quickselect)**
+快速选择是一种基于快速排序的选择算法。它的平均时间复杂度为 \(O(n)\)。
+
+**步骤**:
+
+1. 使用快速选择找到第 \(n - k + 1\) 大的元素(即前 9900 个元素)。
+2. 之后,前 9900 个元素中的任何一个都比剩余的 10 个元素小。
+3. 对最后的 10 个元素进行排序或直接获取。
+
+**示例代码(Python)**:
+
+```python
+import random
+
+def quickselect(arr, left, right, k):
+    if left == right:
+        return arr[left]
+
+    pivot_index = random.randint(left, right)
+    pivot_index = partition(arr, left, right, pivot_index)
+
+    if k == pivot_index:
+        return arr[k]
+    elif k < pivot_index:
+        return quickselect(arr, left, pivot_index - 1, k)
+    else:
+        return quickselect(arr, pivot_index + 1, right, k)
+
+def partition(arr, left, right, pivot_index):
+    pivot_value = arr[pivot_index]
+    arr[pivot_index], arr[right] = arr[right], arr[pivot_index]
+    store_index = left
+    for i in range(left, right):
+        if arr[i] < pivot_value:
+            arr[store_index], arr[i] = arr[i], arr[store_index]
+            store_index += 1
+    arr[right], arr[store_index] = arr[store_index], arr[right]
+    return store_index
+
+def findTopK(arr, k):
+    n = len(arr)
+    quickselect(arr, 0, n - 1, n - k)
+    return sorted(arr[-k:])
+
+# 示例使用
+nums = [random.randint(1, 100000) for _ in range(10000)]
+top_10 = findTopK(nums, 10)
+print(top_10)
+```
+
+### 3. 排序后截取
+
+**算法: 排序**
+直接对整个集合进行排序,然后截取最大的 10 个数。这种方法在时间复杂度上是 \(O(n \log n)\),不如堆和快速选择高效,但实现简单,适用于数据量不大时。
+
+**示例代码(Python)**:
+
+```python
+def findTopK(arr, k):
+    return sorted(arr)[-k:]
+
+# 示例使用
+nums = [random.randint(1, 100000) for _ in range(10000)]
+top_10 = findTopK(nums, 10)
+print(top_10)
+```
+
+### 结论
+
+- **最小堆** 是常见和高效的选择,特别适合需要处理实时数据流的情况。
+- **快速选择** 在理论上是最优的(平均 \(O(n)\)),但实现复杂度较高,适合对性能要求极高的情况。
+- **排序** 虽然不如前两种方法高效,但在实现简便性上有优势,适合数据量相对较小时使用。
+
+在你的情况下(从 10,000 个数中取最大 10 个数),最小堆和快速选择都是不错的选择。

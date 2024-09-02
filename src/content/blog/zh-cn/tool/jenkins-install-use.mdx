@@ -1,0 +1,183 @@
+---
+author: chou403
+publishDate: 2022-09-25T15:20:35
+updatedDate: 2024-08-09T14:46:21
+title: Jenkins
+draft: false
+heroImage: /src/assets/images/eightkun.jpg
+category: Tool
+tags:
+  - tool
+  - jenkins
+description: Jenkins 安装使用
+---
+
+## 介绍
+
+Jenkins 是一个流行的开源自动化服务器,广泛用于持续集成和持续交付/部署 (CI/CD)。以下是 Jenkins 的详细安装和使用指南,包括具体命令操作:
+
+## Jenkins 安装
+
+### 1. 安装 Jenkins
+
+#### **在 macOS 上使用 Homebrew 安装 Jenkins**
+
+1. **更新 Homebrew 和安装 Jenkins:**
+
+   ```sh
+   brew update
+   brew install jenkins-lts
+   ```
+
+2. **启动 Jenkins 服务:**
+
+   ```sh
+   brew services start jenkins-lts
+   ```
+
+#### **在 Ubuntu 上使用 apt 安装 Jenkins**
+
+1. **更新包索引并安装 Java:**
+
+   ```sh
+   sudo apt update
+   sudo apt install openjdk-11-jdk -y
+   ```
+
+2. **添加 Jenkins 存储库并安装 Jenkins:**
+
+   ```sh
+   curl -fsSL https://pkg.jenkins.io/debian/jenkins.io.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+   echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+   sudo apt update
+   sudo apt install jenkins -y
+   ```
+
+3. **启动并启用 Jenkins 服务:**
+
+   ```sh
+   sudo systemctl start jenkins
+   sudo systemctl enable jenkins
+   ```
+
+#### **在 Windows 上使用 Jenkins 安装程序**
+
+1. **下载 Jenkins Windows 安装程序** [Jenkins 官方网站](https://www.jenkins.io/download/).
+2. **运行安装程序并按照提示完成安装**。
+
+### 2. 访问 Jenkins
+
+安装完成后,Jenkins 通常在默认端口 8080 上运行。你可以在浏览器中访问 Jenkins:
+
+```
+http://localhost:8080
+```
+
+### 3. 初始设置
+
+第一次访问 Jenkins 时,需要输入初始管理员密码。你可以在 Jenkins 安装日志中找到这个密码:
+
+```sh
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+```
+
+在 Windows 上,密码可以在安装目录下的 `secrets` 文件夹中找到。
+
+## Jenkins 使用
+
+### 1. 安装插件
+
+在解锁 Jenkins 后,你可以选择安装建议的插件。这些插件涵盖了大多数常见的 CI/CD 需求。
+
+### 2. 创建第一个管理员用户
+
+按照提示创建你的第一个管理员用户,然后登录到 Jenkins 控制台。
+
+### 3. 创建新任务 (Job)
+
+1. **在 Jenkins 控制台主页上,点击 "新建任务" (New Item)**。
+2. **输入任务名称,选择任务类型(例如,"自由风格软件项目" (Freestyle project)),然后点击 "确定"**。
+3. **在任务配置页面上,配置你的任务。你可以指定源代码管理工具 (如 Git),构建触发器 (如定时构建或 SCM 变更),构建步骤 (如执行 shell 脚本或调用构建工具),和构建后操作 (如发送通知或部署)**。
+
+### 4. 配置 Git 仓库
+
+1. **在任务配置页面的 "源代码管理" 部分,选择 "Git"**。
+2. **输入你的 Git 仓库 URL,并提供必要的凭据(如果需要)**。
+
+### 5. 添加构建步骤
+
+在 "构建" 部分,你可以添加各种构建步骤。例如,选择 "执行 Shell" (Execute shell) 并输入构建脚本:
+
+```sh
+#!/bin/bash
+echo "Building the project..."
+# 执行你的构建命令,例如编译代码,运行测试等
+```
+
+### 6. 触发构建
+
+1. **在任务配置页面上,点击 "保存" 以保存配置**。
+2. **在任务主页上,点击 "立即构建" (Build Now) 以手动触发构建**。
+3. **你可以在 "构建历史" (Build History) 中查看构建状态和控制台输出**。
+
+### 7. 查看构建结果
+
+构建完成后,你可以点击构建编号查看详细的构建日志和结果。如果构建失败,可以通过日志信息进行调试和修复。
+
+### 8. 配置 Webhook (可选)
+
+如果你希望 Jenkins 自动触发构建(例如,当代码仓库有新的提交时),可以配置 Webhook。以下是 GitHub 的示例:
+
+1. **在 GitHub 仓库页面,点击 "Settings"**。
+2. **点击 "Webhooks",然后点击 "Add webhook"**。
+3. **在 "Payload URL" 中输入 Jenkins 服务器的 GitHub webhook URL**:
+
+```
+http://<your-jenkins-server>/github-webhook/
+```
+
+4. **选择 "Content type" 为 `application/json`**。
+5. **在 "Which events would you like to trigger this webhook?" 部分,选择 "Just the push event"**。
+6. **点击 "Add webhook" 以保存配置**。
+
+### 使用命令行操作 Jenkins
+
+Jenkins 提供了一些命令行工具用于管理 Jenkins 实例。
+
+#### **安装 Jenkins CLI**
+
+1. **下载 Jenkins CLI jar 文件**:
+
+   ```sh
+   wget http://localhost:8080/jnlpJars/jenkins-cli.jar
+   ```
+
+#### **使用 Jenkins CLI 执行命令**
+
+你可以使用 Jenkins CLI 来执行许多操作,例如启动构建,查看构建日志等。以下是一些常用的命令:
+
+1. **查看所有任务**:
+
+   ```sh
+   java -jar jenkins-cli.jar -s http://localhost:8080/ list-jobs
+   ```
+
+2. **启动任务构建**:
+
+   ```sh
+   java -jar jenkins-cli.jar -s http://localhost:8080/ build <job-name>
+   ```
+
+3. **查看任务的构建日志**:
+
+   ```sh
+   java -jar jenkins-cli.jar -s http://localhost:8080/ console <job-name> <build-number>
+   ```
+
+4. **获取 Jenkins 状态**:
+
+   ```sh
+   java -jar jenkins-cli.jar -s http://localhost:8080/ who-am-i
+   ```
+
+通过上述步骤,你可以安装并配置 Jenkins 来实现持续集成和持续部署。Jenkins 强大的插件系统和灵活的任务配置能力,使其成为许多开发团队的首选自动化服务器。可以根据项目需求进一步扩展和定制 Jenkins,以满足特定的 CI/CD 流程需求。

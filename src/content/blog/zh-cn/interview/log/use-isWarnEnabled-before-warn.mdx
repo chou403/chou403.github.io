@@ -1,0 +1,92 @@
+---
+author: chou403
+publishDate: 2024-07-24T14:40:30
+updatedDate: 2024-08-09T14:46:14
+title: logger.warn() & logger.isWarnEnabled()
+draft: false
+heroImage: /src/assets/images/eightkun.jpg
+category: Interview
+tags:
+  - log
+  - java
+description: 为什么logger.warn()之前要使用logger.isWarnEnabled()?
+---
+
+## 介绍
+
+在使用日志记录工具(如 Log4j,SLF4J,Logback 等)时,常见的做法是在执行某些日志记录操作之前,检查对应的日志级别是否启用。例如,在调用 `logger.warn()` 之前使用 `logger.isWarnEnabled()`。这样做的主要目的是优化性能。以下是具体的原因:
+
+### 性能优化
+
+当日志级别较低(例如 `WARN`,`ERROR`)时,日志记录的操作可能会执行许多不必要的字符串拼接和对象创建,这些操作在性能敏感的应用中可能会带来显著的开销。通过在记录日志之前检查日志级别,可以避免这些不必要的操作。
+
+#### 示例代码:
+
+```java
+if (logger.isWarnEnabled()) {
+    logger.warn("Warning message with details: {}", expensiveOperation());
+}
+```
+
+在这个例子中,如果 `WARN` 级别未启用,`expensiveOperation()` 不会被调用,从而避免了可能昂贵的计算和字符串操作。
+
+### 详细解释:
+
+1. **避免不必要的字符串拼接和对象创建**:
+
+   - 如果日志记录中包含了字符串拼接或对象创建,这些操作在日志级别未启用的情况下是完全不必要的,但仍会占用 CPU 和内存资源。
+
+   ```java
+   if (logger.isWarnEnabled()) {
+       logger.warn("This is a warning with value: " + someObject.toString());
+   }
+   ```
+
+2. **减少方法调用开销**:
+   - 即使日志框架内部做了日志级别检查,每次方法调用仍然会有一些开销。通过在外部进行日志级别检查,可以减少不必要的方法调用次数。
+
+### 何时使用 `logger.isWarnEnabled()`:
+
+- **复杂日志消息**:当日志消息包含复杂的字符串拼接,对象转换,或需要执行一些计算时。
+- **性能敏感代码**:在性能敏感的代码路径中,例如在高频调用的方法,循环或算法中。
+- **大型日志条目**:当日志消息非常大或包含大量上下文信息时。
+
+### 何时可以省略:
+
+- **简单日志消息**:对于非常简单的日志消息,可以省略检查,因为现代日志框架通常已经优化了日志级别的内部检查。
+
+  ```java
+  logger.warn("Simple warning message");
+  ```
+
+- **低频调用**:在低频调用的方法或不涉及关键性能路径的代码中,可以直接调用日志方法而不进行日志级别检查。
+
+### 示例对比:
+
+#### 复杂日志消息:
+
+不进行日志级别检查:
+
+```java
+logger.warn("User {} has {} attempts remaining", user.getName(), calculateRemainingAttempts(user));
+```
+
+进行日志级别检查:
+
+```java
+if (logger.isWarnEnabled()) {
+    logger.warn("User {} has {} attempts remaining", user.getName(), calculateRemainingAttempts(user));
+}
+```
+
+#### 简单日志消息:
+
+直接记录日志(不进行日志级别检查):
+
+```java
+logger.warn("This is a simple warning message");
+```
+
+### 总结:
+
+在性能敏感的代码路径中,通过使用 `logger.isWarnEnabled()` 来检查日志级别可以有效避免不必要的性能开销。对于简单的日志消息,可以直接调用日志方法而不进行检查。通过这种方式,可以在确保日志记录功能的同时,优化应用程序的性能。

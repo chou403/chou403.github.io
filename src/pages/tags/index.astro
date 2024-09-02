@@ -2,7 +2,9 @@
 import BaseLayout from "@/layouts/BaseLayout";
 import TitlePage from "@/components/TitlePage";
 import { getTags } from "@/utils";
-const tags = await getTags();
+
+const currentLocale = Astro.currentLocale;
+const tags = await getTags(currentLocale);
 ---
 
 <BaseLayout title="Tags">

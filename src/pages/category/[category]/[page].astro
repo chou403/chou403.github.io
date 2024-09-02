@@ -1,35 +1,41 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout'
-import ListPosts from '@/components/ListPosts'
-import ListCategories from '@/components/ListCategories'
-import TitlePage from '@/components/TitlePage'
-import { sluglify, unsluglify, getCategories, getPosts } from '@/utils'
-import { siteConfig } from '@/data/site.config'
-import Pagination from '@/components/Pagination'
+import BaseLayout from "@/layouts/BaseLayout";
+import ListPosts from "@/components/ListPosts";
+import ListCategories from "@/components/ListCategories";
+import TitlePage from "@/components/TitlePage";
+import { sluglify, unsluglify, getCategories, getPosts } from "@/utils";
+import { siteConfig } from "@/data/site.config";
+import Pagination from "@/components/Pagination";
+import { LOCALES } from "@/data/locale";
 
+const currentLocale = Astro.currentLocale;
 export async function getStaticPaths({ paginate }: any) {
-	const categories = await getCategories()
-	const allPosts = await getPosts()
+	const paths = [];
+	for (const locale of LOCALES) {
+		const categories = await getCategories(locale);
+		const allPosts = await getPosts(locale);
 
-	return categories.flatMap((category: string) => {
-		const unsluglifyNameCategory = unsluglify(category!.toLowerCase())
-		const filteredPosts = allPosts.filter(
-			(post) => post.data.category.toLowerCase() === unsluglifyNameCategory
-		)
-
-		return paginate(filteredPosts, {
-			params: {
-				category: sluglify(category.toLowerCase())
-			},
-			pageSize: siteConfig.paginationSize
-		})
-	})
+		let map = categories.flatMap((category: string) => {
+			const unsluglifyNameCategory = unsluglify(category!.toLowerCase());
+			const filteredPosts = allPosts.filter(
+				(post) => post.data.category.toLowerCase() === unsluglifyNameCategory,
+			);
+			return paginate(filteredPosts, {
+				params: {
+					category: sluglify(category.toLowerCase()),
+				},
+				pageSize: siteConfig.paginationSize,
+			});
+		});
+		paths.push(...map);
+	}
+	return paths;
 }
-const params = Astro.params
-const { page } = Astro.props
+const params = Astro.params;
+const { page } = Astro.props;
 
-const unsluglifyNameCategory = unsluglify(params.category!.toLowerCase())
-const posts = page.data
+const unsluglifyNameCategory = unsluglify(params.category!.toLowerCase());
+const posts = page.data;
 ---
 
 <BaseLayout title={params.category}>

@@ -1,0 +1,38 @@
+---
+author: chou403
+publishDate: 2024-07-09T13:33:41
+updatedDate: 2024-08-09T14:46:11
+title: fail-fast
+draft: false
+heroImage: /src/assets/images/eightkun.jpg
+category: Interview
+tags:
+  - java
+description: 什么是fail-fast?什么是fail-safe?
+---
+
+## 什么是fail-fast?什么是fail-safe?
+
+在系统设计中,快速失效(fail-fast)系统一种可以立即报告任何可能表明故障的情况的系统。快速失效系统通常设计用于停止正常操作,而不是试图继续可能存在缺陷的过程。
+
+其实,这是一种理念,说白了就是在做系统设计的时候先考虑异常情况,一旦发生异常,直接停止并上报。
+举一个最简单的fail-fast的例子:
+
+```java
+public int divide(int dividend,int divisor){
+    if(divisor == 0){
+        throw new RuntimeException("divisor can't be zero");
+    }
+    return dividend/divisor;
+}
+```
+
+上面的代码是一个对两个整数做除法的方法,在divide方法中,我们对除数做了个简单的检查,如果其值为0,那么就直接抛出一个异常,并明确提示异常原因。这其实就是fail-fast理念的实际应用。
+
+这样做的好处就是可以预先识别出一些错误情况,一方面可以避免执行复杂的其他代码,另外一方面,这种异常情况被识别之后也可以针对性的做一些单独处理。
+
+在Java中,集合类中有用到fail-fast机制进行设计,一旦使用不当,触发fail-fast机制设计的代码,就会发生非预期情况。
+
+在集合类中,为了避免并发修改,会维护一个expectedModCount属性,他表示这个迭代器预期该集合被修改的次数。还有一个modCount属性,他表示该集合实际被修改的次数。在集合被修改时,会去比较modCount和expectedModCount的值,如果不一致,则会触发fail-fast机制,抛出ConcurrentModificationException。
+
+fail-safe 机制是为线程安全的集合准备的,可以避免像 fail-fast 一样在并发使用集合的时候,不断地抛出异常。

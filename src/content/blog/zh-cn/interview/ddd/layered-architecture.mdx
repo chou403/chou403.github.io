@@ -1,0 +1,296 @@
+---
+author: chou403
+publishDate: 2024-07-10T17:22:55
+updatedDate: 2024-08-09T14:46:12
+title: 架构模式
+draft: false
+heroImage: /src/assets/images/eightkun.jpg
+category: Interview
+tags:
+  - ddd
+description: DDD的分层架构是怎么样的
+---
+
+## 简介
+
+领域驱动设计(DDD,Domain-Driven Design)的分层架构通常分为四层,每一层都有特定的职责。这四层从上到下依次是用户界面层(Presentation Layer),应用层(Application Layer),领域层(Domain Layer)和基础设施层(Infrastructure Layer)。这种分层架构有助于实现代码的高内聚和低耦合,使系统更加易于维护和扩展。
+
+### 1. 用户界面层(Presentation Layer)
+
+**职责**:处理用户的输入和输出,显示数据给用户,并将用户的请求传递给应用层。
+
+**示例**:
+
+- Web 控制器(如 Spring MVC 中的控制器)
+- 前端页面或视图(如 HTML,CSS,JavaScript)
+
+**例子**:
+
+```java
+@Controller
+public class OrderController {
+    private final OrderService orderService;
+
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    @PostMapping("/orders")
+    public ResponseEntity<String> createOrder(@RequestBody OrderRequest request) {
+        orderService.createOrder(request);
+        return ResponseEntity.ok("Order created successfully");
+    }
+}
+```
+
+### 2. 应用层(Application Layer)
+
+**职责**:定义应用的用例,协调领域对象来完成特定的业务功能。应用层不包含业务逻辑,而是通过调用领域层中的领域对象来实现业务逻辑。
+
+**示例**:
+
+- 服务类(Service Classes)
+
+**例子**:
+
+```java
+public class OrderService {
+    private final OrderRepository orderRepository;
+    private final CustomerRepository customerRepository;
+
+    public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository) {
+        this.orderRepository = orderRepository;
+        this.customerRepository = customerRepository;
+    }
+
+    public void createOrder(OrderRequest request) {
+        Customer customer = customerRepository.findById(request.getCustomerId());
+        Order order = new Order(customer, request.getProductIds());
+        orderRepository.save(order);
+    }
+}
+```
+
+### 3. 领域层(Domain Layer)
+
+**职责**:包含业务逻辑和业务规则,是整个系统的核心。领域层包括领域对象,值对象,领域服务,聚合,聚合根和领域事件等。
+
+**示例**:
+
+- 领域模型(Domain Models)
+- 聚合根(Aggregate Roots)
+- 值对象(Value Objects)
+- 领域服务(Domain Services)
+
+**例子**:
+
+```java
+public class Order {
+    private String orderId;
+    private Customer customer;
+    private List<OrderItem> orderItems;
+    private OrderStatus status;
+
+    public Order(Customer customer, List<String> productIds) {
+        this.orderId = UUID.randomUUID().toString();
+        this.customer = customer;
+        this.orderItems = productIds.stream()
+                                    .map(productId -> new OrderItem(productId))
+                                    .collect(Collectors.toList());
+        this.status = OrderStatus.CREATED;
+    }
+
+    public void confirm() {
+        if (status != OrderStatus.CREATED) {
+            throw new IllegalStateException("Order cannot be confirmed");
+        }
+        this.status = OrderStatus.CONFIRMED;
+    }
+
+    // 其他业务方法
+}
+```
+
+### 4. 基础设施层(Infrastructure Layer)
+
+**职责**:提供技术支持,为其他层提供通用的技术能力,处理与外部系统的集成,如数据库访问,消息队列,文件系统等。
+
+**示例**:
+
+- 数据库访问(如 Spring Data JPA 的 Repository)
+- 消息队列(如 Kafka 生产者和消费者)
+- 文件系统操作
+
+**例子**:
+
+```java
+@Repository
+public interface OrderRepository extends JpaRepository<Order, String> {
+}
+
+@Repository
+public interface CustomerRepository extends JpaRepository<Customer, String> {
+}
+```
+
+### 分层架构的总结
+
+- **用户界面层**:处理用户交互,传递请求和响应。
+- **应用层**:定义应用用例,协调领域对象来完成业务功能。
+- **领域层**:包含业务逻辑和规则,是系统的核心。
+- **基础设施层**:提供技术支持,与外部系统集成。
+
+通过这种分层架构,DDD 能够帮助开发者更清晰地组织代码,确保系统的可维护性和可扩展性。
+
+层次之间的调用关系是上层可以调用下层,即用户接口层可以调用应用层,领域层及基础层。应用层可以调用领域层和基础层,领域层可以调用基础层。
+
+但是不能从下往上反向调用,各个层级之间是严格的单向调用的依赖关系。
+
+在领域驱动设计(DDD)中,除了传统的四层架构外,还有其他两种常见的架构模式:洋葱架构(Onion Architecture)和六边形架构(Hexagonal Architecture)。这两种架构模式进一步强调系统的内聚性和解耦,促进更清晰的分层和模块化设计。
+
+### 洋葱架构(Onion Architecture)
+
+洋葱架构通过一层一层的形式来组织系统,核心业务逻辑位于中心,外围层次逐步扩展。每一层只依赖于内层,而不是相互依赖。
+
+**核心思想**:
+
+- 将业务逻辑放在核心位置,不受外部技术细节的影响。
+- 通过依赖倒置原则(Dependency Inversion Principle)确保内层不依赖于外层。
+
+**层次**:
+
+1. **核心层(Core)**:
+
+   - 包含领域模型,值对象,聚合根,领域事件等。
+
+2. **领域服务层(Domain Services)**:
+
+   - 业务逻辑和规则。
+
+3. **应用服务层(Application Services)**:
+
+   - 调用领域服务,编排用例。
+
+4. **基础设施层(Infrastructure)**:
+   - 实现技术细节,如数据库访问,消息传递,文件系统等。
+
+**例子**:
+
+```java
+// 核心层:领域模型
+public class Order {
+    private String orderId;
+    private List<OrderItem> items;
+
+    public void addItem(OrderItem item) {
+        items.add(item);
+    }
+
+    // 其他业务逻辑
+}
+
+// 应用服务层
+public class OrderService {
+    private final OrderRepository orderRepository;
+
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+    public void createOrder(Order order) {
+        orderRepository.save(order);
+    }
+}
+
+// 基础设施层:实现 OrderRepository
+public class JpaOrderRepository implements OrderRepository {
+    private final EntityManager entityManager;
+
+    public JpaOrderRepository(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    @Override
+    public void save(Order order) {
+        entityManager.persist(order);
+    }
+}
+```
+
+### 六边形架构(Hexagonal Architecture)
+
+六边形架构,也称为端口和适配器架构(Ports and Adapters Architecture),通过将系统的内部实现与外部接口分离来实现解耦。这种架构允许系统通过不同的接口与外部进行交互,增强了系统的灵活性和可测试性。
+
+**核心思想**:
+
+- 系统的核心逻辑(领域模型)不依赖于外部系统(如数据库,UI,第三方服务)。
+- 通过端口(Ports)定义系统的输入输出,通过适配器(Adapters)实现具体的技术细节。
+
+**层次**:
+
+1. **核心层**:
+
+   - 包含领域模型,领域服务。
+
+2. **端口(Ports)**:
+
+   - 定义系统的输入输出接口,如服务接口,事件接口。
+
+3. **适配器(Adapters)**:
+   - 实现端口接口的具体细节,如数据库适配器,UI适配器,API适配器。
+
+**例子**:
+
+```java
+// 核心层:领域模型
+public class Order {
+    private String orderId;
+    private List<OrderItem> items;
+
+    public void addItem(OrderItem item) {
+        items.add(item);
+    }
+
+    // 其他业务逻辑
+}
+
+// 端口:服务接口
+public interface OrderService {
+    void createOrder(Order order);
+}
+
+// 适配器:实现服务接口
+public class OrderServiceImpl implements OrderService {
+    private final OrderRepository orderRepository;
+
+    public OrderServiceImpl(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+    @Override
+    public void createOrder(Order order) {
+        orderRepository.save(order);
+    }
+}
+
+// 适配器:数据库适配器
+public class JpaOrderRepository implements OrderRepository {
+    private final EntityManager entityManager;
+
+    public JpaOrderRepository(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    @Override
+    public void save(Order order) {
+        entityManager.persist(order);
+    }
+}
+```
+
+### 总结
+
+- **洋葱架构(Onion Architecture)**:通过层层包裹的形式,确保核心业务逻辑不受外部细节影响,内层依赖外层。
+- **六边形架构(Hexagonal Architecture)**:通过端口和适配器解耦系统核心逻辑与外部交互,增强系统的灵活性和可测试性。
+
+这两种架构模式都强调系统的内聚性和解耦,适用于复杂业务逻辑的设计,促进可维护性和可扩展性。选择哪种架构取决于具体项目的需求和设计团队的偏好。

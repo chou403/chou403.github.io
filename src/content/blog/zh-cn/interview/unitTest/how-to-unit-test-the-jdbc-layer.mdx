@@ -1,0 +1,239 @@
+---
+author: chou403
+publishDate: 2024-07-25T17:58:51
+updatedDate: 2024-08-09T14:46:19
+title: How to unit test the JDBC layer
+draft: false
+heroImage: /src/assets/images/eightkun.jpg
+category: Interview
+tags:
+  - unit test
+  - java
+description: 如何对JDBC这一层做单元测试
+---
+
+## 介绍
+
+对JDBC这一层进行单元测试,可以通过模拟数据库连接或使用嵌入式数据库来实现。以下是这两种方法的详细步骤:
+
+### 方法一:使用 Mockito 模拟 JDBC
+
+#### 1. 添加 Mockito 依赖
+
+在 Maven 项目中添加 Mockito 依赖:
+
+```xml
+<dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-core</artifactId>
+    <version>3.11.2</version>
+    <scope>test</scope>
+</dependency>
+```
+
+在 Gradle 项目中添加 Mockito 依赖:
+
+```groovy
+testImplementation 'org.mockito:mockito-core:3.11.2'
+```
+
+#### 2. 编写使用 Mockito 的单元测试
+
+假设我们有一个简单的 DAO 类,用于从数据库中获取用户信息。
+
+**UserDao.java:**
+
+```java
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class UserDao {
+    private Connection connection;
+
+    public UserDao(Connection connection) {
+        this.connection = connection;
+    }
+
+    public User getUserById(Long id) throws SQLException {
+        String query = "SELECT id, name FROM users WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setLong(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new User(rs.getLong("id"), rs.getString("name"));
+                }
+            }
+        }
+        return null;
+    }
+}
+```
+
+**User.java:**
+
+```java
+public class User {
+    private Long id;
+    private String name;
+
+    public User(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    // Getters and setters
+}
+```
+
+**UserDaoTest.java:**
+
+```java
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+public class UserDaoTest {
+
+    @Mock
+    private Connection connection;
+    @Mock
+    private PreparedStatement preparedStatement;
+    @Mock
+    private ResultSet resultSet;
+
+    private UserDao userDao;
+
+    @BeforeEach
+    public void setUp() throws SQLException {
+        MockitoAnnotations.openMocks(this);
+        userDao = new UserDao(connection);
+
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+    }
+
+    @Test
+    public void testGetUserById() throws SQLException {
+        when(resultSet.next()).thenReturn(true);
+        when(resultSet.getLong("id")).thenReturn(1L);
+        when(resultSet.getString("name")).thenReturn("John Doe");
+
+        User user = userDao.getUserById(1L);
+        assertNotNull(user);
+        assertEquals(1L, user.getId());
+        assertEquals("John Doe", user.getName());
+
+        verify(preparedStatement, times(1)).setLong(1, 1L);
+        verify(preparedStatement, times(1)).executeQuery();
+    }
+
+    @Test
+    public void testGetUserById_NotFound() throws SQLException {
+        when(resultSet.next()).thenReturn(false);
+
+        User user = userDao.getUserById(1L);
+        assertNull(user);
+
+        verify(preparedStatement, times(1)).setLong(1, 1L);
+        verify(preparedStatement, times(1)).executeQuery();
+    }
+}
+```
+
+### 方法二:使用嵌入式数据库进行测试
+
+嵌入式数据库允许在测试环境中创建临时数据库,无需依赖外部的数据库服务。H2数据库是一个常用的嵌入式数据库。
+
+#### 1. 添加 H2 依赖
+
+在 Maven 项目中添加 H2 依赖:
+
+```xml
+<dependency>
+    <groupId>com.h2database</groupId>
+    <artifactId>h2</artifactId>
+    <version>1.4.200</version>
+    <scope>test</scope>
+</dependency>
+```
+
+在 Gradle 项目中添加 H2 依赖:
+
+```groovy
+testImplementation 'com.h2database:h2:1.4.200'
+```
+
+#### 2. 编写测试
+
+在测试中使用 H2 数据库创建表并插入数据,然后进行实际的数据库操作测试。
+
+**UserDaoTest.java:**
+
+```java
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+public class UserDaoTest {
+
+    private Connection connection;
+    private UserDao userDao;
+
+    @BeforeEach
+    public void setUp() throws SQLException {
+        connection = DriverManager.getConnection("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
+        connection.createStatement().execute("CREATE TABLE users (id BIGINT PRIMARY KEY, name VARCHAR(255))");
+        connection.createStatement().execute("INSERT INTO users (id, name) VALUES (1, 'John Doe')");
+        userDao = new UserDao(connection);
+    }
+
+    @AfterEach
+    public void tearDown() throws SQLException {
+        connection.createStatement().execute("DROP TABLE users");
+        connection.close();
+    }
+
+    @Test
+    public void testGetUserById() throws SQLException {
+        User user = userDao.getUserById(1L);
+        assertNotNull(user);
+        assertEquals(1L, user.getId());
+        assertEquals("John Doe", user.getName());
+    }
+
+    @Test
+    public void testGetUserById_NotFound() throws SQLException {
+        User user = userDao.getUserById(2L);
+        assertNull(user);
+    }
+}
+```
+
+### 代码解释
+
+1. **Mockito 方式**:通过模拟 `Connection`,`PreparedStatement` 和 `ResultSet` 对象,可以在没有真实数据库连接的情况下测试 `UserDao` 的行为。
+2. **嵌入式数据库方式**:使用 H2 数据库在内存中创建临时表并插入数据,进行实际的数据库操作测试。
+
+这两种方式各有优缺点:
+
+- **Mockito**:适合快速单元测试,独立于外部资源,但不能测试实际的数据库交互逻辑。
+- **嵌入式数据库**:能够测试实际的数据库交互,但需要更多的环境设置和清理工作。
+
+这两种方法结合使用,可以更全面地覆盖JDBC层的单元测试需求。

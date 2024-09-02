@@ -1,12 +1,14 @@
 ---
-import { getCategories } from '@/utils'
-import Category from '@/components/Category'
-const categories = await getCategories()
+import { getCategories } from "@/utils";
+import Category from "@/components/Category";
 
-const { activeCategory } = Astro.props
+const currentLocale = Astro.currentLocale;
+const categories = await getCategories(currentLocale);
+
+const { activeCategory } = Astro.props;
 ---
 
-<div class='relative flex flex-wrap min-w-full gap-5'>
+<div class="relative flex min-w-full flex-wrap gap-5">
 	<Category />
 	{
 		categories.map((category: string) => (
@@ -14,5 +16,5 @@ const { activeCategory } = Astro.props
 		))
 	}
 
-	<div class='hidden sm:block absolute w-full bottom-0 border-b-2 -z-40 dark:border-gray-600'></div>
+	<div class="absolute bottom-0 -z-40 hidden w-full border-b-2 dark:border-gray-600 sm:block"></div>
 </div>
