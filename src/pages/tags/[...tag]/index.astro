@@ -3,7 +3,6 @@ import BaseLayout from "@/layouts/BaseLayout";
 import ListPosts from "@/components/ListPosts";
 import TitlePage from "@/components/TitlePage";
 import { getTags, getPostByTag } from "@/utils";
-import { any } from "astro/zod";
 import { LOCALES } from "@/data/locale";
 
 export async function getStaticPaths() {
@@ -21,8 +20,7 @@ export async function getStaticPaths() {
 }
 
 const { tag } = Astro.props;
-const currentLocale = Astro.currentLocale;
-const posts = await getPostByTag(currentLocale, tag);
+const posts = await getPostByTag(null, tag);
 ---
 
 <BaseLayout title={tag}>

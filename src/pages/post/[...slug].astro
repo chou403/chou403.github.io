@@ -11,14 +11,14 @@ import SButton from "@/components/mdx/SButton";
 import Disqus from "@/components/Disqus";
 import { disqusConfig } from "@/data/disqus.config";
 import { LOCALES } from "@/data/locale";
+import useStore from "../../zustand/store";
 
-const currentLocale = Astro.currentLocale;
-const posts = await getPosts(currentLocale);
+const posts = await getPosts(null);
 export async function getStaticPaths() {
 	const paths = [];
 	for (const locale of LOCALES) {
 		const posts = await getPosts(locale);
-		let map = posts.map((post) => ({
+		let map = posts.map((post: any) => ({
 			params: { slug: post.slug },
 			props: post,
 		}));
@@ -32,9 +32,10 @@ type Props = CollectionEntry<"blog">;
 const post = Astro.props;
 const MAX_POSTS = 3;
 const getRelatedPosts = (post: Props) => {
-	const lowercaseTags = post.data.tags.map((tag) => tag.toLowerCase());
+	const lowercaseTags = post.data.tags.map((tag: any) => tag.toLowerCase());
 	const relatedPosts = posts.filter(
-		(p) => p.slug !== post.slug && p.data.tags.some((t) => lowercaseTags.includes(t.toLowerCase())),
+		(p: any) =>
+			p.slug !== post.slug && p.data.tags.some((t: any) => lowercaseTags.includes(t.toLowerCase())),
 	);
 	return relatedPosts.slice(0, MAX_POSTS);
 };

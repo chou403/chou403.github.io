@@ -1,29 +1,32 @@
 ---
+// language.astro
 import { LOCALES } from "@/data/locale";
-let currentLocale = "en"; // 默认语言
 
-if (typeof window !== "undefined") {
-	currentLocale = window.location.pathname.split("/")[1];
-}
-
-const changeLanguage = (locale) => {
-	if (typeof window !== "undefined") {
-		const pathParts = window.location.pathname.split("/").slice(2).join("/");
-		window.location.href = `/${locale}/${pathParts}`;
-	}
-};
+console.log(543221);
 ---
 
-<select
-	id="language-switcher"
-	onChange={(e) => changeLanguage(e.target.value)}
-	value={currentLocale}
->
-	{
-		LOCALES.map((locale) => (
-			<option key={locale} value={locale}>
-				{locale}
-			</option>
-		))
-	}
+<select id="language-switcher">
+	{LOCALES.map((locale) => <option value={locale}>{locale}</option>)}
 </select>
+
+<script is:inline lang="ts" type="module">
+	import { onMount } from "astro";
+	import useStore from "@/zustand/store";
+	const setLocale = useStore((state) => state.setLocale);
+
+	function changeLanguage(newLocale) {
+		console.log(333333);
+		setLocale(newLocale);
+	}
+
+	// 使用 onMount 以确保 DOM 元素已加载
+	onMount(() => {
+		const languageSwitcher = document.getElementById("language-switcher");
+		if (languageSwitcher) {
+			languageSwitcher.addEventListener("change", (e) => {
+				const target = e.target;
+				changeLanguage(target.value);
+			});
+		}
+	});
+</script>

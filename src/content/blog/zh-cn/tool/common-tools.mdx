@@ -620,3 +620,141 @@ mac安装kafka运行错误@@HOMEBREW_JAVA@@/bin/java: No such file or directory
 描述:安装brew使用的中科大的镜像,直接通过`brew install kafka`后执行启动命令`brew services start kafka`报错
 
 解决:mac终端执行命令:`HOMEBREW_BOTTLE_DOMAIN= brew reinstall kafka`
+
+## node 切换源
+
+### 1、切换 npm 源到国内镜像
+
+- 临时切换到淘宝镜像:
+  ```sh
+  npm install --registry=https://registry.npmmirror.com
+  ```
+- 永久切换 npm 源到淘宝镜像:
+  `sh
+    npm config set registry https://registry.npmmirror.com
+    `
+  然后,你可以使用 npm config get registry 检查当前的 npm 源:
+
+```sh
+npm config get registry
+```
+
+### 2、使用 nrm(NPM Registry Manager)切换源
+
+nrm 是一个可以帮助你快速切换 npm 源的工具。你可以使用 nrm 切换不同的源,例如官方源、淘宝源等
+
+- 安装 nrm
+  ```sh
+  npm install -g nrm
+  ```
+- 查看可用的 npm 源
+  ```sh
+  nrm ls
+  ```
+- 切换到淘宝源
+  ```sh
+  nrm use taobao
+  ```
+- 切换回官方源
+  ```sh
+  nrm use npm
+  ```
+- 查看当前所使用的源
+  ```sh
+  nrm current
+  ```
+
+### 3、清理 npm 缓存
+
+有时候,npm 缓存可能已经损坏,影响命令的执行速度。你可以尝试清理缓存来提升速度
+
+```sh
+npm cache clean --force
+```
+
+### 4、升级 npm 版本
+
+确保你使用的是最新版本的 npm,较旧的版本可能存在性能问题。你可以通过以下命令升级 npm
+
+```sh
+npm install -g npm
+```
+
+### 5、使用 pnpm 或 yarn
+
+pnpm 和 yarn 是比 npm 更高效的包管理工具,尤其在安装大量依赖时有显著的速度提升。你可以考虑使用它们替代 npm。
+
+- 安装 pnpm
+  ```sh
+  npm install -g pnpm
+  ```
+- 安装 yarn
+  ```sh
+  npm install -g yarn
+  ```
+
+### 6、启用并行安装
+
+npm 版本 7.x 及以上支持并行安装依赖,这可以加快包安装的速度。如果你使用的是较旧版本的 npm,建议升级到最新版本以利用这一功能。
+
+### 7、关闭进度条
+
+在执行 npm 命令时,可以通过禁用进度条来稍微提升速度
+
+```sh
+npm set progress=false
+```
+
+### 8、使用缓存加速
+
+你可以通过将常用包缓存到本地或者使用像 verdaccio 这样的本地 npm 代理缓存来加快下载速度
+
+## node 更新依赖
+
+1. 使用 npm update 更新到符合 package.json 版本范围内的最新版本
+
+   ```sh
+   npm update
+   ```
+
+   这将更新所有依赖项到 package.json 中指定的版本范围内的最新版本。例如,^1.0.0 会更新到最新的 1.x.x 版本,但不会更新到 2.x.x。
+
+2. 使用 npm-check-updates (ncu) 更新到所有依赖项的最新版本
+
+   npm-check-updates 是一个工具,它可以更新 package.json 中所有依赖项的版本号为最新的版本。以下是使用它的步骤:
+
+   ** 安装 npm-check-updates **
+   如果你没有安装 npm-check-updates,先全局安装它
+
+   ```sh
+   npm install -g npm-check-updates
+   ```
+
+   如果出现类似异常:`npm ERR! ENOTEMPTY: directory not empty, rename '/usr/local/lib/node_modules/npm-check-updates' -> '/usr/local/lib/node_modules/.npm-check-updates-FrHIZ4wS'`
+   先手动删除文件夹 `sudo rm -rf /usr/local/lib/node_modules/.npm-check-updates-FrHIZ4wS`,之后尝试重新安装
+
+   ** 更新依赖项 **
+
+   - 运行以下命令以检查 package.json 中可以更新的所有依赖
+
+     ```sh
+     ncu
+     ```
+
+   - 运行以下命令来更新 package.json 中的依赖项版本为最新版本
+
+     ```sh
+     ncu -u
+     ```
+
+   - 安装更新后的依赖项
+     更新完 package.json 后,运行以下命令来安装新版本的依赖项
+
+     ```sh
+     npm install
+     ```
+
+3. 手动更新 package.json 中的依赖版本
+
+   新完 package.json 后,运行以下命令来安装新版本的依赖项
+   如果你不想使用 ncu,你也可以手动编辑 package.json 中的依赖版本为最新版本。然后运行 npm install 以安装这些最新的版本

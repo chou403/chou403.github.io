@@ -1,6 +1,15 @@
 {
 	"extends": "astro/tsconfigs/strict",
 	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "Node",
+		"strict": true,
+		"jsxImportSource": "solid-js",
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"jsx": "react-jsx",
 		"strictNullChecks": true,
 		"baseUrl": ".",
 		"verbatimModuleSyntax": true,
@@ -10,8 +19,10 @@
 			"@/utils": ["src/utils/index.ts"],
 			"@/data/*": ["src/data/*"],
 			"@/site-config": ["src/data/site.config.ts"],
-			"@/styles": ["src/styles/"]
+			"@/styles": ["src/styles/"],
+			"@/zustand/*": ["src/zustand/*"]
 		}
 	},
+	"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro", "astro.config.mjs"],
 	"exclude": ["node_modules", "**/node_modules/*", ".vscode", "dist"]
 }

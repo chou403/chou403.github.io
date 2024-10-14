@@ -41,8 +41,8 @@ export default defineConfig({
   vite: {
     plugins: [copyStaticFiles()],
   },
-  i18n: {
-    defaultLocale: 'zh-cn',
-    locales: ['zh-cn', 'en']
-  }
+  // i18n: {
+  //   defaultLocale: 'zh-cn',
+  //   locales: ['zh-cn', 'en']
+  // }
 })

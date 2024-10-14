@@ -8,17 +8,16 @@ import { siteConfig } from "@/data/site.config";
 import Pagination from "@/components/Pagination";
 import { LOCALES } from "@/data/locale";
 
-const currentLocale = Astro.currentLocale;
 export async function getStaticPaths({ paginate }: any) {
 	const paths = [];
 	for (const locale of LOCALES) {
 		const categories = await getCategories(locale);
 		const allPosts = await getPosts(locale);
 
-		let map = categories.flatMap((category: string) => {
+		let map = categories.flatMap((category: any) => {
 			const unsluglifyNameCategory = unsluglify(category!.toLowerCase());
 			const filteredPosts = allPosts.filter(
-				(post) => post.data.category.toLowerCase() === unsluglifyNameCategory,
+				(post: any) => post.data.category.toLowerCase() === unsluglifyNameCategory,
 			);
 			return paginate(filteredPosts, {
 				params: {
