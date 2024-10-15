@@ -2,7 +2,7 @@ import { type CollectionEntry, getCollection } from "astro:content";
 import { assignImagesToObjects } from "./file";
 import useStore from "../zustand/store";
 
-export const getCategories = async (locale: string) => {
+export const getCategories = async (locale: any) => {
 	const currentLocale = locale || useStore.getState().locale;
 	console.log("getCategories", currentLocale);
 
@@ -11,7 +11,9 @@ export const getCategories = async (locale: string) => {
 	return Array.from(categories);
 };
 
-export const getPosts = async (locale: string, max?: number) => {
+export const getPosts = async (locale: any, max?: number) => {
+	console.log("getPosts", locale);
+
 	const currentLocale = locale || useStore.getState().locale;
 	console.log("getPosts", currentLocale);
 
@@ -30,7 +32,7 @@ export const getPosts = async (locale: string, max?: number) => {
 	return blogObj;
 };
 
-export const getTags = async (locale: string) => {
+export const getTags = async (locale: any) => {
 	const currentLocale = locale || useStore.getState().locale;
 	let posts = await getCollection("blog", (entry: any) => entry.id.startsWith(`${currentLocale}/`));
 	const tags = new Set();
@@ -43,7 +45,7 @@ export const getTags = async (locale: string) => {
 	return Array.from(tags);
 };
 
-export const getPostByTag = async (locale: string, tag: any) => {
+export const getPostByTag = async (locale: any, tag: any) => {
 	const currentLocale = locale || useStore.getState().locale;
 	const posts = await getPosts(currentLocale);
 	const lowercaseTag = tag.toLowerCase();
@@ -52,7 +54,7 @@ export const getPostByTag = async (locale: string, tag: any) => {
 	});
 };
 
-export const filterPostsByCategory = async (locale: string, category: any) => {
+export const filterPostsByCategory = async (locale: any, category: any) => {
 	const currentLocale = locale || useStore.getState().locale;
 	const posts = await getPosts(currentLocale);
 	return posts.filter((post: any) => post.data.category.toLowerCase() === category);
