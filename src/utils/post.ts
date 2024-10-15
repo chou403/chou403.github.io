@@ -12,11 +12,7 @@ export const getCategories = async (locale: any) => {
 };
 
 export const getPosts = async (locale: any, max?: number) => {
-	console.log("getPosts", locale);
-
 	const currentLocale = locale || useStore.getState().locale;
-	console.log("getPosts", currentLocale);
-
 	let posts = await getCollection("blog", (entry: any) => entry.id.startsWith(`${currentLocale}/`));
 	let blogObj = posts
 		.filter((post: any) => !post.data.draft)
