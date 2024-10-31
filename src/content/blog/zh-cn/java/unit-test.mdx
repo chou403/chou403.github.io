@@ -39,10 +39,14 @@ description: 项目的单元测试
 
 编写单元测试代码遵守BCDE原则,以保证被测试模块的交付质量。
 
-1. **B-Border: **边界值测试,包括循环边界,特殊取值,特殊时间点,数据顺序等。
-2. **C-Correct: **正确的输入,并得到预期的结果。
-3. **D-Design: **与设计文档相结合,来编写单元测试。
-4. **E-Error: **强制错误信息输入(如: 非法数据,异常流程,非业务允许输入等),并得到预期的结果。测试的目标是验证代码的健壮性是否达到预期设计,所以不能只测试乐观路径,而是对乐观路径和悲观路径都进行测试。
+1. **B-Border:**
+   边界值测试,包括循环边界,特殊取值,特殊时间点,数据顺序等。
+2. **C-Correct:**
+   正确的输入,并得到预期的结果。
+3. **D-Design:**
+   与设计文档相结合,来编写单元测试。
+4. **E-Error:**
+   强制错误信息输入(如: 非法数据,异常流程,非业务允许输入等),并得到预期的结果。测试的目标是验证代码的健壮性是否达到预期设计,所以不能只测试乐观路径,而是对乐观路径和悲观路径都进行测试。
 
 覆盖率相关: 建议 80%,80%的百分比是单元测试成功的必要条件,但不是充分条件。
 
@@ -55,35 +59,35 @@ description: 项目的单元测试
 
 ### 单元测试为什么要 mock
 
-- F-Fast(快速的): 单元测试可以快速运行
-- I-Independent(独立的): 无依赖可以独立运行
-- R-Repeatable(可重复的): 稳定重复运行,每次运行结果稳定可靠
+- **F-Fast(快速的):** 单元测试可以快速运行
+- **I-Independent(独立的):** 无依赖可以独立运行
+- **R-Repeatable(可重复的):** 稳定重复运行,每次运行结果稳定可靠
 
 ## 单元测试常用注解
 
 ### Junit
 
-- @ExtendWith: 声明性的注册拓展
-- @Test: 标识方法为一个测试用例
-- @BeforeAll: 所有方法之前,执行一次
-- @AfterAll: 所有方法之后,执行一次
-- @AfterEach: 每个方法之执行
-- @ParameterizedTest: 参数化测试方法
-- @TimeOut: 设置超时时间
-- @Order: 设置测试方法的执行顺序
-- @RepeatedTest: 重复执行的次数
-- @Disabled: 标识禁用的测试类和方法
-- @DisplayName: 类或方法自定义显示名称
+- **@ExtendWith:** 声明性的注册拓展
+- **@Test:** 标识方法为一个测试用例
+- **@BeforeAll:** 所有方法之前,执行一次
+- **@AfterAll:** 所有方法之后,执行一次
+- **@AfterEach:** 每个方法之执行
+- **@ParameterizedTest:** 参数化测试方法
+- **@TimeOut:** 设置超时时间
+- **@Order:** 设置测试方法的执行顺序
+- **@RepeatedTest:** 重复执行的次数
+- **@Disabled:** 标识禁用的测试类和方法
+- **@DisplayName:** 类或方法自定义显示名称
 
 ### Mockito
 
-- @Mock: 创建被 mock 的代理对象
-- @Spy: 创建被 spy 的代理对象,可保留原对象的行为
-- @InjectMocks: 创建真实对象,常用于被测试类,可注入 mock 对象
-- @Captor: 用于捕获方法调用的参数,方便进一步的断言和校验
-- @MockitoSettings: 用于设置 Mockito 框架的全局设置
+- **@Mock:** 创建被 mock 的代理对象
+- **@Spy:** 创建被 spy 的代理对象,可保留原对象的行为
+- **@InjectMocks:** 创建真实对象,常用于被测试类,可注入 mock 对象
+- **@Captor:** 用于捕获方法调用的参数,方便进一步的断言和校验
+- **@MockitoSettings:** 用于设置 Mockito 框架的全局设置
 
 ### SpringBoot
 
-- @MockBean: 创建被 Spring 管理的 mock bean,常用于集成测试中
-- @SpyBean: 创建被 Spring 管理的 spy bean,常用于集成测试中
+- **@MockBean:** 创建被 Spring 管理的 mock bean,常用于集成测试中
+- **@SpyBean:** 创建被 Spring 管理的 spy bean,常用于集成测试中

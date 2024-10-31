@@ -15,7 +15,7 @@ type Props = {
 };
 
 const { data, readTime, headings, id } = Astro.props;
-const { title, description, publishDate, updatedDate, heroImage, tags } = data;
+const { title, description, publishDate, updatedDate, heroImage, tags, category, author } = data;
 
 const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 ---
@@ -27,34 +27,52 @@ const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 	articleDate={articleDate}
 >
 	<article class="mt-12 min-w-full sm:max-w-none md:max-w-none md:py-4">
-		<header class="mb-3 flex flex-col items-center justify-center gap-6">
-			<div class="flex flex-col gap-2">
-				<h1 class="text-center text-4xl font-semibold md:pb-2.5 md:text-6xl">
-					{title}
-				</h1>
+		<header class="mb-3 flex flex-col gap-6">
+			<div class="flex flex-wrap gap-2">
+				<div class="min-h-full">
+					<Image
+						src={heroImage}
+						width={200}
+						height={200}
+						format="webp"
+						class="h-16 w-16 rounded-full object-cover"
+						alt={`img of ${title}`}
+					/>
+				</div>
+
+				<div class="flex items-center justify-center">
+					<h1 class="text-4xl font-semibold md:pb-2.5 md:text-4xl">
+						{description}
+					</h1>
+				</div>
 			</div>
-			<div class="flex flex-wrap items-center justify-center gap-2 gap-y-4 md:gap-5">
-				{tags.map((tag: any) => <Tag tag={tag} />)}
-			</div>
-			<div class="flex items-center justify-center gap-x-1">
-				<p class="text-center text-sm text-opacity-50">
-					<FormattedDate date={publishDate} />
+
+			<div class="flex gap-x-1">
+				<p class="text-center text-sm font-bold text-opacity-50">
+					{author}
 				</p>
 				<p class="text-center text-sm font-bold text-opacity-50">
-					- {readTime}
+					/ {category}
 				</p>
-				{
+				<p class="text-center text-sm text-opacity-50">
+					/ <FormattedDate date={publishDate} />
+				</p>
+				<p class="text-center text-sm font-bold text-opacity-50">
+					/ {readTime}
+				</p>
+				<!-- {
 					data.updatedDate && (
 						<span class="text-quote rounded-lg p-1">
 							Last Updated:
 							<FormattedDate date={data.updatedDate} />
 						</span>
 					)
-				}
+				} -->
 			</div>
 		</header>
 
-		<>
+		<!-- annotate blog post image -->
+		<!-- <>
 			{
 				heroImage && (
 					<Image
@@ -69,7 +87,7 @@ const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 					/>
 				)
 			}
-		</>
+		</> -->
 
 		<hr />
 

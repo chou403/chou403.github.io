@@ -12,6 +12,7 @@ import Disqus from "@/components/Disqus";
 import { disqusConfig } from "@/data/disqus.config";
 import { LOCALES } from "@/data/locale";
 import useStore from "../../zustand/store";
+import Tag from "@/components/Tag";
 
 const posts = await getPosts(null);
 export async function getStaticPaths() {
@@ -45,6 +46,8 @@ const relatedPosts = getRelatedPosts(post);
 const { Content, headings, remarkPluginFrontmatter } = await post.render();
 
 const disqusEnabled = disqusConfig.enabled;
+
+const { tags } = post.data;
 ---
 
 <BlogPost
@@ -53,19 +56,24 @@ const disqusEnabled = disqusConfig.enabled;
 	headings={headings}
 	readTime={remarkPluginFrontmatter.minutesRead}
 >
-	<div class="mt-8 grid grid-cols-1 gap-10 md:grid-cols-[20%_auto]">
+	<!-- <div class="mt-8 grid grid-cols-1 gap-10 md:grid-cols-[20%_auto]"> -->
+	<div class="mt-8 grid grid-cols-1 gap-10">
 		<!-- aside  -->
-		<aside class="hidden flex-col gap-8 md:flex">
-			<!-- <Share /> -->
+		<!-- Left menu bar comments -->
+		<!-- <aside class="hidden flex-col gap-8 md:flex">
 			<div class="sticky top-12 z-10 hidden self-start transition-all duration-200 md:block">
 				{headings && headings.length > 0 && <TableOfContents {headings} />}
 			</div>
-		</aside>
+		</aside> -->
 
 		<!-- post -->
 		<article class="grid w-full max-w-full">
 			<div class="prose prose-lg mb-12 min-w-full dark:prose-invert md:prose-xl">
 				<Content components={{ pre: Code, SButton }} />
+			</div>
+
+			<div class="mb-12 flex flex-wrap gap-2 gap-y-4 md:gap-5">
+				{tags.map((tag: any) => <Tag tag={tag} />)}
 			</div>
 
 			<!-- related posts -->

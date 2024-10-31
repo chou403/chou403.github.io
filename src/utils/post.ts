@@ -57,7 +57,8 @@ export const filterPostsByCategory = async (locale: any, category: any) => {
 };
 
 export function getPostSortDate(post: CollectionEntry<"blog">) {
-	return post.data.updatedDate !== undefined
-		? new Date(post.data.updatedDate)
-		: new Date(post.data.publishDate);
+	// return post.data.updatedDate !== undefined
+	// 	? new Date(post.data.updatedDate)
+	// 	: new Date(post.data.publishDate);
+	return new Date(post.data.publishDate);
 }

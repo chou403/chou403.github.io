@@ -1,0 +1,119 @@
+---
+author: chou403
+publishDate: 2024-10-23T15:36:01
+updatedDate: 2024-10-23T15:36:01
+title: spring cloud anemic or rich
+draft: false
+fixed: false
+heroImage: /src/assets/images/eightkun.jpg
+category: Interview
+tags:
+  - ddd
+description: spring cloud 是贫血模型还是充血模型
+---
+
+## 简介
+
+大多数情况下，典型的 **Spring Cloud** 项目往往属于**贫血模型（Anemic Domain Model）**。这是因为在传统的 Spring 项目结构中，尤其是基于微服务架构的 Spring Cloud 项目，通常会将业务逻辑放置在 **Service 层**，而 **领域对象（Domain Objects）** 主要作为数据传输对象（DTO）或实体类存在，负责保存数据状态。
+
+### 原因分析：
+
+1. **服务层（Service Layer）逻辑**：在 Spring Cloud 的典型架构中，业务逻辑主要集中在 Service 层。领域对象（如实体类）主要用于表示数据结构，业务逻辑则由 Service 层的类来处理，这种设计导致领域对象通常没有行为，只是简单的持有数据。
+
+2. **Controller-Service-Repository 模式**：Spring Cloud 的标准开发模式是分层的。Controller 层处理 HTTP 请求，Service 层处理业务逻辑，Repository 层负责数据访问。这种分层结构决定了业务逻辑和领域模型被分离，导致领域对象通常是贫血的。
+
+   - **Controller**：负责处理 HTTP 请求，将参数传递给 Service 层。
+   - **Service**：业务逻辑集中在这里，通过调用领域对象和存储层处理业务需求。
+   - **Repository**：负责持久化，通常使用 JPA 或其他数据访问框架。
+
+3. **实体类（Entity Classes）与 DTO**：领域对象一般使用 JPA 的 `@Entity` 注解，或者直接作为 DTO 进行数据传递。大部分业务逻辑不会放在这些实体类中，而是集中在 Service 中去操作这些对象。这种设计模式符合贫血模型的特征，即领域对象只是数据的载体，而没有行为。
+
+### 贫血模型的典型示例：
+
+```java
+@Entity
+public class Order {
+    @Id
+    private Long id;
+    private String status;
+    private BigDecimal amount;
+
+    // getter 和 setter
+}
+
+@Service
+public class OrderService {
+    @Autowired
+    private OrderRepository orderRepository;
+
+    public void cancelOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow();
+        if (!order.getStatus().equals("Shipped")) {
+            order.setStatus("Cancelled");
+            orderRepository.save(order);
+        } else {
+            throw new RuntimeException("Cannot cancel shipped orders");
+        }
+    }
+}
+```
+
+在上面的例子中，`Order` 只是一个包含数据的实体对象，没有包含任何业务逻辑，所有的业务逻辑都在 `OrderService` 中实现。
+
+---
+
+### 如果要实现充血模型：
+
+充血模型的设计思路是将业务逻辑尽量封装在领域对象中，让对象自己管理自己的状态和行为。为了在 Spring Cloud 项目中应用充血模型，领域对象应该具备更多的行为和规则。
+
+**充血模型的示例：**
+
+```java
+@Entity
+public class Order {
+    @Id
+    private Long id;
+    private String status;
+    private BigDecimal amount;
+
+    public void cancel() {
+        if (!"Shipped".equals(status)) {
+            this.status = "Cancelled";
+        } else {
+            throw new RuntimeException("Cannot cancel shipped orders");
+        }
+    }
+
+    // getter 和 setter
+}
+
+@Service
+public class OrderService {
+    @Autowired
+    private OrderRepository orderRepository;
+
+    public void cancelOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow();
+        order.cancel(); // 调用订单对象自身的业务逻辑
+        orderRepository.save(order);
+    }
+}
+```
+
+在这个例子中，`Order` 自己封装了取消订单的业务逻辑 (`cancel` 方法)，而不是让 `OrderService` 负责。这就是充血模型的做法，它更符合面向对象的设计原则。
+
+---
+
+### Spring Cloud 项目为什么通常使用贫血模型？
+
+1. **开发效率和分层架构的标准化**：Spring Cloud 的分层架构和贫血模型结合使得开发过程更加标准化和高效。不同的层次清晰分工，开发者可以专注于每一层的职责。对于微服务架构，每个服务通常是一个狭小的业务领域，贫血模型简单直接，降低了系统复杂性。
+
+2. **团队协作和易维护性**：通过将业务逻辑集中在 Service 层，领域对象变得更加简单，方便团队之间的协作。同时，贫血模型将业务逻辑与数据存储、服务请求等技术细节分离，降低了项目的耦合度。
+
+3. **常见的框架限制**：像 JPA 这样的 ORM 框架，倾向于将领域对象视作简单的实体类，使得在实体对象中实现复杂的业务逻辑显得不自然。而且 JPA 实体对象往往会和数据库的表结构紧密绑定，导致将业务逻辑放在实体类中并不方便。
+
+---
+
+### 总结
+
+虽然 DDD 倡导充血模型，但是 Spring Cloud 等微服务项目由于其典型的开发模式和架构设计，往往属于**贫血模型**。在这种模式下，业务逻辑被放置在 Service 层，领域对象仅作为数据载体。如果希望更好地封装业务逻辑，可以采用充血模型，但这通常会增加系统复杂性，需要更高的设计和维护成本。

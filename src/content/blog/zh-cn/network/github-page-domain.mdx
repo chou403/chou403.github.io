@@ -1,0 +1,35 @@
+---
+author: chou403
+publishDate: 2024-10-29T17:02:06
+updatedDate: 2024-10-29T17:02:06
+title: GitHub Pages
+draft: false
+fixed: false
+heroImage: /src/assets/images/eightkun.jpg
+category: Network
+tags:
+  - github page
+description: github page 配置自定义域名
+---
+
+## 简介
+
+要将 GitHub Pages 和阿里云域名连接起来，您需要进行以下步骤：
+
+### 1. 在 GitHub 上配置自定义域名
+
+1. 打开您的 GitHub 仓库页面，进入 **Settings**。
+2. 向下滚动到 **Pages** 章节，找到 **Custom Domain**，并输入您的自定义域名（如 `example.com` 或 `www.example.com`）。
+3. 保存后，GitHub 会自动生成两个 DNS 记录（CNAME 或 A 记录）来验证域名的归属。
+
+### 2. 在阿里云域名控制台配置 DNS
+
+1. 登录到 [阿里云控制台](https://account.aliyun.com/) 并进入 **域名与网站** > **域名**。
+2. 选择您的域名，进入 **解析设置**。
+3. 根据 GitHub 提供的 DNS 配置，添加以下解析记录：
+   - 如果 GitHub 提供了 **CNAME 记录**，则添加一条 **CNAME 记录**，将 `www` 子域名指向 `username.github.io`，将**主机记录**设为 `www` 或空白（对应裸域），**记录类型**设为 **CNAME**。
+   - 如果 GitHub 提供了 **A 记录**，则添加两条 **A 记录**，指向 GitHub 提供的 IP 地址（一般是 `185.199.108.153`、`185.199.109.153`、`185.199.110.153` 和 `185.199.111.153`）。确保**主机记录**对应的是裸域名或 `www`。
+
+### 3. GitHub Pages 设置 HTTPS（可选）
+
+返回 GitHub 仓库的 **Settings** > **Pages** 页面，确认 **Enforce HTTPS** 被勾选。GitHub 会自动为您设置 HTTPS 证书，通常会在一段时间后生效。
