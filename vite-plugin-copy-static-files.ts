@@ -28,7 +28,6 @@ export function copyStaticFiles() {
 
 			await fs.mkdir(destDir, { recursive: true });
 			await copyRecursive(srcDir, destDir);
-			console.log("Static files copied to dist/_astro");
 		},
 	};
 }

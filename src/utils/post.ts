@@ -4,8 +4,6 @@ import useStore from "../zustand/store";
 
 export const getCategories = async (locale: any) => {
 	const currentLocale = locale || useStore.getState().locale;
-	console.log("getCategories", currentLocale);
-
 	let posts = await getCollection("blog", (entry: any) => entry.id.startsWith(`${currentLocale}/`));
 	const categories = new Set(posts.map((post: any) => post.data.category));
 	return Array.from(categories);

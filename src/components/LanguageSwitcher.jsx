@@ -7,13 +7,10 @@ export default function LanguageSwitcher() {
 	const setLocale = useStore((state) => state.setLocale);
 
 	// 使用 useEffect 监听 currentLocale 的变化
-	useEffect(() => {
-		console.log("Current locale updated:", currentLocale);
-	}, [currentLocale]);
+	useEffect(() => {}, [currentLocale]);
 
 	const handleChange = (e) => {
 		const newLocale = e.target.value;
-		console.log("Changing locale to:", newLocale);
 		setLocale(newLocale);
 
 		const currentUrl = window.location.pathname.split("/").slice(3).join("/"); // 获取除语言代码之外的 URL

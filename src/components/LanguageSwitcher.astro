@@ -1,8 +1,6 @@
 ---
 // language.astro
 import { LOCALES } from "@/data/locale";
-
-console.log(543221);
 ---
 
 <select id="language-switcher">
@@ -15,7 +13,6 @@ console.log(543221);
 	const setLocale = useStore((state) => state.setLocale);
 
 	function changeLanguage(newLocale) {
-		console.log(333333);
 		setLocale(newLocale);
 	}
 

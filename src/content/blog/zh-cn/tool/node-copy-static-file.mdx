@@ -45,7 +45,6 @@ function copyRecursiveSync(src, dest) {
 }
 
 copyRecursiveSync(srcDir, destDir);
-console.log("Static files copied to dist/_astro");
 ```
 
 在 package.json 中添加构建脚本
@@ -101,7 +100,6 @@ export function copyStaticFiles() {
 
 			await fs.mkdir(destDir, { recursive: true });
 			await copyRecursive(srcDir, destDir);
-			console.log("Static files copied to dist/_astro");
 		},
 	};
 }
