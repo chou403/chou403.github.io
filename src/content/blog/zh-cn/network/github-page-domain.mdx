@@ -33,3 +33,24 @@ description: github page 配置自定义域名
 ### 3. GitHub Pages 设置 HTTPS（可选）
 
 返回 GitHub 仓库的 **Settings** > **Pages** 页面，确认 **Enforce HTTPS** 被勾选。GitHub 会自动为您设置 HTTPS 证书，通常会在一段时间后生效。
+
+### 4. GitHub Pages 执行工作流配置 Domain
+
+github 执行工作流会重置配置，会把设置的 domain 清除，若需要每次执行工作流默认添加 domain，修改 .github/workflows 中的配置文件内容
+
+```yml
+- name: Deploy to GitHub Pages
+  uses: peaceiris/actions-gh-pages@v4
+  with:
+    personal_token: ${{ secrets.GITHUB_TOKEN }}
+    publish_dir: ./dist
+    publish_branch: docs
+    cname: uchou.me ## 添加自定义域名，自动在 docs 分支生成 cname 文件
+    force_orphan: true
+```
+
+出现异常 can't open the page "https://uchou.me/. The error is： "Load cannot follow more than 20 redirections"
+
+检查 Cloudflare 的 SSL/TLS 设置
+
+- 在 Cloudflare 的 SSL/TLS 设置中，确保 SSL 设置为“灵活（Flexible）”或“完全（Full）”。通常，“灵活”会导致不必要的重定向循环。尝试使用“完全”并确保您的 GitHub Pages 已启用 HTTPS。

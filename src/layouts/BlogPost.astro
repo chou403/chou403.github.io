@@ -29,17 +29,6 @@ const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 	<article class="mt-12 min-w-full sm:max-w-none md:max-w-none md:py-4">
 		<header class="mb-3 flex flex-col gap-6">
 			<div class="flex flex-wrap gap-2">
-				<div class="min-h-full">
-					<Image
-						src={heroImage}
-						width={200}
-						height={200}
-						format="webp"
-						class="h-16 w-16 rounded-full object-cover"
-						alt={`img of ${title}`}
-					/>
-				</div>
-
 				<div class="flex items-center justify-center">
 					<h1 class="text-4xl font-semibold md:pb-2.5 md:text-4xl">
 						{description}
