@@ -52,14 +52,5 @@ jobs:
           personal_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: docs
+          cname: uchou.me
           force_orphan: true
-
-      - name: Copy CNAME to docs branch
-        run: |
-          git config user.name "chou403"
-          git config user.email "nuyoahchou@gmail.com"
-          git checkout docs
-          cp CNAME docs/CNAME
-          git add docs/CNAME
-          git commit -m "Update CNAME file"
-          git push origin docs
