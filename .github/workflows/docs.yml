@@ -46,6 +46,16 @@ jobs:
       - name: Build Astro site
         run: pnpm run build
 
+      - name: Copy CNAME to docs branch
+        run: |
+          git config user.name "chou403"
+          git config user.email "nuyoahchou@gmail.com"
+          git checkout docs
+          cp CNAME docs/CNAME
+          git add docs/CNAME
+          git commit -m "Update CNAME file"
+          git push origin docs
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
