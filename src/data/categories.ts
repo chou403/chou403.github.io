@@ -1,2 +1,2 @@
 // List of categories for blog posts
-export const CATEGORIES = ["Java", "Middleware", "Interview", "Tool", "Network"] as const;
+export const CATEGORIES = ["Java", "Middleware", "Interview", "Tool", "Network", "Html"] as const;

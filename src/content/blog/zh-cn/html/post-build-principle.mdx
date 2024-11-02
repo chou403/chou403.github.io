@@ -1,0 +1,55 @@
+---
+author: chou403
+publishDate: 2024-11-02T16:32:17
+updatedDate: 2024-11-02T16:32:17
+title: postbuild
+draft: false
+fixed: false
+heroImage: /src/assets/images/eightkun.jpg
+category: Html
+tags:
+  - npm
+  - node
+description: postbuild 执行的原理
+---
+
+## 一学一个不吱声
+
+`postbuild` 脚本会在 `npm run build` 之后自动执行,这是由 npm 脚本命名规则导致的。npm 提供了一种预定义的生命周期钩子机制,这样可以在某些任务执行前或执行后自动运行其他脚本。
+
+### 工作原理
+
+npm 脚本系统支持通过命名约定来定义钩子脚本。例如:
+
+- `pre<task>`:在 `task` 脚本运行之前自动执行。
+- `post<task>`:在 `task` 脚本运行之后自动执行。
+
+对于 `build` 脚本,如果你定义了:
+
+- `prebuild`,在 `npm run build` 之前自动运行。
+- `postbuild`,在 `npm run build` 之后自动运行。
+
+这种机制无需额外工具支持,只要是通过 npm 运行 `npm run build`,它就会自动检测是否存在相应的 `prebuild` 或 `postbuild` 脚本,并在适当的时机自动运行。
+
+### 为什么会自动运行 `postbuild`
+
+在你的 `package.json` 中:
+
+```json
+"scripts": {
+  "build": "astro build",
+  "postbuild": "pagefind --site dist"
+}
+```
+
+当你执行 `npm run build` 时:
+
+1. npm 首先运行 `astro build`。
+2. 当 `build` 脚本成功完成后,npm 检测到存在 `postbuild`,然后自动运行 `pagefind --site dist`。
+
+### 工具或环境的影响
+
+- **npm 本身**:这是 npm 的核心功能,与 npm 版本相关联,而不依赖其他工具。
+- **CI/CD 环境**:如果你的项目在 GitHub Actions 或其他 CI/CD 工具中运行 `npm run build`,它们会遵循 npm 的行为,因此会自动运行 `postbuild`。
+
+总结来说,`postbuild` 的自动执行仅仅是 npm 脚本命名规则的作用,无需额外配置或工具。

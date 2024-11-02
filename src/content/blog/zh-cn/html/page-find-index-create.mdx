@@ -1,0 +1,95 @@
+---
+author: chou403
+publishDate: 2024-11-02T16:25:10
+updatedDate: 2024-11-02T16:25:10
+title: 创建索引文件
+draft: false
+fixed: false
+heroImage: /src/assets/images/eightkun.jpg
+category: Html
+tags:
+  - pagefind
+description: Pagefind 如何创建的索引文件
+---
+
+## 一学一个不吱声
+
+在使用 `Pagefind` 进行站点搜索时,生成的索引文件通常位于指定的输出目录中,并被放置在站点的静态资源路径下。默认情况下,当你运行 `Pagefind` 的构建工具(如 `pagefind-cli`)时,它会在站点构建过程中生成并输出索引文件。这些文件的路径和结构因配置而异,下面是一个典型的文件结构示例。
+
+### 文件结构
+
+生成的 `Pagefind` 索引文件通常会放在一个专用的目录中,如 `pagefind/`,包含以下内容:
+
+```
+public/
+├── pagefind/
+│   ├── pagefind.js         // JavaScript 文件,Pagefind 搜索库核心逻辑
+│   ├── pagefind.wasm       // WebAssembly 文件,用于加速搜索
+│   ├── search_index/       // 包含索引数据的目录
+│   │   ├── 1.pf_index      // 压缩的索引文件(片段)
+│   │   ├── 2.pf_index      // 更多的索引片段(根据站点大小会有多个)
+│   │   └── *.pf_index      // 索引片段文件
+│   └── translations.json   // 语言支持文件(可选,用于多语言搜索)
+```
+
+### 文件说明
+
+- **`pagefind.js`**:
+  - 提供核心的搜索逻辑和加载索引的功能,加载后在前端执行搜索查询。
+- **`pagefind.wasm`**:
+  - 使用 WebAssembly 来提高搜索性能,尤其是在大型索引上显著加快查询速度。
+- **`search_index/`**:
+  - 包含所有索引数据的压缩文件。每个 `*.pf_index` 文件是预处理的索引片段,`Pagefind` 会根据需要动态加载这些片段以执行搜索。
+- **`translations.json`**(可选):
+  - 包含搜索 UI 支持的语言翻译,提供多语言支持时会用到。
+
+### 部署建议
+
+- **索引目录路径**:
+  - 确保在部署站点时,`pagefind/` 目录在你的站点的 `public` 文件夹或类似的静态文件目录下,这样可以通过 `baseUrl` 指定的路径正确引用它。
+- **`bundlePath` 配置**:
+  - 在你的搜索 UI 实例化代码中,如你提供的示例,需要确保 `bundlePath` 正确指向 `pagefind/` 目录:
+    ```javascript
+    new PagefindUI({
+    	element: "#pagefind__search",
+    	baseUrl: import.meta.env.BASE_URL,
+    	bundlePath: import.meta.env.BASE_URL.replace(/\/$/, "") + "/pagefind/",
+    	showImages: false,
+    });
+    ```
+
+### 如何生成索引文件
+
+通常,使用以下命令运行 `Pagefind` CLI 来生成索引:
+
+```bash
+npx pagefind --source ./output-dir
+```
+
+- `./output-dir` 是你的网站构建输出目录,如 `dist/` 或 `public/`。
+
+索引文件生成后,可以将整个 `pagefind/` 目录部署到生产环境,并通过正确配置路径在前端加载并使用这些索引。
+
+### 配置 postbuild
+
+在 `package.json` 中的 `postbuild` 脚本部分:
+
+```json
+"postbuild": "pagefind --site dist"
+```
+
+这个脚本会在 `astro build` 命令运行完成后自动执行。`postbuild` 是一个特殊的 npm 脚本钩子,当 `npm run build` 完成时会自动触发。你没有显式调用 `postbuild`,但在部署时,`build` 命令运行完毕后会自动运行 `postbuild`。
+
+### 发布到 GitHub Pages 会生成索引文件?
+
+在 GitHub Actions 中,如果你的 CI/CD 工作流程中定义了 `npm run build`,`postbuild` 脚本会随之运行,这样 `pagefind` 会生成索引文件并放置在 `dist` 目录中。
+
+### 执行流程
+
+1. **构建站点**:运行 `npm run build` 或 `astro build`。
+2. **触发 `postbuild`**:构建结束后,`postbuild` 脚本 (`pagefind --site dist`) 自动执行,生成搜索索引文件。
+3. **部署到 GitHub Pages**:`dist` 目录连同生成的 `pagefind/` 文件夹一起部署。
+
+### 自动生成索引文件的原因
+
+你可能在 GitHub Actions 配置中有一个 `npm run build` 或类似的构建步骤,该步骤会在构建完成后触发 `postbuild` 脚本,因此即使本地没有手动运行 `postbuild`,在 GitHub Actions 上的工作流会自动完成这一过程。

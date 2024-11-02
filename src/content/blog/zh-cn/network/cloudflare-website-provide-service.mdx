@@ -14,30 +14,30 @@ description: 网站是否通过 Cloudflare 提供服务
 
 ## 一学一个不吱声
 
-要确认您的网站是否正在通过 Cloudflare 提供服务，可以通过以下几种方式检查：
+要确认您的网站是否正在通过 Cloudflare 提供服务,可以通过以下几种方式检查:
 
 ### 1. **查看 DNS 解析记录**
 
-- 在 Cloudflare 的 DNS 设置页面，查看您自定义域名的记录状态：
-  - 如果记录的**代理状态**显示为“Proxied”（橙色云朵图标），那么请求将会经过 Cloudflare。
-  - 如果显示为“DNS only”（灰色云朵图标），请求直接指向 GitHub，未使用 Cloudflare 代理。
+- 在 Cloudflare 的 DNS 设置页面,查看您自定义域名的记录状态:
+  - 如果记录的**代理状态**显示为“Proxied”(橙色云朵图标),那么请求将会经过 Cloudflare。
+  - 如果显示为“DNS only”(灰色云朵图标),请求直接指向 GitHub,未使用 Cloudflare 代理。
 
 ### 2. **检查响应头信息**
 
-- 打开网站后，在浏览器中按 `F12` 打开开发者工具，选择“Network”选项卡，刷新页面。
-- 在请求的响应头（Response Headers）中，查看是否存在 `cf-cache-status` 或 `server: cloudflare` 等标识。如果有，说明请求确实经过了 Cloudflare。
+- 打开网站后,在浏览器中按 `F12` 打开开发者工具,选择“Network”选项卡,刷新页面。
+- 在请求的响应头(Response Headers)中,查看是否存在 `cf-cache-status` 或 `server: cloudflare` 等标识。如果有,说明请求确实经过了 Cloudflare。
 
 ### 3. **使用在线工具**
 
-- 访问网站如 [webpagetest.org](https://www.webpagetest.org/) 或 [httpstatus.io](https://httpstatus.io/)，输入您的自定义域名。
-- 如果请求路径中显示 `cloudflare`，说明 Cloudflare 正在代理您的流量。
+- 访问网站如 [webpagetest.org](https://www.webpagetest.org/) 或 [httpstatus.io](https://httpstatus.io/),输入您的自定义域名。
+- 如果请求路径中显示 `cloudflare`,说明 Cloudflare 正在代理您的流量。
 
 ### 4. **Ping 或 Trace 路由**
 
-- 打开终端（Command Prompt 或 Terminal），使用 `ping` 或 `traceroute` 检查域名。
+- 打开终端(Command Prompt 或 Terminal),使用 `ping` 或 `traceroute` 检查域名。
   ```bash
   ping your-domain.com
   ```
-- 如果您看到 Cloudflare IP 段（通常以 `104.16.x.x` 或 `172.67.x.x` 开头），则流量已通过 Cloudflare。
+- 如果您看到 Cloudflare IP 段(通常以 `104.16.x.x` 或 `172.67.x.x` 开头),则流量已通过 Cloudflare。
 
-通过这些方法，可以确认 Cloudflare 是否在处理您的流量。
+通过这些方法,可以确认 Cloudflare 是否在处理您的流量。

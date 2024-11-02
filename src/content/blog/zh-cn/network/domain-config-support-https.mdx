@@ -14,35 +14,35 @@ description: 阿里云域名配置支持 https
 
 ## 一学一个不吱声
 
-在阿里云上使用自定义域名访问 GitHub Pages，如果希望支持 HTTPS，有几种常见方式：
+在阿里云上使用自定义域名访问 GitHub Pages,如果希望支持 HTTPS,有几种常见方式:
 
-### 方法 1：直接使用 GitHub Pages 提供的 HTTPS
+### 方法 1:直接使用 GitHub Pages 提供的 HTTPS
 
-GitHub Pages 提供免费的 HTTPS 支持。通过以下步骤启用 HTTPS：
+GitHub Pages 提供免费的 HTTPS 支持。通过以下步骤启用 HTTPS:
 
-1. **配置自定义域名**：在 GitHub Pages 设置中添加您的自定义域名，并保存。
-2. **启用 HTTPS**：
-   - 在 GitHub 仓库页面，进入 **Settings** > **Pages**。
-   - 在 **Custom domain** 下输入您的域名后，会出现 **Enforce HTTPS** 选项。
-   - 勾选 **Enforce HTTPS** 选项，GitHub 会自动生成并安装 SSL 证书。
-3. **等待生效**：通常 10 分钟到 1 小时后，GitHub 会启用 HTTPS。
+1. **配置自定义域名**:在 GitHub Pages 设置中添加您的自定义域名,并保存。
+2. **启用 HTTPS**:
+   - 在 GitHub 仓库页面,进入 **Settings** > **Pages**。
+   - 在 **Custom domain** 下输入您的域名后,会出现 **Enforce HTTPS** 选项。
+   - 勾选 **Enforce HTTPS** 选项,GitHub 会自动生成并安装 SSL 证书。
+3. **等待生效**:通常 10 分钟到 1 小时后,GitHub 会启用 HTTPS。
 
-> **注意**：GitHub Pages 的 HTTPS 仅适用于 **CNAME 解析**的域名（比如 `www.example.com`），不适用于裸域（`example.com`）。所以，如果使用裸域，可以考虑 CNAME 转发到带 `www` 的域名。
+> **注意**:GitHub Pages 的 HTTPS 仅适用于 **CNAME 解析**的域名(比如 `www.example.com`),不适用于裸域(`example.com`)。所以,如果使用裸域,可以考虑 CNAME 转发到带 `www` 的域名。
 
-### 方法 2：通过阿里云 CDN 实现 HTTPS
+### 方法 2:通过阿里云 CDN 实现 HTTPS
 
-如果想在裸域名（`example.com`）上也实现 HTTPS，阿里云 CDN 可以提供自定义 HTTPS 证书：
+如果想在裸域名(`example.com`)上也实现 HTTPS,阿里云 CDN 可以提供自定义 HTTPS 证书:
 
-1. **在阿里云 CDN 配置域名**：进入阿里云 **CDN** 控制台，添加一个加速域名并指向 GitHub Pages 的域名。
-2. **上传 SSL 证书**：阿里云 CDN 提供免费和自定义 SSL 证书支持，您可以在 **域名管理** > **HTTPS 配置** 上传或选择已购买的 SSL 证书。
-3. **设置解析**：将您的裸域 `example.com` 设置为 **CNAME** 解析指向阿里云 CDN 的加速域名。
-4. **访问 HTTPS 链接**：一旦解析生效，您的域名将支持 HTTPS。
+1. **在阿里云 CDN 配置域名**:进入阿里云 **CDN** 控制台,添加一个加速域名并指向 GitHub Pages 的域名。
+2. **上传 SSL 证书**:阿里云 CDN 提供免费和自定义 SSL 证书支持,您可以在 **域名管理** > **HTTPS 配置** 上传或选择已购买的 SSL 证书。
+3. **设置解析**:将您的裸域 `example.com` 设置为 **CNAME** 解析指向阿里云 CDN 的加速域名。
+4. **访问 HTTPS 链接**:一旦解析生效,您的域名将支持 HTTPS。
 
-> **注意**：阿里云 CDN 的 HTTPS 需要购买阿里云的证书，或者使用免费的证书（如 Let’s Encrypt）上传。
+> **注意**:阿里云 CDN 的 HTTPS 需要购买阿里云的证书,或者使用免费的证书(如 Let’s Encrypt)上传。
 
-### 方法 3：使用 Cloudflare 配置免费 HTTPS
+### 方法 3:使用 Cloudflare 配置免费 HTTPS
 
-1. **在 Cloudflare 添加域名**：注册并登录 [Cloudflare](https://www.cloudflare.com/)，然后将您的域名添加到 Cloudflare 中。
-2. **设置 DNS 解析**：在 Cloudflare 中，将 `@` 和 `www` 的记录都指向 GitHub Pages 的 IP 地址，启用 Cloudflare 的代理（橙色云）。
-3. **启用 HTTPS**：在 Cloudflare 的 **SSL/TLS** 设置中，选择 **Flexible** 或 **Full** 模式，Cloudflare 将自动启用 HTTPS。
-4. **等待生效**：解析完成后，Cloudflare 会为您的域名提供 HTTPS 访问。
+1. **在 Cloudflare 添加域名**:注册并登录 [Cloudflare](https://www.cloudflare.com/),然后将您的域名添加到 Cloudflare 中。
+2. **设置 DNS 解析**:在 Cloudflare 中,将 `@` 和 `www` 的记录都指向 GitHub Pages 的 IP 地址,启用 Cloudflare 的代理(橙色云)。
+3. **启用 HTTPS**:在 Cloudflare 的 **SSL/TLS** 设置中,选择 **Flexible** 或 **Full** 模式,Cloudflare 将自动启用 HTTPS。
+4. **等待生效**:解析完成后,Cloudflare 会为您的域名提供 HTTPS 访问。
