@@ -16,6 +16,9 @@
       "  - $7",
       "description: $8",
       "---",
+      "",
+      "## 一学一个不吱声",
+      ""
     ],
     "description": "Adds the frontmatter block for the AstroPaper Blog post"
   },
