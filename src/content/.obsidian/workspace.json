@@ -4,11 +4,11 @@
 		"type": "split",
 		"children": [
 			{
-				"id": "6a82933d34bd5f4f",
+				"id": "095ae1cd0c6e5e5c",
 				"type": "tabs",
 				"children": [
 					{
-						"id": "caed8831b9d2435e",
+						"id": "d2b5e487cfe75c24",
 						"type": "leaf",
 						"state": {
 							"type": "empty",
@@ -138,19 +138,22 @@
 			"command-palette:打开命令面板": false
 		}
 	},
-	"active": "caed8831b9d2435e",
+	"active": "d2b5e487cfe75c24",
 	"lastOpenFiles": [
+		"blog/zh-cn/html/未命名.md",
+		"blog/zh-cn/java/blocking-queue-definition.mdx",
+		"blog/zh-cn/tool/common-utils.mdx",
+		"blog/zh-cn/tool/docker-install-use.mdx",
+		"blog/zh-cn/tool/node-copy-static-file.mdx",
+		"blog/zh-cn/tool/mysql_multi.mdx",
+		"blog/zh-cn/html/page-find-definition.mdx",
+		"blog/zh-cn/html/post-build-principle.mdx",
+		"blog/zh-cn/html/page-find-index-create.mdx",
+		"未命名 1.canvas",
+		"2024-11-04.md",
+		"未命名.canvas",
 		"blog/interview/collection/fail-fast.mdx",
 		"blog/interview/ddd/entity-value-object.mdx",
-		"blog/interview/ddd/ddd.mdx",
-		"blog/interview/ddd/what-is-entity.mdx",
-		"blog/interview/ddd/entity.mdx",
-		"blog/interview/ddd/domain-event.mdx",
-		"blog/interview/ddd/congestion-anemia.mdx",
-		"blog/interview/ddd/aggregation.mdx",
-		"blog/interview/ddd/implementation-process.mdx",
-		"blog/interview/ddd/layered-architecture.mdx",
-		"blog/interview/ddd/what-is-domain-event.mdx",
 		"blog/interview/collection/what-is-fail-fast.mdx.md",
 		"blog/interview/未命名.canvas"
 	]
