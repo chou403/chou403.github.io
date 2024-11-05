@@ -1,0 +1,686 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth" data-astro-cid-37fxchfa> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico" type="image/x-icon"><!-- <link rel="icon" type="image/svg+xml" href="/favicon1.svg" /> --><meta name="generator" content="Astro v4.16.2"><!-- Canonical URL --><link rel="canonical" href="https://blog-template-gray.vercel.app/post/zh-cn/tool/mybatis-plus-generator/"><!-- Primary Meta Tags --><title>MybatisPlus generator • 知道的越多,才知知道的越少</title><!-- ViewTransitions  --><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><!-- SEO --><meta name="title" content="MybatisPlus generator • 知道的越多,才知知道的越少"><meta name="description" content="MybatisPlus 代码生成工具配置(基于 IDEA plugin)"><meta name="author" content="chou403"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://blog-template-gray.vercel.app/post/zh-cn/tool/mybatis-plus-generator/"><meta property="og:title" content="MybatisPlus generator"><meta property="og:description" content="MybatisPlus 代码生成工具配置(基于 IDEA plugin)"><meta property="og:image" content="https://blog-template-gray.vercel.app/_astro/cat-7.jpeg"><meta property="article:author" content="chou403"><meta property="article:published_time" content="2024-08-09T14:54:22.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://blog-template-gray.vercel.app/post/zh-cn/tool/mybatis-plus-generator/"><meta property="twitter:title" content="MybatisPlus generator"><meta property="twitter:description" content="MybatisPlus 代码生成工具配置(基于 IDEA plugin)"><meta property="twitter:image" content="https://blog-template-gray.vercel.app/_astro/cat-7.jpeg"><!-- RSS auto-discovery --><link rel="alternate" type="application/rss+xml" title="知道的越多,才知知道的越少" href="/rss.xml"><link as="font" crossorigin rel="preload" href="/fonts/Manrope-Bold.woff2" type="font/woff2"><style>@font-face {font-weight: 200;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-ExtraLight.woff2)} @font-face {font-weight: 300;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Light.woff2)} @font-face {font-weight: 400;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Regular.woff2)} @font-face {font-weight: 500;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Medium.woff2)} @font-face {font-weight: 600;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-SemiBold.woff2)} @font-face {font-weight: 700;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Bold.woff2)} @font-face {font-weight: 800;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-ExtraBold.woff2)} @font-face { font-family: '_font_fallback_655037766690'; size-adjust: 103.76%; src: local('Arial'); ascent-override: 102.74%; descent-override: 28.91%; line-gap-override: 0.00%; }</style><script>
+	function getTheme() {
+		const storedTheme = typeof localStorage !== 'undefined' && localStorage.getItem('theme')
+
+		return (
+			storedTheme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+		)
+	}
+
+	function setTheme(newTheme) {
+		const html = document.documentElement
+		const isDark = newTheme === 'dark'
+
+		html.classList.toggle('dark', isDark)
+		html.classList.toggle('light', !isDark)
+
+		localStorage.setItem('theme', newTheme)
+	}
+
+	// set initial theme
+	setTheme(getTheme())
+	document.addEventListener('astro:after-swap', () => setTheme(getTheme()))
+
+	document.addEventListener('theme-change', (e) => {
+		setTheme(e.detail.theme)
+	})
+</script><script>
+	if (!('animations' in localStorage)) {
+		localStorage.setItem('animations', 'true')
+	} else {
+		localStorage.setItem('animations', 'false')
+	}
+</script><link rel="stylesheet" href="/_astro/_page_.CCiJ3j76.css">
+<link rel="stylesheet" href="/_astro/_slug_.Ba2ksmBT.css"><script type="module" src="/_astro/hoisted.D9DAUC0s.js"></script></head> <body class="mx-auto bg-white dark:bg-slate-900 dark:text-slate-400 dark:text-white" data-astro-cid-37fxchfa> <main class="mt-4 grid gap-12 overflow-hidden px-5 antialiased sm:mx-auto sm:max-w-2xl sm:px-8 md:max-w-6xl md:overflow-visible lg:px-0" data-astro-cid-37fxchfa> <header class="fixed left-0 top-0 z-50 flex h-12 w-full items-center bg-[#f8f9fa99] px-5 py-2.5 font-semibold dark:border-slate-50/[0.06] dark:bg-slate-900/60"> <a class="mr-auto text-lg" href="/">Home</a> <div id="astro-header-drawer" class="absolute right-1 top-12 z-50 translate-x-96 rounded-l-lg bg-white p-4 text-slate-500 shadow transition-transform duration-300 ease-in dark:bg-[#0a0910] md:static md:h-auto md:translate-x-0 md:rounded-none md:border-none md:bg-transparent md:p-0 md:shadow-none dark:md:bg-transparent"> <nav class="flex h-full justify-between gap-2 text-left md:w-full md:flex-row md:gap-5"> <div class="flex flex-col gap-4 border-black pr-4 dark:border-white md:flex-row md:border-r-2"> <a href="/tags" class="text-opacity-60 flex items-center gap-1 text-2xl md:text-base" rel="noopener noreferrer ">  <svg xmlns="http://www.w3.org/2000/svg" class="w-8 md:w-6" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M7.859 6h-2.834a2.025 2.025 0 0 0 -2.025 2.025v2.834c0 .537 .213 1.052 .593 1.432l6.116 6.116a2.025 2.025 0 0 0 2.864 0l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-6.117 -6.116a2.025 2.025 0 0 0 -1.431 -.593z"></path> <path d="M17.573 18.407l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-7.117 -7.116"></path> <path d="M6 9h-.01"></path> </svg> Tags
+ </a> </div> <div class="flex items-center justify-center gap-3 md:justify-end md:p-0"> <a href="https://github.com/chou403/chou403.github.io" class="text-opacity-60" rel="noopener noreferrer " target="_blank" aria-label="Github">  <span><svg viewBox="0 0 16 16" class="h-5 w-5" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg> </span>  </a> </div> <!-- <LanguageSwitcher client:load /> --> </nav> </div> <div class="flex items-center gap-3 text-slate-500 md:pl-3" data-astro-transition-persist="navbar"> <div> <site-search id="search" class="ms-auto"> <button data-open-modal disabled class="flex items-center justify-center rounded-md gap-1"> <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 19-3.5-3.5"></path><circle cx="11" cy="11" r="6"></circle></svg> <!-- <span class='md:hidden text-2xl'> Search</span> --> </button> <dialog aria-label="search" class="h-full max-h-full w-full max-w-full border border-zinc-400 bg-white dark:bg-[#0a0910ec] shadow backdrop:backdrop-blur sm:mx-auto sm:mb-auto sm:mt-16 sm:h-max sm:max-h-[calc(100%-8rem)] sm:min-h-[15rem] sm:w-5/6 sm:max-w-[48rem] sm:rounded-md opacity-0"> <div class="dialog-frame flex flex-col gap-4 p-6 pt-12 sm:pt-6"> <button data-close-modal class="ms-auto cursor-pointer rounded-full bg-black text-white px-4 py-2 dark:bg-white dark:text-black">Close</button> <div class="search-container dark:text-white"> <div id="pagefind__search"></div> </div> </div> </dialog> </site-search>   </div>  <theme-toggle class="relative h-6 w-6"> <button id="toggle-theme" class="group" aria-label="Toggle Theme"> <span class="absolute left-0 right-0 top-0 opacity-0 group-aria-pressed:opacity-100"> <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.715 15.15A6.5 6.5 0 0 1 9 6.035C6.106 6.922 4 9.645 4 12.867c0 3.94 3.153 7.136 7.042 7.136 3.101 0 5.734-2.032 6.673-4.853Z" class="fill-sky-400/20"></path><path d="m17.715 15.15.95.316a1 1 0 0 0-1.445-1.185l.495.869ZM9 6.035l.846.534a1 1 0 0 0-1.14-1.49L9 6.035Zm8.221 8.246a5.47 5.47 0 0 1-2.72.718v2a7.47 7.47 0 0 0 3.71-.98l-.99-1.738Zm-2.72.718A5.5 5.5 0 0 1 9 9.5H7a7.5 7.5 0 0 0 7.5 7.5v-2ZM9 9.5c0-1.079.31-2.082.845-2.93L8.153 5.5A7.47 7.47 0 0 0 7 9.5h2Zm-4 3.368C5 10.089 6.815 7.75 9.292 6.99L8.706 5.08C5.397 6.094 3 9.201 3 12.867h2Zm6.042 6.136C7.718 19.003 5 16.268 5 12.867H3c0 4.48 3.588 8.136 8.042 8.136v-2Zm5.725-4.17c-.81 2.433-3.074 4.17-5.725 4.17v2c3.552 0 6.553-2.327 7.622-5.537l-1.897-.632Z" class="fill-sky-500"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M17 3a1 1 0 0 1 1 1 2 2 0 0 0 2 2 1 1 0 1 1 0 2 2 2 0 0 0-2 2 1 1 0 1 1-2 0 2 2 0 0 0-2-2 1 1 0 1 1 0-2 2 2 0 0 0 2-2 1 1 0 0 1 1-1Z" class="fill-sky-500"></path></svg> </span> <span class="absolute left-0 right-0 top-0 opacity-0 group-aria-[pressed=false]:opacity-100"> <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" class="fill-sky-400/20 stroke-sky-500"></path><path d="M12 4v1M17.66 6.344l-.828.828M20.005 12.004h-1M17.66 17.664l-.828-.828M12 20.01V19M6.34 17.664l.835-.836M3.995 12.004h1.01M6 6l.835.836" class="stroke-sky-500"></path></svg> </span> </button> </theme-toggle> <script>
+	const button = document.getElementById('toggle-theme')
+
+	function setButtonPresssed() {
+		const bodyThemeIsDark = document.documentElement.classList.contains('dark')
+		button.setAttribute('aria-pressed', String(bodyThemeIsDark))
+	}
+	setButtonPresssed()
+</script> <button id="toggleMenu" class="md:ml-6 md:hidden"> <svg width="24" height="24"><path d="M5 6h14M5 12h14M5 18h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg> </button> <button id="astro-header-drawer-button" type="button" class="md:ml-6 md:hidden"> <svg width="24" height="24" fill="none" aria-hidden="true"><path d="M12 6v.01M12 12v.01M12 18v.01M12 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> <span class="sr-only">Show Menu</span> </button> </div> </header>  <div class="pointer-events-none absolute inset-x-0 top-0 z-[60] flex justify-center overflow-hidden"> <div class="flex w-[108rem] flex-none justify-end"> <picture> <source srcset="/_astro/docs.BiePeNN8.avif" type="image/avif"> <img src="/_astro/docs.BeNwu2rW_1CTG48.webp" class="w-[71.75rem] max-w-none flex-none dark:hidden" alt="img of docs" width="200" height="200" loading="lazy" decoding="async"> </picture> <picture> <source srcset="/_astro/docs-dark.C7CksN2y.avif" type="image/avif"> <img src="/_astro/docs-dark.Bsq-hjJH_17S3ea.webp" class="hidden w-[90rem] max-w-none flex-none dark:block" alt="img of docs-dark" width="200" height="200" loading="lazy" decoding="async"> </picture> </div> </div>  <article class="mt-12 min-w-full sm:max-w-none md:max-w-none md:py-4"> <header class="mb-3 flex flex-col gap-6"> <div class="flex flex-wrap gap-2"> <div class="flex items-center justify-center"> <h1 class="text-4xl font-semibold md:pb-2.5 md:text-4xl"> MybatisPlus 代码生成工具配置(基于 IDEA plugin) </h1> </div> </div> <div class="flex gap-x-1"> <p class="text-center text-sm font-bold text-opacity-50"> chou403 </p> <p class="text-center text-sm font-bold text-opacity-50">
+/ Tool </p> <p class="text-center text-sm text-opacity-50">
+/ <time class="text-sm font-bold text-opacity-60" datetime="2024-03-16T20:43:41.000Z"> Mar 16, 2024 </time> </p> <p class="text-center text-sm font-bold text-opacity-50">
+/ 9 min read </p> <!-- {
+					data.updatedDate && (
+						<span class="text-quote rounded-lg p-1">
+							Last Updated:
+							<FormattedDate date={data.updatedDate} />
+						</span>
+					)
+				} --> </div> </header> <!-- annotate blog post image --> <!-- <>
+			{
+				heroImage && (
+					<Image
+						src={heroImage}
+						width={1000}
+						height={500}
+						quality={100}
+						format="jpg"
+						loading="eager"
+						class="my-8 max-h-[300px] w-full rounded-md object-cover md:max-h-[500px]"
+						alt={`img of ${title}`}
+					/>
+				)
+			}
+		</> --> <hr> <div>   <div class="mt-8 grid grid-cols-1 gap-10"> <!-- aside  --> <!-- Left menu bar comments --> <!-- <aside class="hidden flex-col gap-8 md:flex">
+			<div class="sticky top-12 z-10 hidden self-start transition-all duration-200 md:block">
+				{headings && headings.length > 0 && <TableOfContents {headings} />}
+			</div>
+		</aside> --> <!-- post --> <article class="grid w-full max-w-full"> <div class="prose prose-lg mb-12 min-w-full dark:prose-invert md:prose-xl"> <h2 id="idea-安装插件-mybatisplus-生成代码">IDEA 安装插件 MybatisPlus 生成代码</h2>
+<p><img src="https://cdn.jsdelivr.net/gh/chou403/pic-md@main//img/202403162046262.png" alt="202403162046262"/></p>
+<p>IDEA 导航栏 tools 找到一些内容
+<img src="https://cdn.jsdelivr.net/gh/chou403/pic-md@main//img/202403162046992.png" alt="202403162046992"/></p>
+<h3 id="config-database">Config Database</h3>
+<p>点击 Config Database 配置数据库连接</p>
+<p><img src="https://cdn.jsdelivr.net/gh/chou403/pic-md@main//img/202403162049146.png" alt="202403162049146"/></p>
+<h3 id="config-generator">Config Generator</h3>
+<p>配置数据库连接结束,点击 Config Generator</p>
+<p><img src="https://cdn.jsdelivr.net/gh/chou403/pic-md@main//img/202403162052413.png" alt="202403162052413"/></p>
+<p>选中需要生成代码的表 点击 code Generator 即可</p>
+<h2 id="idea-结合-easycode-生成代码">IDEA 结合 EasyCode 生成代码</h2>
+<p><img src="https://cdn.jsdelivr.net/gh/chou403/pic-md@main//img/202403162055314.png" alt="202403162055314"/></p>
+<p>IDEA setting 配置中找到 EasyCode 可设置作者名称
+<img src="https://cdn.jsdelivr.net/gh/chou403/pic-md@main//img/202403162056007.png" alt="202403162056007"/></p>
+<h3 id="template">Template</h3>
+<p>template 中有多个模版可以选择,若不合适也可以自己配置想要的模版
+<img src="https://cdn.jsdelivr.net/gh/chou403/pic-md@main//img/202403162057554.png" alt="202403162057554"/></p>
+<p>以下为自己目前调整的模版</p>
+<h4 id="controllerjavavm">controller.java.vm</h4>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">##导入宏定义</span></span>
+<span class="line"><span style="color:#E1E4E8">$</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">{define.vm}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##配置变量(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">getGlobalConfig</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##设置表后缀(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">setTableSuffix</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;Controller&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##保存文件(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">save</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;/controller/${moduleName}&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;Controller.java&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##包路径(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">setPackageSuffix</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;controller.${moduleName}&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($requestUrl </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tool.</span><span style="color:#B392F0">hump2Underline</span><span style="color:#E1E4E8">(${moduleName}).</span><span style="color:#B392F0">replace</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;_&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;/&quot;</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##主键字段首字母大写</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($pkName </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tool.</span><span style="color:#B392F0">firstUpperCase</span><span style="color:#E1E4E8">($</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">pkColumn.name))</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.baomidou.mybatisplus.core.metadata.IPage;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.yonyou.cloud.dcsrepair.entity.dto.ttClaimCheckOrder.TtClaimCheckOrderDTO;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.yonyou.cloud.dcsrepair.entity.vo.ttClaimCheckOrder.TtClaimCheckOrderVO;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.yonyou.cloud.dcsrepair.service.ttClaimCheckOrder.ITtClaimCheckOrderService;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.yonyou.cloud.dcsrepair.util.PageUtils;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.yonyou.dmscloud.framework.service.excel.ExcelGenerator;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> io.swagger.annotations.Api;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> io.swagger.annotations.ApiOperation;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.springframework.web.bind.annotation.</span><span style="color:#79B8FF">*</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> javax.servlet.http.HttpServletRequest;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> javax.servlet.http.HttpServletResponse;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> java.util.List;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * ${functionName}Controller</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@author</span><span style="color:#6A737D"> ${author}</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@since</span><span style="color:#6A737D"> ${datetime}</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">Api</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">value</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;${functionName}controller&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">tags</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">&quot;${functionName}controller&quot;</span><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">RestController</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">RequestMapping</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;/${requestUrl}&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">RequiredArgsConstructor</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> $</span><span style="color:#E1E4E8">{ClassName}Controller {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> I${ClassName}Service ${className}Service;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> ExcelGenerator excelGenerator;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 查询${functionName}分页列表</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">GetMapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">path</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;/page/query&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">ApiOperation</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">value</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;分页列表${functionName}&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">notes</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;分页${functionName}&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#E1E4E8"> IPage</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}VO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> ${businessName}</span><span style="color:#B392F0">PageQuery</span><span style="color:#E1E4E8">(${ClassName}DTO requestDTO) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> ${className}Service.select${ClassName}</span><span style="color:#B392F0">List</span><span style="color:#E1E4E8">(requestDTO, PageUtils.</span><span style="color:#B392F0">getPageParam</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 查询${functionName}列表-不分页</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">GetMapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">path</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;/all/query&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">ApiOperation</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">value</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;不分页列表${functionName}&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">notes</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;不分页查询${functionName}&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#E1E4E8"> List</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}VO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> ${businessName}</span><span style="color:#B392F0">AllQuery</span><span style="color:#E1E4E8">(${ClassName}DTO requestDTO) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> ${className}Service.select${ClassName}</span><span style="color:#B392F0">List</span><span style="color:#E1E4E8">(requestDTO);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 进行新增${functionName}数据</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * @param ${className}DTO 需要保存的DTO</span></span>
+<span class="line"><span style="color:#6A737D">     * @return int</span></span>
+<span class="line"><span style="color:#6A737D">     * @author ${author}</span></span>
+<span class="line"><span style="color:#6A737D">     * @since ${datetime}</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">PostMapping</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;/insert&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">ApiOperation</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">value</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;${functionName}新增数据&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">notes</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;${functionName}新增数据&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> ${businessName}</span><span style="color:#B392F0">Insert</span><span style="color:#E1E4E8">(@</span><span style="color:#F97583">RequestBody</span><span style="color:#E1E4E8"> ${ClassName}DTO ${className}DTO) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> ${className}Service.insert${ClassName}(${className}DTO);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * ${functionName}导出</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * @param</span></span>
+<span class="line"><span style="color:#6A737D">     * @return</span></span>
+<span class="line"><span style="color:#6A737D">     * @author ${author}</span></span>
+<span class="line"><span style="color:#6A737D">     * @since ${datetime}</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">GetMapping</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;/export&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">ApiOperation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;${functionName}导出&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#E1E4E8"> ${businessName}</span><span style="color:#B392F0">Export</span><span style="color:#E1E4E8">(${ClassName}DTO ${className}DTO, HttpServletRequest request, HttpServletResponse response) {</span></span>
+<span class="line"><span style="color:#6A737D">        // 按需实现</span></span>
+<span class="line"><span style="color:#6A737D">        /*</span></span>
+<span class="line"><span style="color:#6A737D">        // List&lt;Map&gt; dataList = null;</span></span>
+<span class="line"><span style="color:#6A737D">        HashMap&lt;String, List&lt;Map&gt;&gt; excelData = new HashMap&lt;&gt;(1024);</span></span>
+<span class="line"><span style="color:#6A737D">        excelData.put(&quot;${functionName}导出&quot;, dataList);</span></span>
+<span class="line"><span style="color:#6A737D">        List&lt;ExcelExportColumn&gt; exportColumnList = new ArrayList&lt;&gt;();</span></span>
+<span class="line"><span style="color:#6A737D">        // exportColumnList.add(new ExcelExportColumn(&quot;bigAreaName&quot;, &quot;大区&quot;));</span></span>
+<span class="line"><span style="color:#6A737D">        // exportColumnList.add(new ExcelExportColumn(&quot;customerType&quot;, &quot;客户类型&quot;, ExcelDataType.Dict));</span></span>
+<span class="line"><span style="color:#6A737D">        // exportColumnList.add(new ExcelExportColumn(&quot;productDate&quot;, &quot;生产日期&quot;,&quot;yyyy-MM-dd&quot;));</span></span>
+<span class="line"><span style="color:#6A737D">        // exportColumnList.add(new ExcelExportColumn(&quot;submitDate&quot;, &quot;提交时间&quot;,&quot;yyyy-MM-dd HH:mm:ss&quot;));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        try {</span></span>
+<span class="line"><span style="color:#6A737D">            request.setCharacterEncoding(&quot;UTF-8&quot;);</span></span>
+<span class="line"><span style="color:#6A737D">        } catch (UnsupportedEncodingException e) {</span></span>
+<span class="line"><span style="color:#6A737D">            e.printStackTrace();</span></span>
+<span class="line"><span style="color:#6A737D">        }</span></span>
+<span class="line"><span style="color:#6A737D">        response.setContentType(&quot;application/vnd.ms-excel;charset=utf-8&quot;);</span></span>
+<span class="line"><span style="color:#6A737D">        response.setHeader(&quot;Content-Disposition&quot;, &quot;attachment; filename=_${functionName}导出.xls&quot;);</span></span>
+<span class="line"><span style="color:#6A737D">        excelGenerator.generateExcel(excelData, exportColumnList, &quot;_${functionName}导出.xls&quot;, request, response);</span></span>
+<span class="line"><span style="color:#6A737D">        */</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<h4 id="dtojavavm">dto.java.vm</h4>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">##导入宏定义</span></span>
+<span class="line"><span style="color:#E1E4E8">$</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">{define.vm}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##配置变量(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">getGlobalConfig</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##设置表后缀(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">setTableSuffix</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;DTO&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##保存文件(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">save</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;/entity/dto/${moduleName}&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;DTO.java&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##包路径(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">setPackageSuffix</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;entity.dto.${moduleName}&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##自动导入包(全局变量)</span></span>
+<span class="line"><span style="color:#E1E4E8">$</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">autoImport</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.fasterxml.jackson.annotation.JsonFormat;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.yonyou.dmscloud.framework.base.dto.BaseDTO;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.yonyou.dmscloud.framework.base.po.BasePO;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.yonyou.dmscloud.framework.util.bean.BeanMapperUtil;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> io.swagger.annotations.ApiModel;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> io.swagger.annotations.ApiModelProperty;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> lombok.Data;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> lombok.EqualsAndHashCode;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.springframework.format.annotation.DateTimeFormat;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> java.io.Serializable;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> java.math.BigDecimal;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> java.util.Date;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">tableComment</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;表实体类&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">Data</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">EqualsAndHashCode</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">callSuper</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">ApiModel</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">value</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;${className}DTO对象&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">description</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;${tableComment}&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> $</span><span style="color:#E1E4E8">{ClassName}DTO extends BaseDTO implements Serializable {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> static</span><span style="color:#F97583"> final</span><span style="color:#F97583"> long</span><span style="color:#E1E4E8"> serialVersionUID </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1L</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">foreach</span><span style="color:#E1E4E8"> ($column in $tableInfo.fullColumn)</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">ApiModelProperty</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">value</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;$column.comment&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#F97583">if</span><span style="color:#E1E4E8">($</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">{tool.</span><span style="color:#B392F0">getClsNameByFullName</span><span style="color:#E1E4E8">($column.type)} </span><span style="color:#F97583">==</span><span style="color:#9ECBFF"> &quot;Date&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">DateTimeFormat</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">pattern</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;yyyy-MM-dd HH:mm:ss&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">JsonFormat</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">pattern</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;yyyy-MM-dd HH:mm:ss&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    #end</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">{tool.</span><span style="color:#B392F0">getClsNameByFullName</span><span style="color:#E1E4E8">($column.type)} $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">{column.name};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#F97583">if</span><span style="color:#E1E4E8">($</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">{tool.</span><span style="color:#B392F0">getClsNameByFullName</span><span style="color:#E1E4E8">($column.type)} </span><span style="color:#F97583">==</span><span style="color:#9ECBFF"> &#39;Date&#39;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">ApiModelProperty</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">value</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;$column.comment开始日期&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> String ${column.name}Begin;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">ApiModelProperty</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">value</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;$column.comment结束日期&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> String ${column.name}End;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    #end</span></span>
+<span class="line"><span style="color:#E1E4E8">#end</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">foreach</span><span style="color:#E1E4E8"> ($column in $tableInfo.pkColumn)</span></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 将DTO 信息转化为 PO</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * @param po 需要进行转换的po</span></span>
+<span class="line"><span style="color:#6A737D">     * @author ${author}</span></span>
+<span class="line"><span style="color:#6A737D">     * @since ${time.currTime()}</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> &lt;</span><span style="color:#E1E4E8">T extends BasePO</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">T</span><span style="color:#F97583">&gt;&gt;</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> transDtoToPo</span><span style="color:#E1E4E8">(T po) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        BeanMapperUtil.</span><span style="color:#B392F0">copyProperties</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, po, </span><span style="color:#9ECBFF">&quot;$column.name&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">#end</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#F97583">if</span><span style="color:#E1E4E8">($table.sub)</span></span>
+<span class="line"><span style="color:#6A737D">    /** $table.subTable.functionName信息 */</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> List</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${subClassName}</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> ${subclassName}List;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">#end</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"></span></code></pre> </div> 
+<h4 id="pojavavm">po.java.vm</h4>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">##导入宏定义</span></span>
+<span class="line"><span style="color:#E1E4E8">$</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">{define.vm}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##配置变量(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">getGlobalConfig</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##设置表后缀(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">setTableSuffix</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;PO&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##保存文件(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">save</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;/entity/po/${moduleName}&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;PO.java&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##包路径(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">setPackageSuffix</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;entity.po.${moduleName}&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##主键字段</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($pkName </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tool.</span><span style="color:#B392F0">firstUpperCase</span><span style="color:#E1E4E8">($</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">pkColumn.name))</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($javaType </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tool.</span><span style="color:#B392F0">getClsNameByFullName</span><span style="color:#E1E4E8">($</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">pkColumn.type))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##自动导入包(全局变量)</span></span>
+<span class="line"><span style="color:#E1E4E8">$</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">autoImport</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.baomidou.mybatisplus.annotation.TableField;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.baomidou.mybatisplus.annotation.TableName;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.yonyou.dmscloud.framework.base.dto.BaseDTO;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.yonyou.dmscloud.framework.base.po.BasePO;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.yonyou.dmscloud.framework.util.bean.BeanMapperUtil;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> lombok.Data;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> lombok.EqualsAndHashCode;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> java.math.BigDecimal;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> java.util.Date;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">tableComment</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">Data</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">EqualsAndHashCode</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">callSuper</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">TableName</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;${tableInfo.obj.name}&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> $</span><span style="color:#E1E4E8">{ClassName}PO extends BasePO</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}PO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> static</span><span style="color:#F97583"> final</span><span style="color:#F97583"> long</span><span style="color:#E1E4E8"> serialVersionUID </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1L</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">foreach</span><span style="color:#E1E4E8"> ($column in $tableInfo.fullColumn)</span></span>
+<span class="line"><span style="color:#6A737D">    /** $column.comment */</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#F97583">if</span><span style="color:#E1E4E8">($column.obj.name </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> $pkColumn.name)</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">TableId</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">value</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;$column.name&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">type</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> IdType.AUTO)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#F97583">else</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">TableField</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;$column.obj.name&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">#end</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">{tool.</span><span style="color:#B392F0">getClsNameByFullName</span><span style="color:#E1E4E8">($column.type)} $column.name;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#F97583">if</span><span style="color:#E1E4E8">($column.obj.name </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> $pkColumn.name)</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#F97583">    protected</span><span style="color:#E1E4E8"> Serializable </span><span style="color:#B392F0">pkVal</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.$column.name;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">#end</span></span>
+<span class="line"><span style="color:#E1E4E8">#end</span></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 将PO 信息转化为DTO</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * @param dtoClass 需要进行转换的dtoClass</span></span>
+<span class="line"><span style="color:#6A737D">     * @author ${author}</span></span>
+<span class="line"><span style="color:#6A737D">     * @since ${time.currTime()}</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> &lt;</span><span style="color:#E1E4E8">T extends BaseDTO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> T </span><span style="color:#B392F0">transPoToDto</span><span style="color:#E1E4E8">(Class</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">T</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> dtoClass) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> super</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">transDtoToPo</span><span style="color:#E1E4E8">(dtoClass);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">foreach</span><span style="color:#E1E4E8"> ($column in $tableInfo.pkColumn)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 将PO 信息转化为DTO</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * @param dto 需要进行转换的dto</span></span>
+<span class="line"><span style="color:#6A737D">     * @author ${author}</span></span>
+<span class="line"><span style="color:#6A737D">     * @since ${time.currTime()}</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> &lt;</span><span style="color:#E1E4E8">T extends BaseDTO</span><span style="color:#F97583">&gt;</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> transPoToDto</span><span style="color:#E1E4E8">(T dto) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        BeanMapperUtil.</span><span style="color:#B392F0">copyProperties</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, dto, </span><span style="color:#9ECBFF">&quot;$column.name&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">#end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"></span></code></pre> </div> 
+<h4 id="vojavavm">vo.java.vm</h4>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">##导入宏定义</span></span>
+<span class="line"><span style="color:#E1E4E8">$</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">{define.vm}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##配置变量(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">getGlobalConfig</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##设置表后缀(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">setTableSuffix</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;VO&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##保存文件(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">save</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;/entity/vo/${moduleName}&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;VO.java&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##包路径(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">setPackageSuffix</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;entity.vo.${moduleName}&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##自动导入包(全局变量)</span></span>
+<span class="line"><span style="color:#E1E4E8">$</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">autoImport</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.fasterxml.jackson.annotation.JsonFormat;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> io.swagger.annotations.ApiModel;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> io.swagger.annotations.ApiModelProperty;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> lombok.Data;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.springframework.format.annotation.DateTimeFormat;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> java.io.Serializable;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> java.math.BigDecimal;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> java.util.Date;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">tableComment</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;返回 VO&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">Data</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">ApiModel</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">value</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;${className}VO对象&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">description</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;${tableComment}&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> $</span><span style="color:#E1E4E8">{ClassName}VO implements Serializable {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> static</span><span style="color:#F97583"> final</span><span style="color:#F97583"> long</span><span style="color:#E1E4E8"> serialVersionUID </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1L</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">foreach</span><span style="color:#E1E4E8"> ($column in $tableInfo.fullColumn)</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">ApiModelProperty</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">value</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;$column.comment&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#F97583">if</span><span style="color:#E1E4E8">($</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">{tool.</span><span style="color:#B392F0">getClsNameByFullName</span><span style="color:#E1E4E8">($column.type)} </span><span style="color:#F97583">==</span><span style="color:#9ECBFF"> &quot;Date&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">DateTimeFormat</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">pattern</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;yyyy-MM-dd HH:mm:ss&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">JsonFormat</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">pattern</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;yyyy-MM-dd HH:mm:ss&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    #end</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">{tool.</span><span style="color:#B392F0">getClsNameByFullName</span><span style="color:#E1E4E8">($column.type)} $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">{column.name};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">#end</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"></span></code></pre> </div> 
+<h4 id="mapperjavavm">mapper.java.vm</h4>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">##导入宏定义</span></span>
+<span class="line"><span style="color:#E1E4E8">$</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">{define.vm}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##配置变量(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">getGlobalConfig</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##设置表后缀(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">setTableSuffix</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;Mapper&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##保存文件(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">save</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;/dao/${moduleName}&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;Mapper.java&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##包路径(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">setPackageSuffix</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;dao.${moduleName}&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##主键字段</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($pkName </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tool.</span><span style="color:#B392F0">firstUpperCase</span><span style="color:#E1E4E8">($</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">pkColumn.name))</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($javaType </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tool.</span><span style="color:#B392F0">getClsNameByFullName</span><span style="color:#E1E4E8">($</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">pkColumn.type))</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.baomidou.mybatisplus.core.mapper.BaseMapper;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.baomidou.mybatisplus.extension.plugins.pagination.Page;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ${packageName}.entity.dto.${moduleName}.${ClassName}DTO;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ${packageName}.entity.po.${moduleName}.${ClassName}PO;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ${packageName}.entity.vo.${moduleName}.${ClassName}VO;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.apache.ibatis.annotations.Param;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> java.util.List;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * ${functionName}Mapper接口</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@author</span><span style="color:#6A737D"> ${author}</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@since</span><span style="color:#6A737D"> ${datetime}</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> interface</span><span style="color:#B392F0"> $</span><span style="color:#E1E4E8">{ClassName}Mapper extends BaseMapper</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}PO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 查询${functionName}列表</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * @param ${className} ${functionName}</span></span>
+<span class="line"><span style="color:#6A737D">     * @return ${functionName}集合</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#E1E4E8">    List</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}VO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> select${ClassName}</span><span style="color:#B392F0">List</span><span style="color:#E1E4E8">(@</span><span style="color:#F97583">Param</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;params&quot;</span><span style="color:#E1E4E8">) ${ClassName}DTO ${className},@</span><span style="color:#F97583">Param</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;page&quot;</span><span style="color:#E1E4E8">) Page</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}VO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> page);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 查询${functionName}列表-不分页</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * @param ${className} ${functionName}</span></span>
+<span class="line"><span style="color:#6A737D">     * @return ${functionName}集合</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#E1E4E8">    List</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}VO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> select${ClassName}</span><span style="color:#B392F0">List</span><span style="color:#E1E4E8">(@</span><span style="color:#F97583">Param</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;params&quot;</span><span style="color:#E1E4E8">) ${ClassName}DTO ${className});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"></span></code></pre> </div> 
+<h4 id="servicejavavm">service.java.vm</h4>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">##导入宏定义</span></span>
+<span class="line"><span style="color:#E1E4E8">$</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">{define.vm}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##配置变量(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">getGlobalConfig</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##设置表后缀(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">setTableSuffix</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;Service&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##设置回调</span></span>
+<span class="line"><span style="color:#E1E4E8">$</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">callback.</span><span style="color:#B392F0">setFileName</span><span style="color:#E1E4E8">($tool.</span><span style="color:#B392F0">append</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;I&quot;</span><span style="color:#E1E4E8">, $tableName, </span><span style="color:#9ECBFF">&quot;.java&quot;</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">$</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">callback.</span><span style="color:#B392F0">setSavePath</span><span style="color:#E1E4E8">($tool.</span><span style="color:#B392F0">append</span><span style="color:#E1E4E8">($tableInfo.savePath, </span><span style="color:#9ECBFF">&quot;/service/${moduleName}&quot;</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##包路径(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">setPackageSuffix</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;service.${moduleName}&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##主键字段</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($pkName </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tool.</span><span style="color:#B392F0">firstUpperCase</span><span style="color:#E1E4E8">($</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">pkColumn.name))</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($javaType </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tool.</span><span style="color:#B392F0">getClsNameByFullName</span><span style="color:#E1E4E8">($</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">pkColumn.type))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.baomidou.mybatisplus.core.metadata.IPage;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.baomidou.mybatisplus.extension.service.IService;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.baomidou.mybatisplus.extension.plugins.pagination.Page;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.yonyou.dmscloud.framework.domain.RequestPageInfoDto;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ${packageName}.entity.dto.${moduleName}.${ClassName}DTO;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ${packageName}.entity.po.${moduleName}.${ClassName}PO;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ${packageName}.entity.vo.${moduleName}.${ClassName}VO;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> java.util.List;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * ${functionName}Service接口</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@author</span><span style="color:#6A737D"> ${author}</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@since</span><span style="color:#6A737D"> ${datetime}</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> interface</span><span style="color:#B392F0"> I$</span><span style="color:#E1E4E8">{ClassName}Service extends IService</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}PO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 查询${functionName}列表</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * @param ${className} ${functionName}</span></span>
+<span class="line"><span style="color:#6A737D">     * @return ${functionName}集合</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#E1E4E8">    IPage</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}VO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> select${ClassName}</span><span style="color:#B392F0">List</span><span style="color:#E1E4E8">(${ClassName}DTO ${className}, Page</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}VO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> page);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 查询${functionName}列表</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * @param ${className} ${functionName}</span></span>
+<span class="line"><span style="color:#6A737D">     * @return ${functionName}集合</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#E1E4E8">    List</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}VO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> select${ClassName}</span><span style="color:#B392F0">List</span><span style="color:#E1E4E8">(${ClassName}DTO ${className});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 新增${functionName}</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * @param ${className} ${functionName}</span></span>
+<span class="line"><span style="color:#6A737D">     * @return 结果</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#E1E4E8"> insert${ClassName}(${ClassName}DTO ${className});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"></span></code></pre> </div> 
+<h4 id="serviceimpljavavm">serviceImpl.java.vm</h4>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">##导入宏定义</span></span>
+<span class="line"><span style="color:#E1E4E8">$</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">{define.vm}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##配置变量(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">getGlobalConfig</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##设置表后缀(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">setTableSuffix</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;ServiceImpl&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##保存文件(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">save</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;/service/${moduleName}/impl&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;ServiceImpl.java&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##包路径(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">setPackageSuffix</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;service.${moduleName}.impl&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##主键字段</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($pkName </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tool.</span><span style="color:#B392F0">firstUpperCase</span><span style="color:#E1E4E8">($</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">pkColumn.name))</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($javaType </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tool.</span><span style="color:#B392F0">getClsNameByFullName</span><span style="color:#E1E4E8">($</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">pkColumn.type))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.baomidou.mybatisplus.core.metadata.IPage;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.baomidou.mybatisplus.extension.plugins.pagination.Page;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ${packageName}.dao.${moduleName}.${ClassName}Mapper;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ${packageName}.entity.dto.${moduleName}.${ClassName}DTO;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ${packageName}.entity.po.${moduleName}.${ClassName}PO;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ${packageName}.entity.vo.${moduleName}.${ClassName}VO;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ${packageName}.service.${moduleName}.I${ClassName}Service;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.springframework.stereotype.Service;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.springframework.transaction.annotation.Transactional;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> java.util.List;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * ${functionName}Service业务层处理</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@author</span><span style="color:#6A737D"> ${author}</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@since</span><span style="color:#6A737D"> ${datetime}</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">Service</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">RequiredArgsConstructor</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> $</span><span style="color:#E1E4E8">{ClassName}ServiceImpl extends ServiceImpl</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}Mapper, ${ClassName}PO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> implements I${ClassName}Service {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> ${ClassName}Mapper ${className}Mapper;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 查询${functionName}列表</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * @param ${className} ${functionName}</span></span>
+<span class="line"><span style="color:#6A737D">     * @return ${functionName}</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#E1E4E8"> IPage</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}VO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> select${ClassName}</span><span style="color:#B392F0">List</span><span style="color:#E1E4E8">(${ClassName}DTO ${className}, Page</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}VO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> page) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        List</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}VO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> result </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ${className}Mapper.select${ClassName}</span><span style="color:#B392F0">List</span><span style="color:#E1E4E8">(${className},page);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> page.</span><span style="color:#B392F0">setRecords</span><span style="color:#E1E4E8">(result);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 查询${functionName}列表</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * @param ${className} ${functionName}</span></span>
+<span class="line"><span style="color:#6A737D">     * @return ${functionName}</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#E1E4E8"> List</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">${ClassName}VO</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> select${ClassName}</span><span style="color:#B392F0">List</span><span style="color:#E1E4E8">(${ClassName}DTO ${className}) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> ${className}Mapper.select${ClassName}</span><span style="color:#B392F0">List</span><span style="color:#E1E4E8">(${className});</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 新增${functionName}</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * @param ${className} ${functionName}</span></span>
+<span class="line"><span style="color:#6A737D">     * @return 结果</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Transactional</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">rollbackFor</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Exception.class)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> insert${ClassName}(${ClassName}DTO ${className}) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        ${ClassName}PO po </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> ${ClassName}</span><span style="color:#B392F0">PO</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        ${className}.</span><span style="color:#B392F0">transDtoToPo</span><span style="color:#E1E4E8">(po);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> ${className}Mapper.</span><span style="color:#B392F0">insert</span><span style="color:#E1E4E8">(po);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"></span></code></pre> </div> 
+<h4 id="mapperxmlvm">mapper.xml.vm</h4>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">##引入mybatis支持</span></span>
+<span class="line"><span style="color:#E1E4E8">$!{mybatisSupport.vm}</span></span>
+<span class="line"><span style="color:#E1E4E8">$!{define.vm}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##配置变量(宏定义)</span></span>
+<span class="line"><span style="color:#E1E4E8">#getGlobalConfig()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">##设置保存名称与保存位置</span></span>
+<span class="line"><span style="color:#E1E4E8">$!callback.setFileName($tool.append($!{tableInfo.name}, &quot;Mapper.xml&quot;))</span></span>
+<span class="line"><span style="color:#E1E4E8">$!callback.setSavePath($tool.append($modulePath, &quot;/src/main/resources/mapper/${moduleName}&quot;))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&lt;?</span><span style="color:#85E89D">xml</span><span style="color:#B392F0"> version</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;1.0&quot;</span><span style="color:#B392F0"> encoding</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;UTF-8&quot;</span><span style="color:#E1E4E8">?&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;!</span><span style="color:#F97583">DOCTYPE</span><span style="color:#79B8FF"> mapper</span><span style="color:#E1E4E8"> PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot; &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#85E89D">mapper</span><span style="color:#B392F0"> namespace</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;$!{tableInfo.savePackageName}.dao.${moduleName}.$!{tableInfo.name}Mapper&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">sql</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;select${ClassName}Vo&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        select#foreach($column in $tableInfo.fullColumn) A.$column.obj.name#if($foreach.hasNext),#end#end from ${tableInfo.obj.name} A</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">sql</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">select</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;select${ClassName}List&quot;</span><span style="color:#B392F0"> resultType</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;${packageName}.entity.vo.${moduleName}.${ClassName}VO&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#85E89D">include</span><span style="color:#B392F0"> refid</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;select${ClassName}Vo&quot;</span><span style="color:#E1E4E8">/&gt;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">select</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&lt;/</span><span style="color:#85E89D">mapper</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"></span>
+<span class="line"></span></code></pre> </div> 
+<h3 id="global-config">Global Config</h3>
+<p><img src="https://cdn.jsdelivr.net/gh/chou403/pic-md@main//img/202403162105900.png" alt="202403162105900"/></p>
+<p>内容可根据需要自行增加以及调整。</p>
+<p>define.vm 增减了部分全局变量</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">##定义全局变量配置</span></span>
+<span class="line"><span style="color:#E1E4E8">#</span><span style="color:#B392F0">macro</span><span style="color:#E1E4E8">(getGlobalConfig)</span></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#F97583">if</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">$tableInfo.pkColumn.</span><span style="color:#B392F0">isEmpty</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">        #</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($pkColumn </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $tableInfo.pkColumn.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">    #end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($packageName </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tableInfo.savePackageName)</span></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($className </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tool.</span><span style="color:#B392F0">firstLowerCase</span><span style="color:#E1E4E8">($</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tableInfo.name))</span></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($moduleName </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tool.</span><span style="color:#B392F0">firstLowerCase</span><span style="color:#E1E4E8">($</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tableInfo.name))</span></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($businessName </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tool.</span><span style="color:#B392F0">firstLowerCase</span><span style="color:#E1E4E8">($</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tableInfo.name))</span></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($ClassName </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tableInfo.name)</span></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($functionName </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tableInfo.comment)</span></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($tableComment </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tableInfo.comment)</span></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($datetime </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">time.</span><span style="color:#B392F0">currTime</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">($tableName </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> $</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tableInfo.obj.name)</span></span>
+<span class="line"><span style="color:#E1E4E8">#end</span></span>
+<span class="line"></span></code></pre> </div> 
+<h2 id="疑问">疑问</h2>
+<p><strong>mapper.xml文件中出现字段无逗号分割情况:</strong></p>
+<p>找到以下位置:</p>
+<ol>
+<li>Template下的 mapper.xml.vm脚本</li>
+<li>Global Config下的 mybatisSupport.vm脚本</li>
+</ol>
+<p>将其中的 $velocityHasNext 替换成 $foreach.hasNext 即可。</p> </div> <div class="mb-12 flex flex-wrap gap-2 gap-y-4 md:gap-5"> <a href="/tags/tool" aria-label="tool"> <!-- <span
+		class="w-fit rounded-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2"
+	> --> <span class="w-fit rounded-full px-2 py-1 text-sm font-semibold shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2">
+#tool </span> </a><a href="/tags/mybatisplus" aria-label="mybatisplus"> <!-- <span
+		class="w-fit rounded-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2"
+	> --> <span class="w-fit rounded-full px-2 py-1 text-sm font-semibold shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2">
+#mybatisplus </span> </a> </div> <!-- related posts --> <footer> <h2 class="mb-6 text-lg font-bold dark:text-white">Related Posts</h2> <section class="flex flex-col md:flex-row sm:justify-between gap-8"> <div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/dark-2_Q5SMA.webp" class="h-16 w-16 rounded-full object-cover" alt="img of node copy static file" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/tool/node-copy-static-file/"> node 构建之后复制静态文件到 dist 目录 </a> </header> </div><div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/cat-8_1KjlHo.webp" class="h-16 w-16 rounded-full object-cover" alt="img of Github" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/tool/github-common/"> github 通用的使用方式 </a> </header> </div><div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/pexels-pixabay-531533_ZYDUp0.webp" class="h-16 w-16 rounded-full object-cover" alt="img of JWT" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/tool/jwt-user-redis-token/"> 介绍 JWT &amp; token + redis </a> </header> </div> </section> </footer> </article> </div>  </div> </article> <button aria-label="Back to Top" class="z-90 fixed bottom-8 end-4 flex h-10 w-10 translate-y-28 items-center justify-center rounded-full border-2 border-transparent bg-[#f8f9fa99] text-3xl opacity-0 transition-all duration-300 hover:border-zinc-400 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 dark:border-slate-50/[0.06] dark:bg-slate-900/75 sm:end-8 sm:h-12 sm:w-12" data-show="false" id="to-top-btn" style="opacity: 1;--tw-translate-y: -26px;
+		transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));"> <svg aria-hidden="true" class="h-6 w-6" fill="none" focusable="false" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <path d="M4.5 15.75l7.5-7.5 7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button>  <footer class="flex h-28 w-full items-center justify-center border-t-2 px-16">
+&copy; 2024 chou403 · Powered by &nbsp;<a href="https://astro.build" style="color:cornflowerblue;">Astro</a>&nbsp;& &nbsp;<a href="https://blog-template-gray.vercel.app" style="color:cornflowerblue;">OpenBlog</a> </footer> </main>    </body> </html>  <div> <div class="fixed inset-0 z-50 hidden" id="headlessui-dialog-:Rlb6:" role="dialog" aria-modal="true" data-headlessui-state="open"> <div class="fixed inset-0 bg-black/20 backdrop-blur-sm dark:bg-slate-900/80" id="" aria-hidden="true" data-headlessui-state="open"></div> <div class="relative w-80 max-w-[calc(100%-3rem)] bg-white p-6 dark:bg-slate-800" id="toc_content"> <button id="close-dialog-page" type="button" class="absolute right-5 top-5 z-10 flex h-8 w-8 items-center justify-center text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300" tabindex="0"><span class="sr-only">Close navigation</span> <svg viewBox="0 0 10 10" class="h-2.5 w-2.5 overflow-visible"> <path d="M0 0L10 10M10 0L0 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </svg> </button> <nav class="h-[59rem] max-w-xs dark:text-black"> <h1 class="mb-3 text-2xl font-bold dark:text-white">On this page</h1> <ul class="sidebar flex flex-col gap-4 [text-wrap:balance]"> <li class="flex flex-col"> <a href="#idea-安装插件-mybatisplus-生成代码" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> IDEA 安装插件 MybatisPlus 生成代码 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#config-database" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> Config Database </a>  </li><li class="flex flex-col"> <a href="#config-generator" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> Config Generator </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#idea-结合-easycode-生成代码" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> IDEA 结合 EasyCode 生成代码 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#template" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> Template </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#controllerjavavm" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> controller.java.vm </a>  </li><li class="flex flex-col"> <a href="#dtojavavm" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> dto.java.vm </a>  </li><li class="flex flex-col"> <a href="#pojavavm" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> po.java.vm </a>  </li><li class="flex flex-col"> <a href="#vojavavm" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> vo.java.vm </a>  </li><li class="flex flex-col"> <a href="#mapperjavavm" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> mapper.java.vm </a>  </li><li class="flex flex-col"> <a href="#servicejavavm" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> service.java.vm </a>  </li><li class="flex flex-col"> <a href="#serviceimpljavavm" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> serviceImpl.java.vm </a>  </li><li class="flex flex-col"> <a href="#mapperxmlvm" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> mapper.xml.vm </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#global-config" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> Global Config </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#疑问" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 疑问 </a>  </li> </ul> </nav> </div> </div> </div> 

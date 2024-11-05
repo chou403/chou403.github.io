@@ -1,0 +1,233 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth" data-astro-cid-37fxchfa> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico" type="image/x-icon"><!-- <link rel="icon" type="image/svg+xml" href="/favicon1.svg" /> --><meta name="generator" content="Astro v4.16.2"><!-- Canonical URL --><link rel="canonical" href="https://blog-template-gray.vercel.app/post/zh-cn/interview/log/why-cant-use-apis-in-log4j-and-logback-directly/"><!-- Primary Meta Tags --><title>Why can&#39;t I use APIs in Log4j and Logback directly? • 知道的越多,才知知道的越少</title><!-- ViewTransitions  --><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><!-- SEO --><meta name="title" content="Why can't I use APIs in Log4j and Logback directly? • 知道的越多,才知知道的越少"><meta name="description" content="为什么不能直接使用Log4j,Logback中的 API?"><meta name="author" content="chou403"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://blog-template-gray.vercel.app/post/zh-cn/interview/log/why-cant-use-apis-in-log4j-and-logback-directly/"><meta property="og:title" content="Why can't I use APIs in Log4j and Logback directly?"><meta property="og:description" content="为什么不能直接使用Log4j,Logback中的 API?"><meta property="og:image" content="https://blog-template-gray.vercel.app/_astro/pexels-kmerriman-20787.jpg"><meta property="article:author" content="chou403"><meta property="article:published_time" content="2024-08-09T14:46:14.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://blog-template-gray.vercel.app/post/zh-cn/interview/log/why-cant-use-apis-in-log4j-and-logback-directly/"><meta property="twitter:title" content="Why can't I use APIs in Log4j and Logback directly?"><meta property="twitter:description" content="为什么不能直接使用Log4j,Logback中的 API?"><meta property="twitter:image" content="https://blog-template-gray.vercel.app/_astro/pexels-kmerriman-20787.jpg"><!-- RSS auto-discovery --><link rel="alternate" type="application/rss+xml" title="知道的越多,才知知道的越少" href="/rss.xml"><link as="font" crossorigin rel="preload" href="/fonts/Manrope-Bold.woff2" type="font/woff2"><style>@font-face {font-weight: 200;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-ExtraLight.woff2)} @font-face {font-weight: 300;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Light.woff2)} @font-face {font-weight: 400;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Regular.woff2)} @font-face {font-weight: 500;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Medium.woff2)} @font-face {font-weight: 600;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-SemiBold.woff2)} @font-face {font-weight: 700;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Bold.woff2)} @font-face {font-weight: 800;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-ExtraBold.woff2)} @font-face { font-family: '_font_fallback_900663394399'; size-adjust: 103.76%; src: local('Arial'); ascent-override: 102.74%; descent-override: 28.91%; line-gap-override: 0.00%; }</style><script>
+	function getTheme() {
+		const storedTheme = typeof localStorage !== 'undefined' && localStorage.getItem('theme')
+
+		return (
+			storedTheme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+		)
+	}
+
+	function setTheme(newTheme) {
+		const html = document.documentElement
+		const isDark = newTheme === 'dark'
+
+		html.classList.toggle('dark', isDark)
+		html.classList.toggle('light', !isDark)
+
+		localStorage.setItem('theme', newTheme)
+	}
+
+	// set initial theme
+	setTheme(getTheme())
+	document.addEventListener('astro:after-swap', () => setTheme(getTheme()))
+
+	document.addEventListener('theme-change', (e) => {
+		setTheme(e.detail.theme)
+	})
+</script><script>
+	if (!('animations' in localStorage)) {
+		localStorage.setItem('animations', 'true')
+	} else {
+		localStorage.setItem('animations', 'false')
+	}
+</script><link rel="stylesheet" href="/_astro/_page_.CCiJ3j76.css">
+<link rel="stylesheet" href="/_astro/_slug_.Ba2ksmBT.css"><script type="module" src="/_astro/hoisted.D9DAUC0s.js"></script></head> <body class="mx-auto bg-white dark:bg-slate-900 dark:text-slate-400 dark:text-white" data-astro-cid-37fxchfa> <main class="mt-4 grid gap-12 overflow-hidden px-5 antialiased sm:mx-auto sm:max-w-2xl sm:px-8 md:max-w-6xl md:overflow-visible lg:px-0" data-astro-cid-37fxchfa> <header class="fixed left-0 top-0 z-50 flex h-12 w-full items-center bg-[#f8f9fa99] px-5 py-2.5 font-semibold dark:border-slate-50/[0.06] dark:bg-slate-900/60"> <a class="mr-auto text-lg" href="/">Home</a> <div id="astro-header-drawer" class="absolute right-1 top-12 z-50 translate-x-96 rounded-l-lg bg-white p-4 text-slate-500 shadow transition-transform duration-300 ease-in dark:bg-[#0a0910] md:static md:h-auto md:translate-x-0 md:rounded-none md:border-none md:bg-transparent md:p-0 md:shadow-none dark:md:bg-transparent"> <nav class="flex h-full justify-between gap-2 text-left md:w-full md:flex-row md:gap-5"> <div class="flex flex-col gap-4 border-black pr-4 dark:border-white md:flex-row md:border-r-2"> <a href="/tags" class="text-opacity-60 flex items-center gap-1 text-2xl md:text-base" rel="noopener noreferrer ">  <svg xmlns="http://www.w3.org/2000/svg" class="w-8 md:w-6" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M7.859 6h-2.834a2.025 2.025 0 0 0 -2.025 2.025v2.834c0 .537 .213 1.052 .593 1.432l6.116 6.116a2.025 2.025 0 0 0 2.864 0l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-6.117 -6.116a2.025 2.025 0 0 0 -1.431 -.593z"></path> <path d="M17.573 18.407l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-7.117 -7.116"></path> <path d="M6 9h-.01"></path> </svg> Tags
+ </a> </div> <div class="flex items-center justify-center gap-3 md:justify-end md:p-0"> <a href="https://github.com/chou403/chou403.github.io" class="text-opacity-60" rel="noopener noreferrer " target="_blank" aria-label="Github">  <span><svg viewBox="0 0 16 16" class="h-5 w-5" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg> </span>  </a> </div> <!-- <LanguageSwitcher client:load /> --> </nav> </div> <div class="flex items-center gap-3 text-slate-500 md:pl-3" data-astro-transition-persist="navbar"> <div> <site-search id="search" class="ms-auto"> <button data-open-modal disabled class="flex items-center justify-center rounded-md gap-1"> <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 19-3.5-3.5"></path><circle cx="11" cy="11" r="6"></circle></svg> <!-- <span class='md:hidden text-2xl'> Search</span> --> </button> <dialog aria-label="search" class="h-full max-h-full w-full max-w-full border border-zinc-400 bg-white dark:bg-[#0a0910ec] shadow backdrop:backdrop-blur sm:mx-auto sm:mb-auto sm:mt-16 sm:h-max sm:max-h-[calc(100%-8rem)] sm:min-h-[15rem] sm:w-5/6 sm:max-w-[48rem] sm:rounded-md opacity-0"> <div class="dialog-frame flex flex-col gap-4 p-6 pt-12 sm:pt-6"> <button data-close-modal class="ms-auto cursor-pointer rounded-full bg-black text-white px-4 py-2 dark:bg-white dark:text-black">Close</button> <div class="search-container dark:text-white"> <div id="pagefind__search"></div> </div> </div> </dialog> </site-search>   </div>  <theme-toggle class="relative h-6 w-6"> <button id="toggle-theme" class="group" aria-label="Toggle Theme"> <span class="absolute left-0 right-0 top-0 opacity-0 group-aria-pressed:opacity-100"> <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.715 15.15A6.5 6.5 0 0 1 9 6.035C6.106 6.922 4 9.645 4 12.867c0 3.94 3.153 7.136 7.042 7.136 3.101 0 5.734-2.032 6.673-4.853Z" class="fill-sky-400/20"></path><path d="m17.715 15.15.95.316a1 1 0 0 0-1.445-1.185l.495.869ZM9 6.035l.846.534a1 1 0 0 0-1.14-1.49L9 6.035Zm8.221 8.246a5.47 5.47 0 0 1-2.72.718v2a7.47 7.47 0 0 0 3.71-.98l-.99-1.738Zm-2.72.718A5.5 5.5 0 0 1 9 9.5H7a7.5 7.5 0 0 0 7.5 7.5v-2ZM9 9.5c0-1.079.31-2.082.845-2.93L8.153 5.5A7.47 7.47 0 0 0 7 9.5h2Zm-4 3.368C5 10.089 6.815 7.75 9.292 6.99L8.706 5.08C5.397 6.094 3 9.201 3 12.867h2Zm6.042 6.136C7.718 19.003 5 16.268 5 12.867H3c0 4.48 3.588 8.136 8.042 8.136v-2Zm5.725-4.17c-.81 2.433-3.074 4.17-5.725 4.17v2c3.552 0 6.553-2.327 7.622-5.537l-1.897-.632Z" class="fill-sky-500"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M17 3a1 1 0 0 1 1 1 2 2 0 0 0 2 2 1 1 0 1 1 0 2 2 2 0 0 0-2 2 1 1 0 1 1-2 0 2 2 0 0 0-2-2 1 1 0 1 1 0-2 2 2 0 0 0 2-2 1 1 0 0 1 1-1Z" class="fill-sky-500"></path></svg> </span> <span class="absolute left-0 right-0 top-0 opacity-0 group-aria-[pressed=false]:opacity-100"> <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" class="fill-sky-400/20 stroke-sky-500"></path><path d="M12 4v1M17.66 6.344l-.828.828M20.005 12.004h-1M17.66 17.664l-.828-.828M12 20.01V19M6.34 17.664l.835-.836M3.995 12.004h1.01M6 6l.835.836" class="stroke-sky-500"></path></svg> </span> </button> </theme-toggle> <script>
+	const button = document.getElementById('toggle-theme')
+
+	function setButtonPresssed() {
+		const bodyThemeIsDark = document.documentElement.classList.contains('dark')
+		button.setAttribute('aria-pressed', String(bodyThemeIsDark))
+	}
+	setButtonPresssed()
+</script> <button id="toggleMenu" class="md:ml-6 md:hidden"> <svg width="24" height="24"><path d="M5 6h14M5 12h14M5 18h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg> </button> <button id="astro-header-drawer-button" type="button" class="md:ml-6 md:hidden"> <svg width="24" height="24" fill="none" aria-hidden="true"><path d="M12 6v.01M12 12v.01M12 18v.01M12 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> <span class="sr-only">Show Menu</span> </button> </div> </header>  <div class="pointer-events-none absolute inset-x-0 top-0 z-[60] flex justify-center overflow-hidden"> <div class="flex w-[108rem] flex-none justify-end"> <picture> <source srcset="/_astro/docs.BiePeNN8.avif" type="image/avif"> <img src="/_astro/docs.BeNwu2rW_1CTG48.webp" class="w-[71.75rem] max-w-none flex-none dark:hidden" alt="img of docs" width="200" height="200" loading="lazy" decoding="async"> </picture> <picture> <source srcset="/_astro/docs-dark.C7CksN2y.avif" type="image/avif"> <img src="/_astro/docs-dark.Bsq-hjJH_17S3ea.webp" class="hidden w-[90rem] max-w-none flex-none dark:block" alt="img of docs-dark" width="200" height="200" loading="lazy" decoding="async"> </picture> </div> </div>  <article class="mt-12 min-w-full sm:max-w-none md:max-w-none md:py-4"> <header class="mb-3 flex flex-col gap-6"> <div class="flex flex-wrap gap-2"> <div class="flex items-center justify-center"> <h1 class="text-4xl font-semibold md:pb-2.5 md:text-4xl"> 为什么不能直接使用Log4j,Logback中的 API? </h1> </div> </div> <div class="flex gap-x-1"> <p class="text-center text-sm font-bold text-opacity-50"> chou403 </p> <p class="text-center text-sm font-bold text-opacity-50">
+/ Interview </p> <p class="text-center text-sm text-opacity-50">
+/ <time class="text-sm font-bold text-opacity-60" datetime="2024-07-24T09:52:28.000Z"> Jul 24, 2024 </time> </p> <p class="text-center text-sm font-bold text-opacity-50">
+/ 15 min read </p> <!-- {
+					data.updatedDate && (
+						<span class="text-quote rounded-lg p-1">
+							Last Updated:
+							<FormattedDate date={data.updatedDate} />
+						</span>
+					)
+				} --> </div> </header> <!-- annotate blog post image --> <!-- <>
+			{
+				heroImage && (
+					<Image
+						src={heroImage}
+						width={1000}
+						height={500}
+						quality={100}
+						format="jpg"
+						loading="eager"
+						class="my-8 max-h-[300px] w-full rounded-md object-cover md:max-h-[500px]"
+						alt={`img of ${title}`}
+					/>
+				)
+			}
+		</> --> <hr> <div>   <div class="mt-8 grid grid-cols-1 gap-10"> <!-- aside  --> <!-- Left menu bar comments --> <!-- <aside class="hidden flex-col gap-8 md:flex">
+			<div class="sticky top-12 z-10 hidden self-start transition-all duration-200 md:block">
+				{headings && headings.length > 0 && <TableOfContents {headings} />}
+			</div>
+		</aside> --> <!-- post --> <article class="grid w-full max-w-full"> <div class="prose prose-lg mb-12 min-w-full dark:prose-invert md:prose-xl"> <h2 id="介绍">介绍</h2>
+<p>在Java生态体系中,围绕着日志,有很多成熟的解决方案。关于日志输出,主要有两类工具。</p>
+<p>一类是日志框架(Log4j,Logback),主要用来进行日志的输出的,比如输出到哪个文件,日志格式如何等。 另外一类是日志门面(slf4j,commons-logging),主要一套通用的API,用来屏蔽各个日志框架之间的差异的。</p>
+<p>对于Java工程师来说,关于日志工具的使用,最佳实践就是在应用中使用如Log4j + SLF4J 这样的组合来进行日志输出。</p>
+<p>这样做的最大好处,就是业务层的开发不需要关心底层日志框架的实现及细节,在编码的时候也不需要考虑日后更换框架所带来的成本。这也是门面模式所带来的好处。</p>
+<p>直接使用 Log4j,Logback 等日志框架的 API 可能会在某些情况下带来问题。以下是一些主要原因以及推荐的做法:</p>
+<h3 id="1-降低耦合性">1. <strong>降低耦合性</strong></h3>
+<p>直接使用特定日志框架的 API 会使你的代码与该框架紧密耦合,导致以下问题:</p>
+<ul>
+<li><strong>难以替换</strong>:如果以后需要替换日志框架(例如从 Log4j 切换到 Logback 或其他框架),你需要修改所有使用特定框架 API 的地方,这可能非常耗时和容易出错。</li>
+<li><strong>依赖冲突</strong>:在大型项目或多模块项目中,不同模块可能需要不同的日志框架版本,直接使用 API 会导致版本冲突和兼容性问题。</li>
+</ul>
+<h3 id="2-增加灵活性">2. <strong>增加灵活性</strong></h3>
+<p>使用抽象层(如 SLF4J 或 Commons Logging)可以增加日志记录的灵活性:</p>
+<ul>
+<li><strong>抽象层</strong>:通过使用 SLF4J 或 Apache Commons Logging 等抽象层,你可以在不修改代码的情况下切换底层日志框架。抽象层提供统一的日志 API,使你的代码独立于具体的日志实现。</li>
+</ul>
+<h3 id="3-一致的日志格式和配置">3. <strong>一致的日志格式和配置</strong></h3>
+<p>统一的日志抽象层可以确保整个项目或系统使用一致的日志格式和配置:</p>
+<ul>
+<li><strong>统一管理</strong>:通过一个抽象层配置所有日志框架,可以在项目级别统一管理日志格式,级别和输出目标。</li>
+</ul>
+<h3 id="4-支持多种日志框架">4. <strong>支持多种日志框架</strong></h3>
+<p>使用日志抽象层还可以同时支持多种日志框架:</p>
+<ul>
+<li><strong>兼容性</strong>:抽象层通常支持多个流行的日志框架,确保你的项目可以在不同的运行环境和依赖中保持兼容性。</li>
+</ul>
+<h3 id="推荐的做法">推荐的做法</h3>
+<h4 id="1-使用-slf4j">1. <strong>使用 SLF4J</strong></h4>
+<p>SLF4J(Simple Logging Facade for Java)是一个非常流行的日志抽象层,支持多种日志框架如 Log4j,Logback 等。</p>
+<p><strong>Maven 依赖</strong>:</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#85E89D">dependency</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">groupId</span><span style="color:#E1E4E8">&gt;org.slf4j&lt;/</span><span style="color:#85E89D">groupId</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">artifactId</span><span style="color:#E1E4E8">&gt;slf4j-api&lt;/</span><span style="color:#85E89D">artifactId</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">version</span><span style="color:#E1E4E8">&gt;1.7.30&lt;/</span><span style="color:#85E89D">version</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;/</span><span style="color:#85E89D">dependency</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#85E89D">dependency</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">groupId</span><span style="color:#E1E4E8">&gt;ch.qos.logback&lt;/</span><span style="color:#85E89D">groupId</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">artifactId</span><span style="color:#E1E4E8">&gt;logback-classic&lt;/</span><span style="color:#85E89D">artifactId</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">version</span><span style="color:#E1E4E8">&gt;1.2.3&lt;/</span><span style="color:#85E89D">version</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;/</span><span style="color:#85E89D">dependency</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"></span></code></pre> </div> 
+<p><strong>代码示例</strong>:</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.slf4j.Logger;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.slf4j.LoggerFactory;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> MyClass</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> static</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Logger logger </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> LoggerFactory.</span><span style="color:#B392F0">getLogger</span><span style="color:#E1E4E8">(MyClass.class);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> doSomething</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        logger.</span><span style="color:#B392F0">info</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;This is an info message&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        logger.</span><span style="color:#B392F0">error</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;This is an error message&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<h4 id="2-使用-apache-commons-logging">2. <strong>使用 Apache Commons Logging</strong></h4>
+<p>Apache Commons Logging 是另一个流行的日志抽象层,支持多种日志框架。</p>
+<p><strong>Maven 依赖</strong>:</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#85E89D">dependency</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">groupId</span><span style="color:#E1E4E8">&gt;commons-logging&lt;/</span><span style="color:#85E89D">groupId</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">artifactId</span><span style="color:#E1E4E8">&gt;commons-logging&lt;/</span><span style="color:#85E89D">artifactId</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">version</span><span style="color:#E1E4E8">&gt;1.2&lt;/</span><span style="color:#85E89D">version</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;/</span><span style="color:#85E89D">dependency</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"></span></code></pre> </div> 
+<p><strong>代码示例</strong>:</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.apache.commons.logging.Log;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.apache.commons.logging.LogFactory;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> MyClass</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> static</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Log logger </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> LogFactory.</span><span style="color:#B392F0">getLog</span><span style="color:#E1E4E8">(MyClass.class);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> doSomething</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        logger.</span><span style="color:#B392F0">info</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;This is an info message&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        logger.</span><span style="color:#B392F0">error</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;This is an error message&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<h3 id="总结">总结</h3>
+<p>通过使用日志抽象层(如 SLF4J 或 Apache Commons Logging),可以降低代码与具体日志框架的耦合,增加灵活性,确保一致的日志格式和配置,并支持多种日志框架。这种做法在长期维护和扩展项目时具有显著优势。</p>
+<h2 id="扩展知识">扩展知识</h2>
+<h3 id="常用日志框架">常用日志框架</h3>
+<h4 id="jul">j.u.l</h4>
+<p>j.u.l是java.util.logging包的简称,是JDK在1.4版本中引入的Java原生日志框架。Java Logging API提供了七个日志级别用来控制输出。这七个级别分别是:SEVERE,WARNING,INFO,CONFIG,FINE,FINER,FINEST。</p>
+<h4 id="log4j">Log4j</h4>
+<p>Log4j是Apache的一个开源项目,通过使用Log4j,我们可以控制日志信息输送的目的地是控制台,文件,GUI组件,甚至是套接口服务器,NT的事件记录器,UNIX Syslog守护进程等;我们也可以控制每一条日志的输出格式;通过定义每一条日志信息的级别,我们能够更加细致地控制日志的生成过程。最令人感兴趣的就是,这些可以通过一个配置文件来灵活地进行配置,而不需要修改应用的代码。</p>
+<p>Log4也有七种日志级别:OFF,FATAL,ERROR,WARN,INFO,DEBUG和TRACE。</p>
+<h4 id="logback">Logback</h4>
+<p>LogBack也是一个很成熟的日志框架,其实LogBack和Log4j出自一个人之手,这个人就是Ceki Gülcü。</p>
+<p>logback当前分成三个模块:logback-core,logback- classic和logback-access。logback-core是其它两个模块的基础模块。logback-classic是Log4j的一个改良版本。此外logback-classic完整实现SLF4J API使你可以很方便地更换成其它日记系统如Log4j或j.u.l。logback-access访问模块与Servlet容器集成提供通过Http来访问日记的功能。</p>
+<h4 id="log4j2">Log4j2</h4>
+<p>前面介绍过Log4j,这里要单独介绍一下Log4j2,之所以要单独拿出来说,而没有和Log4j放在一起介绍,是因为作者认为,Log4j2已经不仅仅是Log4j的一个升级版本了,而是从头到尾被重写的,这可以认为这其实就是完全不同的两个框架。</p>
+<p>关于Log4j2解决了Log4j的哪些问题,Log4j2相比较于Log4j,j.u.l和logback有哪些优势,我们在后续的文章中介绍。</p>
+<p>前面介绍了四种日志框架,也就是说,我们想要在应用中打印日志的时候,可以使用以上四种类库中的任意一种。比如想要使用Log4j,那么只要依赖Log4j的jar包,配置好配置文件并且在代码中使用其API打印日志就可以了。</p>
+<h3 id="什么是日志门面">什么是日志门面</h3>
+<p>日志门面,是门面模式的一个典型的应用。</p>
+<p>门面模式(Facade Pattern),也称之为外观模式,其核心为:外部与一个子系统的通信必须通过一个统一的外观对象进行,使得子系统更易于使用。</p>
+<p>就像前面介绍的几种日志框架一样,每一种日志框架都有自己单独的API,要使用对应的框架就要使用其对应的API,这就大大的增加应用程序代码对于日志框架的耦合性。</p>
+<p>为了解决这个问题,就是在日志框架和应用程序之间架设一个沟通的桥梁,对于应用程序来说,无论底层的日志框架如何变,都不需要有任何感知。只要门面服务做的足够好,随意换另外一个日志框架,应用程序不需要修改任意一行代码,就可以直接上线。</p>
+<p>在软件开发领域有这样一句话:计算机科学领域的任何问题都可以通过增加一个间接的中间层来解决。而门面模式就是对于这句话的典型实践。</p>
+<h3 id="为什么需要日志门面">为什么需要日志门面</h3>
+<p>前面提到过一个重要的原因,就是为了在应用中屏蔽掉底层日志框架的具体实现。这样的话,即使有一天要更换代码的日志框架,只需要修改jar包,最多再改改日志输出相关的配置文件就可以了。这就是解除了应用和日志框架之间的耦合。</p>
+<p>有人或许会问了,如果我换了日志框架了,应用是不需要改了,那日志门面不还是需要改的吗?</p>
+<p>要回答这个问题,我们先来举一个例子,再把门面模式揉碎了重新解释一遍。</p>
+<p>日志门面就像饭店的服务员,而日志框架就像是后厨的厨师。对于顾客这个应用来说,我到饭店点菜,我只需要告诉服务员我要一盘番茄炒蛋即可,我不关心后厨的所有事情。因为虽然主厨从把这道菜称之为『番茄炒蛋』A厨师换成了把这道菜称之为『西红柿炒鸡蛋』的B厨师。但是,顾客不需要关心,他只要下达『番茄炒蛋』的命令给到服务员,由服务员再去翻译给厨师就可以了。</p>
+<p>所以,对于一个了解了”番茄炒蛋的多种叫法”的服务员来说,无论后厨如何换厨师,他都能准确的帮用户下单。</p>
+<p>同理,对于一个设计的全面,完善的日志门面来说,他也应该是天然就兼容了多种日志框架的。所以,底层框架的更换,日志门面几乎不需要改动。</p>
+<p>以上,就是日志门面的一个比较重要的好处——解耦。</p>
+<h3 id="常用日志门面">常用日志门面</h3>
+<h4 id="slf4j">SLF4J</h4>
+<p>Java简易日志门面(Simple Logging Facade for Java,缩写SLF4J),是一套包装Logging 框架的界面程式,以外观模式实现。可以在软件部署的时候决定要使用的 Logging 框架,目前主要支援的有Java Logging API,Log4j及logback等框架。以MIT 授权方式发布。</p>
+<p>SLF4J 的作者就是 Log4j 的作者 Ceki Gülcü,他宣称 SLF4J 比 Log4j 更有效率,而且比 Apache Commons Logging (JCL) 简单,稳定。</p>
+<p>其实,SLF4J其实只是一个门面服务而已,他并不是真正的日志框架,真正的日志的输出相关的实现还是要依赖Log4j,logback等日志框架的。</p>
+<p>由于SLF4J比较常用,这里多用一些篇幅,再来简单分析一下SLF4J,主要和Log4J做一下对比。相比较于Log4J的API,SLF4J有以下几点优势:</p>
+<ul>
+<li>
+<p>Log4j 提供 TRACE, DEBUG, INFO, WARN, ERROR 及 FATAL 六种纪录等级,但是 SLF4J 认为 ERROR 与 FATAL 并没有实质上的差别,所以拿掉了 FATAL 等级,只剩下其他五种。</p>
+</li>
+<li>
+<p>大部分人在程序里面会去写logger.error(exception),其实这个时候Log4j会去把这个exception tostring。真正的写法应该是logger(message.exception);而SLF4J就不会使得程序员犯这个错误。</p>
+</li>
+<li>
+<p>Log4j间接的在鼓励程序员使用string相加的写法(这种写法是有性能问题的),而SLF4J就不会有这个问题 ,你可以使用logger.error(” is+serviceid”,serviceid);</p>
+</li>
+<li>
+<p>使用SLF4J可以方便的使用其提供的各种集体的实现的jar。(类似commons-logger)</p>
+</li>
+<li>
+<p>从commons—logger和Log4j merge非常方便,SLF4J也提供了一个swing的tools来帮助大家完成这个merge。</p>
+</li>
+<li>
+<p>提供字串内容替换的功能,会比较有效率,说明如下:</p>
+<ul>
+<li>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span>// 传统的字符串产生方式,如果没有要记录Debug等级的信息,就会浪费时间在产生不必要的信息上</span></span>
+<span class="line"><span>logger.debug(&quot;There are now &quot; + count + &quot; user accounts: &quot; + userAccountList);</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// 为了避免上述问题,我们可以先检查是不是开启了Debug信息记录功能,只是程序的编码会比较复杂</span></span>
+<span class="line"><span>if (logger.isDebugEnabled()) {</span></span>
+<span class="line"><span>    logger.debug(&quot;There are now &quot; + count + &quot; user accounts: &quot; + userAccountList);</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// 如果Debug等级没有开启,则不会产生不必要的字符串,同时也能保持程序编码的简洁</span></span>
+<span class="line"><span>logger.debug(&quot;There are now {} user accounts: {}&quot;, count, userAccountList);</span></span>
+<span class="line"><span></span></span></code></pre> </div> 
+</li>
+</ul>
+</li>
+<li>
+<p>SLF4J 只支持 MDC,不支持 NDC。</p>
+</li>
+</ul>
+<h4 id="commons-logging">commons-logging</h4>
+<p>Apache Commons Logging是一个基于Java的日志记录实用程序,是用于日志记录和其他工具包的编程模型。它通过其他一些工具提供API,日志实现和包装器实现。</p>
+<p>commons-logging和SLF4J的功能是类似的,主要是用来做日志 门面的。提供更加好友的API工具。</p> </div> <div class="mb-12 flex flex-wrap gap-2 gap-y-4 md:gap-5"> <a href="/tags/log" aria-label="log"> <!-- <span
+		class="w-fit rounded-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2"
+	> --> <span class="w-fit rounded-full px-2 py-1 text-sm font-semibold shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2">
+#log </span> </a><a href="/tags/java" aria-label="java"> <!-- <span
+		class="w-fit rounded-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2"
+	> --> <span class="w-fit rounded-full px-2 py-1 text-sm font-semibold shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2">
+#java </span> </a> </div> <!-- related posts --> <footer> <h2 class="mb-6 text-lg font-bold dark:text-white">Related Posts</h2> <section class="flex flex-col md:flex-row sm:justify-between gap-8"> <div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/dark-6_Z1gwj2P.webp" class="h-16 w-16 rounded-full object-cover" alt="img of Single test coverage statistical principle" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/interview/unittest/single-test-coverage-statistical-principle/"> 单测覆盖率是如何统计的?原理是什么? </a> </header> </div><div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/dog-5_Z1iTcu0.webp" class="h-16 w-16 rounded-full object-cover" alt="img of How to unit test the JDBC layer" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/interview/unittest/how-to-unit-test-the-jdbc-layer/"> 如何对JDBC这一层做单元测试 </a> </header> </div><div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/squirrel-1_1Fybwb.webp" class="h-16 w-16 rounded-full object-cover" alt="img of How to make a single test Mock" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/interview/unittest/how-to-make-a-single-test-mock/"> 什么是Mock?怎么做单测的Mock? </a> </header> </div> </section> </footer> </article> </div>  </div> </article> <button aria-label="Back to Top" class="z-90 fixed bottom-8 end-4 flex h-10 w-10 translate-y-28 items-center justify-center rounded-full border-2 border-transparent bg-[#f8f9fa99] text-3xl opacity-0 transition-all duration-300 hover:border-zinc-400 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 dark:border-slate-50/[0.06] dark:bg-slate-900/75 sm:end-8 sm:h-12 sm:w-12" data-show="false" id="to-top-btn" style="opacity: 1;--tw-translate-y: -26px;
+		transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));"> <svg aria-hidden="true" class="h-6 w-6" fill="none" focusable="false" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <path d="M4.5 15.75l7.5-7.5 7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button>  <footer class="flex h-28 w-full items-center justify-center border-t-2 px-16">
+&copy; 2024 chou403 · Powered by &nbsp;<a href="https://astro.build" style="color:cornflowerblue;">Astro</a>&nbsp;& &nbsp;<a href="https://blog-template-gray.vercel.app" style="color:cornflowerblue;">OpenBlog</a> </footer> </main>    </body> </html>  <div> <div class="fixed inset-0 z-50 hidden" id="headlessui-dialog-:Rlb6:" role="dialog" aria-modal="true" data-headlessui-state="open"> <div class="fixed inset-0 bg-black/20 backdrop-blur-sm dark:bg-slate-900/80" id="" aria-hidden="true" data-headlessui-state="open"></div> <div class="relative w-80 max-w-[calc(100%-3rem)] bg-white p-6 dark:bg-slate-800" id="toc_content"> <button id="close-dialog-page" type="button" class="absolute right-5 top-5 z-10 flex h-8 w-8 items-center justify-center text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300" tabindex="0"><span class="sr-only">Close navigation</span> <svg viewBox="0 0 10 10" class="h-2.5 w-2.5 overflow-visible"> <path d="M0 0L10 10M10 0L0 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </svg> </button> <nav class="h-[59rem] max-w-xs dark:text-black"> <h1 class="mb-3 text-2xl font-bold dark:text-white">On this page</h1> <ul class="sidebar flex flex-col gap-4 [text-wrap:balance]"> <li class="flex flex-col"> <a href="#介绍" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 介绍 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#1-降低耦合性" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 1. 降低耦合性 </a>  </li><li class="flex flex-col"> <a href="#2-增加灵活性" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 2. 增加灵活性 </a>  </li><li class="flex flex-col"> <a href="#3-一致的日志格式和配置" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 3. 一致的日志格式和配置 </a>  </li><li class="flex flex-col"> <a href="#4-支持多种日志框架" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 4. 支持多种日志框架 </a>  </li><li class="flex flex-col"> <a href="#推荐的做法" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 推荐的做法 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#1-使用-slf4j" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 1. 使用 SLF4J </a>  </li><li class="flex flex-col"> <a href="#2-使用-apache-commons-logging" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 2. 使用 Apache Commons Logging </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#总结" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 总结 </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#扩展知识" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 扩展知识 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#常用日志框架" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 常用日志框架 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#jul" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> j.u.l </a>  </li><li class="flex flex-col"> <a href="#log4j" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> Log4j </a>  </li><li class="flex flex-col"> <a href="#logback" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> Logback </a>  </li><li class="flex flex-col"> <a href="#log4j2" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> Log4j2 </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#什么是日志门面" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 什么是日志门面 </a>  </li><li class="flex flex-col"> <a href="#为什么需要日志门面" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 为什么需要日志门面 </a>  </li><li class="flex flex-col"> <a href="#常用日志门面" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 常用日志门面 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#slf4j" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> SLF4J </a>  </li><li class="flex flex-col"> <a href="#commons-logging" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> commons-logging </a>  </li> </ul> </li> </ul> </li> </ul> </nav> </div> </div> </div> 

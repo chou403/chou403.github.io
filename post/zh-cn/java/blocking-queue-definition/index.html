@@ -1,0 +1,535 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth" data-astro-cid-37fxchfa> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico" type="image/x-icon"><!-- <link rel="icon" type="image/svg+xml" href="/favicon1.svg" /> --><meta name="generator" content="Astro v4.16.2"><!-- Canonical URL --><link rel="canonical" href="https://blog-template-gray.vercel.app/post/zh-cn/java/blocking-queue-definition/"><!-- Primary Meta Tags --><title>阻塞队列 • 知道的越多,才知知道的越少</title><!-- ViewTransitions  --><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><!-- SEO --><meta name="title" content="阻塞队列 • 知道的越多,才知知道的越少"><meta name="description" content="开发使用到的阻塞队列"><meta name="author" content="chou403"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://blog-template-gray.vercel.app/post/zh-cn/java/blocking-queue-definition/"><meta property="og:title" content="阻塞队列"><meta property="og:description" content="开发使用到的阻塞队列"><meta property="og:image" content="https://blog-template-gray.vercel.app/_astro/pexels-kmerriman-20787.jpg"><meta property="article:author" content="chou403"><meta property="article:published_time" content="2024-08-09T14:46:19.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://blog-template-gray.vercel.app/post/zh-cn/java/blocking-queue-definition/"><meta property="twitter:title" content="阻塞队列"><meta property="twitter:description" content="开发使用到的阻塞队列"><meta property="twitter:image" content="https://blog-template-gray.vercel.app/_astro/pexels-kmerriman-20787.jpg"><!-- RSS auto-discovery --><link rel="alternate" type="application/rss+xml" title="知道的越多,才知知道的越少" href="/rss.xml"><link as="font" crossorigin rel="preload" href="/fonts/Manrope-Bold.woff2" type="font/woff2"><style>@font-face {font-weight: 200;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-ExtraLight.woff2)} @font-face {font-weight: 300;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Light.woff2)} @font-face {font-weight: 400;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Regular.woff2)} @font-face {font-weight: 500;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Medium.woff2)} @font-face {font-weight: 600;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-SemiBold.woff2)} @font-face {font-weight: 700;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Bold.woff2)} @font-face {font-weight: 800;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-ExtraBold.woff2)} @font-face { font-family: '_font_fallback_643777521279'; size-adjust: 103.76%; src: local('Arial'); ascent-override: 102.74%; descent-override: 28.91%; line-gap-override: 0.00%; }</style><script>
+	function getTheme() {
+		const storedTheme = typeof localStorage !== 'undefined' && localStorage.getItem('theme')
+
+		return (
+			storedTheme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+		)
+	}
+
+	function setTheme(newTheme) {
+		const html = document.documentElement
+		const isDark = newTheme === 'dark'
+
+		html.classList.toggle('dark', isDark)
+		html.classList.toggle('light', !isDark)
+
+		localStorage.setItem('theme', newTheme)
+	}
+
+	// set initial theme
+	setTheme(getTheme())
+	document.addEventListener('astro:after-swap', () => setTheme(getTheme()))
+
+	document.addEventListener('theme-change', (e) => {
+		setTheme(e.detail.theme)
+	})
+</script><script>
+	if (!('animations' in localStorage)) {
+		localStorage.setItem('animations', 'true')
+	} else {
+		localStorage.setItem('animations', 'false')
+	}
+</script><link rel="stylesheet" href="/_astro/_page_.CCiJ3j76.css">
+<link rel="stylesheet" href="/_astro/_slug_.Ba2ksmBT.css"><script type="module" src="/_astro/hoisted.D9DAUC0s.js"></script></head> <body class="mx-auto bg-white dark:bg-slate-900 dark:text-slate-400 dark:text-white" data-astro-cid-37fxchfa> <main class="mt-4 grid gap-12 overflow-hidden px-5 antialiased sm:mx-auto sm:max-w-2xl sm:px-8 md:max-w-6xl md:overflow-visible lg:px-0" data-astro-cid-37fxchfa> <header class="fixed left-0 top-0 z-50 flex h-12 w-full items-center bg-[#f8f9fa99] px-5 py-2.5 font-semibold dark:border-slate-50/[0.06] dark:bg-slate-900/60"> <a class="mr-auto text-lg" href="/">Home</a> <div id="astro-header-drawer" class="absolute right-1 top-12 z-50 translate-x-96 rounded-l-lg bg-white p-4 text-slate-500 shadow transition-transform duration-300 ease-in dark:bg-[#0a0910] md:static md:h-auto md:translate-x-0 md:rounded-none md:border-none md:bg-transparent md:p-0 md:shadow-none dark:md:bg-transparent"> <nav class="flex h-full justify-between gap-2 text-left md:w-full md:flex-row md:gap-5"> <div class="flex flex-col gap-4 border-black pr-4 dark:border-white md:flex-row md:border-r-2"> <a href="/tags" class="text-opacity-60 flex items-center gap-1 text-2xl md:text-base" rel="noopener noreferrer ">  <svg xmlns="http://www.w3.org/2000/svg" class="w-8 md:w-6" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M7.859 6h-2.834a2.025 2.025 0 0 0 -2.025 2.025v2.834c0 .537 .213 1.052 .593 1.432l6.116 6.116a2.025 2.025 0 0 0 2.864 0l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-6.117 -6.116a2.025 2.025 0 0 0 -1.431 -.593z"></path> <path d="M17.573 18.407l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-7.117 -7.116"></path> <path d="M6 9h-.01"></path> </svg> Tags
+ </a> </div> <div class="flex items-center justify-center gap-3 md:justify-end md:p-0"> <a href="https://github.com/chou403/chou403.github.io" class="text-opacity-60" rel="noopener noreferrer " target="_blank" aria-label="Github">  <span><svg viewBox="0 0 16 16" class="h-5 w-5" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg> </span>  </a> </div> <!-- <LanguageSwitcher client:load /> --> </nav> </div> <div class="flex items-center gap-3 text-slate-500 md:pl-3" data-astro-transition-persist="navbar"> <div> <site-search id="search" class="ms-auto"> <button data-open-modal disabled class="flex items-center justify-center rounded-md gap-1"> <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 19-3.5-3.5"></path><circle cx="11" cy="11" r="6"></circle></svg> <!-- <span class='md:hidden text-2xl'> Search</span> --> </button> <dialog aria-label="search" class="h-full max-h-full w-full max-w-full border border-zinc-400 bg-white dark:bg-[#0a0910ec] shadow backdrop:backdrop-blur sm:mx-auto sm:mb-auto sm:mt-16 sm:h-max sm:max-h-[calc(100%-8rem)] sm:min-h-[15rem] sm:w-5/6 sm:max-w-[48rem] sm:rounded-md opacity-0"> <div class="dialog-frame flex flex-col gap-4 p-6 pt-12 sm:pt-6"> <button data-close-modal class="ms-auto cursor-pointer rounded-full bg-black text-white px-4 py-2 dark:bg-white dark:text-black">Close</button> <div class="search-container dark:text-white"> <div id="pagefind__search"></div> </div> </div> </dialog> </site-search>   </div>  <theme-toggle class="relative h-6 w-6"> <button id="toggle-theme" class="group" aria-label="Toggle Theme"> <span class="absolute left-0 right-0 top-0 opacity-0 group-aria-pressed:opacity-100"> <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.715 15.15A6.5 6.5 0 0 1 9 6.035C6.106 6.922 4 9.645 4 12.867c0 3.94 3.153 7.136 7.042 7.136 3.101 0 5.734-2.032 6.673-4.853Z" class="fill-sky-400/20"></path><path d="m17.715 15.15.95.316a1 1 0 0 0-1.445-1.185l.495.869ZM9 6.035l.846.534a1 1 0 0 0-1.14-1.49L9 6.035Zm8.221 8.246a5.47 5.47 0 0 1-2.72.718v2a7.47 7.47 0 0 0 3.71-.98l-.99-1.738Zm-2.72.718A5.5 5.5 0 0 1 9 9.5H7a7.5 7.5 0 0 0 7.5 7.5v-2ZM9 9.5c0-1.079.31-2.082.845-2.93L8.153 5.5A7.47 7.47 0 0 0 7 9.5h2Zm-4 3.368C5 10.089 6.815 7.75 9.292 6.99L8.706 5.08C5.397 6.094 3 9.201 3 12.867h2Zm6.042 6.136C7.718 19.003 5 16.268 5 12.867H3c0 4.48 3.588 8.136 8.042 8.136v-2Zm5.725-4.17c-.81 2.433-3.074 4.17-5.725 4.17v2c3.552 0 6.553-2.327 7.622-5.537l-1.897-.632Z" class="fill-sky-500"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M17 3a1 1 0 0 1 1 1 2 2 0 0 0 2 2 1 1 0 1 1 0 2 2 2 0 0 0-2 2 1 1 0 1 1-2 0 2 2 0 0 0-2-2 1 1 0 1 1 0-2 2 2 0 0 0 2-2 1 1 0 0 1 1-1Z" class="fill-sky-500"></path></svg> </span> <span class="absolute left-0 right-0 top-0 opacity-0 group-aria-[pressed=false]:opacity-100"> <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" class="fill-sky-400/20 stroke-sky-500"></path><path d="M12 4v1M17.66 6.344l-.828.828M20.005 12.004h-1M17.66 17.664l-.828-.828M12 20.01V19M6.34 17.664l.835-.836M3.995 12.004h1.01M6 6l.835.836" class="stroke-sky-500"></path></svg> </span> </button> </theme-toggle> <script>
+	const button = document.getElementById('toggle-theme')
+
+	function setButtonPresssed() {
+		const bodyThemeIsDark = document.documentElement.classList.contains('dark')
+		button.setAttribute('aria-pressed', String(bodyThemeIsDark))
+	}
+	setButtonPresssed()
+</script> <button id="toggleMenu" class="md:ml-6 md:hidden"> <svg width="24" height="24"><path d="M5 6h14M5 12h14M5 18h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg> </button> <button id="astro-header-drawer-button" type="button" class="md:ml-6 md:hidden"> <svg width="24" height="24" fill="none" aria-hidden="true"><path d="M12 6v.01M12 12v.01M12 18v.01M12 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> <span class="sr-only">Show Menu</span> </button> </div> </header>  <div class="pointer-events-none absolute inset-x-0 top-0 z-[60] flex justify-center overflow-hidden"> <div class="flex w-[108rem] flex-none justify-end"> <picture> <source srcset="/_astro/docs.BiePeNN8.avif" type="image/avif"> <img src="/_astro/docs.BeNwu2rW_1CTG48.webp" class="w-[71.75rem] max-w-none flex-none dark:hidden" alt="img of docs" width="200" height="200" loading="lazy" decoding="async"> </picture> <picture> <source srcset="/_astro/docs-dark.C7CksN2y.avif" type="image/avif"> <img src="/_astro/docs-dark.Bsq-hjJH_17S3ea.webp" class="hidden w-[90rem] max-w-none flex-none dark:block" alt="img of docs-dark" width="200" height="200" loading="lazy" decoding="async"> </picture> </div> </div>  <article class="mt-12 min-w-full sm:max-w-none md:max-w-none md:py-4"> <header class="mb-3 flex flex-col gap-6"> <div class="flex flex-wrap gap-2"> <div class="flex items-center justify-center"> <h1 class="text-4xl font-semibold md:pb-2.5 md:text-4xl"> 开发使用到的阻塞队列 </h1> </div> </div> <div class="flex gap-x-1"> <p class="text-center text-sm font-bold text-opacity-50"> chou403 </p> <p class="text-center text-sm font-bold text-opacity-50">
+/ Java </p> <p class="text-center text-sm text-opacity-50">
+/ <time class="text-sm font-bold text-opacity-60" datetime="2022-09-25T15:20:35.000Z"> Sep 25, 2022 </time> </p> <p class="text-center text-sm font-bold text-opacity-50">
+/ 16 min read </p> <!-- {
+					data.updatedDate && (
+						<span class="text-quote rounded-lg p-1">
+							Last Updated:
+							<FormattedDate date={data.updatedDate} />
+						</span>
+					)
+				} --> </div> </header> <!-- annotate blog post image --> <!-- <>
+			{
+				heroImage && (
+					<Image
+						src={heroImage}
+						width={1000}
+						height={500}
+						quality={100}
+						format="jpg"
+						loading="eager"
+						class="my-8 max-h-[300px] w-full rounded-md object-cover md:max-h-[500px]"
+						alt={`img of ${title}`}
+					/>
+				)
+			}
+		</> --> <hr> <div>   <div class="mt-8 grid grid-cols-1 gap-10"> <!-- aside  --> <!-- Left menu bar comments --> <!-- <aside class="hidden flex-col gap-8 md:flex">
+			<div class="sticky top-12 z-10 hidden self-start transition-all duration-200 md:block">
+				{headings && headings.length > 0 && <TableOfContents {headings} />}
+			</div>
+		</aside> --> <!-- post --> <article class="grid w-full max-w-full"> <div class="prose prose-lg mb-12 min-w-full dark:prose-invert md:prose-xl"> <h2 id="阻塞队列">阻塞队列</h2>
+<p>先进先出(FIFO)的数据结构,与普通队列不同的是,他支持两个附加操作,即阻塞添加和阻塞删除方法。</p>
+<ul>
+<li>阻塞添加: 当阻塞队列是满时,往队列里添加元素的操作将被阻塞。</li>
+<li>阻塞删除: 当阻塞队列是空时,从队列中获取元素/删除元素的操作将被阻塞。</li>
+</ul>
+<p>在多线程中,阻塞的意思是,在某些情况下会 挂起线程,一旦条件成熟,被阻塞的线程就会被自动唤醒。</p>
+<p>好处:</p>
+<ul>
+<li>阻塞队列不用手动控制什么时候该被阻塞,什么时候该被唤醒,简化了操作。</li>
+</ul>
+<h3 id="blockingqueue">BlockingQueue</h3>
+<p>根据插入和取出两种类型的操作,具体分为下面一些类型:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th style="text-align:center">方法类型</th><th style="text-align:center">抛出异常</th><th style="text-align:center">返回布尔</th><th style="text-align:center">阻塞</th><th style="text-align:center">超时</th></tr></thead><tbody><tr><td style="text-align:center">插入</td><td style="text-align:center">add(E e)</td><td style="text-align:center">offer(E e)</td><td style="text-align:center">put(E e)</td><td style="text-align:center">offer(E e, Time, TimeUnit)</td></tr><tr><td style="text-align:center">取出</td><td style="text-align:center">remove()</td><td style="text-align:center">poll()</td><td style="text-align:center">take()</td><td style="text-align:center">poll(Time, TimeUnit)</td></tr><tr><td style="text-align:center">对首</td><td style="text-align:center">element()</td><td style="text-align:center">peek()</td><td style="text-align:center">无</td><td style="text-align:center">无</td></tr></tbody></table>
+<ul>
+<li>抛出异常是指当队列满时,再次插入会抛出异常(如果队列未满,插入返回值为true)。</li>
+<li>返回布尔是指当队列满时,再次插入会返回false。</li>
+<li>阻塞是指当队列满时,再次插入会被阻塞,直到队列取出一个元素,才能插入。</li>
+<li>超市是指当一个时限过后,才会插入或者取出。</li>
+</ul>
+<blockquote>
+<p>生产</p>
+<p>add,offer,put这三个方法都是往队列尾部添加元素,区别如下:</p>
+<ul>
+<li>add: 不会阻塞,添加成功时返回true,不响应中断,当队列已满导致添加失败时抛出IllegalStateException。</li>
+<li>offer: 不会阻塞,添加成功时返回true,因队列已满导致添加失败时返回false,不响应中断。</li>
+<li>put: 会阻塞,会响应中断。</li>
+</ul>
+<p>消费</p>
+<p>take,poll方法能获取队列头部第一个元素,区别如下:</p>
+<ul>
+<li>take: 会响应中断,会一直阻塞直到取得元素或当前线程中断。</li>
+<li>poll: 会响应中断,会阻塞,阻塞时间参照方法里参数timeout.timeUnit,当阻塞时间到了还没取得元素会返回null。</li>
+</ul>
+</blockquote>
+<h3 id="arrayblockingqueue">ArrayBlockingQueue</h3>
+<ul>
+<li>
+<p>数据结构: 静态数组,容量固定必须指定长度,没有扩容机制,没有元素的下标位置null占位。</p>
+</li>
+<li>
+<p>锁: ReentrantLock 存取时同一把锁,操作的是同一个数组对象。</p>
+</li>
+<li>
+<p>阻塞:</p>
+<ul>
+<li>
+<p>notEmpty,出队: 队列count为0,无元素可取时,阻塞在该对象上。</p>
+</li>
+<li>
+<p>notFull,入队: 队列count为数组的length,放不进元素时,阻塞在该对象上。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>入队: 从对首开始添加元素,记录putIndex(到队尾时置为0),唤醒notEmpty。</p>
+</li>
+<li>
+<p>出队: 从对首开始取元素,记录takeIndex,唤醒notFull。</p>
+</li>
+<li>
+<p>先进先出,读写互相排斥。</p>
+</li>
+</ul>
+<p>由<strong>数组</strong>构成的<strong>有界</strong>阻塞队列,通过<strong>ReentrantLock</strong>和<strong>Condition</strong>条件队列来实现阻塞,一些成员变量如下:</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#6A737D">    //存储数据</span></span>
+<span class="line"><span style="color:#F97583">    final</span><span style="color:#F97583"> Object</span><span style="color:#E1E4E8">[] items;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    //返回获取数据的索引,主要用于take,poll,peek,remove方法</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#E1E4E8"> takeIndex;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    //返回添加数据的索引,主要用于 put,offer,add 方法</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#E1E4E8"> putIndex;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 队列元素的个数</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#E1E4E8"> count;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    //可重入锁</span></span>
+<span class="line"><span style="color:#F97583">    final</span><span style="color:#E1E4E8"> ReentrantLock lock;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    //条件对象,用于通知take方法队列的线程</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Condition notEmpty;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    //条件对象,用于通知put方法队列的线程</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Condition notFull;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    //迭代器</span></span>
+<span class="line"><span style="color:#F97583">    transient</span><span style="color:#E1E4E8"> Itrs itrs </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"></span></code></pre> </div> 
+<h4 id="添加元素原理">添加元素原理</h4>
+<p>添加方法有add,offer,put。</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#6A737D">//add方法</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> boolean</span><span style="color:#B392F0"> add</span><span style="color:#E1E4E8">(E e) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#B392F0">offer</span><span style="color:#E1E4E8">(e))</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    else</span></span>
+<span class="line"><span style="color:#F97583">        throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> IllegalStateException</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;Queue full&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">//offer方法</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> boolean</span><span style="color:#B392F0"> offer</span><span style="color:#E1E4E8">(E e) {</span></span>
+<span class="line"><span style="color:#6A737D">    //判断是否为null</span></span>
+<span class="line"><span style="color:#B392F0">     checkNotNull</span><span style="color:#E1E4E8">(e);</span></span>
+<span class="line"><span style="color:#F97583">     final</span><span style="color:#E1E4E8"> ReentrantLock lock </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.lock;</span></span>
+<span class="line"><span style="color:#E1E4E8">     lock.</span><span style="color:#B392F0">lock</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">     try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">         //判断队列是否满</span></span>
+<span class="line"><span style="color:#F97583">         if</span><span style="color:#E1E4E8"> (count </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> items.length)</span></span>
+<span class="line"><span style="color:#F97583">             return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">         else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">             //添加元素到队列</span></span>
+<span class="line"><span style="color:#B392F0">             enqueue</span><span style="color:#E1E4E8">(e);</span></span>
+<span class="line"><span style="color:#F97583">             return</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">         }</span></span>
+<span class="line"><span style="color:#E1E4E8">     } </span><span style="color:#F97583">finally</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">         lock.</span><span style="color:#B392F0">unlock</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">     }</span></span>
+<span class="line"><span style="color:#E1E4E8"> }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">//元素入队操作</span></span>
+<span class="line"><span style="color:#F97583">private</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> enqueue</span><span style="color:#E1E4E8">(E x) {</span></span>
+<span class="line"><span style="color:#6A737D">    //获取当前数组</span></span>
+<span class="line"><span style="color:#F97583">    final</span><span style="color:#F97583"> Object</span><span style="color:#E1E4E8">[] items </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.items;</span></span>
+<span class="line"><span style="color:#6A737D">    //通过putIndex索引对数组进行赋值</span></span>
+<span class="line"><span style="color:#E1E4E8">    items[putIndex] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x;</span></span>
+<span class="line"><span style="color:#6A737D">    //索引自增,如果已是最后一个位置,重新设置 putIndex = 0;</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">putIndex </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> items.length)</span></span>
+<span class="line"><span style="color:#E1E4E8">        putIndex </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">    //队列中元素数量加1</span></span>
+<span class="line"><span style="color:#E1E4E8">    count</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">    //唤醒调用take()方法的线程,执行元素获取操作。</span></span>
+<span class="line"><span style="color:#E1E4E8">    notEmpty.</span><span style="color:#B392F0">signal</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<p>add方法本质调用的是offer方法,而在offer的最关键处,也就是enqueue入队操作。</p>
+<ol>
+<li>reentrantLock保证的线程的互斥性,即统一时间只能有一个线程操作。如果队列已满,返回true,add方法则是抛出异常;如果队列未满,则开始入队操作;</li>
+<li>在入队操作时,他会通过一个全局变量putIndex作为索引,指引着新来元素的位置。在这里有个小细节,就是判断putIndex是否与队列长度相等,如果队列已满,而且队列的操作时先进先出,索引下一次来插入元素的位置肯定是对头,也就是索引0的位置;</li>
+<li>队内已经有元素了,然后开始唤醒take操作来消费元素。signal() 其实是 notify() 的升级版。</li>
+</ol>
+<p>在添加的操作中,put方法,他是会导致线程阻塞的。</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#6A737D">//put方法,阻塞时可中断</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> put</span><span style="color:#E1E4E8">(E e) throws InterruptedException {</span></span>
+<span class="line"><span style="color:#B392F0"> checkNotNull</span><span style="color:#E1E4E8">(e);</span></span>
+<span class="line"><span style="color:#F97583">  final</span><span style="color:#E1E4E8"> ReentrantLock lock </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.lock;</span></span>
+<span class="line"><span style="color:#E1E4E8">  lock.</span><span style="color:#B392F0">lockInterruptibly</span><span style="color:#E1E4E8">();</span><span style="color:#6A737D">//该方法可中断</span></span>
+<span class="line"><span style="color:#F97583">  try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">      //当队列元素个数与数组长度相等时,无法添加元素</span></span>
+<span class="line"><span style="color:#F97583">      while</span><span style="color:#E1E4E8"> (count </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> items.length)</span></span>
+<span class="line"><span style="color:#6A737D">          //将当前调用线程挂起,添加到notFull条件队列中等待唤醒</span></span>
+<span class="line"><span style="color:#E1E4E8">          notFull.</span><span style="color:#B392F0">await</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#B392F0">      enqueue</span><span style="color:#E1E4E8">(e);</span><span style="color:#6A737D">//如果队列没有满直接添加。。</span></span>
+<span class="line"><span style="color:#E1E4E8">  } </span><span style="color:#F97583">finally</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      lock.</span><span style="color:#B392F0">unlock</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<p>他是通过condition的await方法来实现阻塞的,但由于又添加了lockInterruptibly标识,说明其阻塞可被打断。</p>
+<h4 id="获取元素删除元素原理">获取元素/删除元素原理</h4>
+<p>方法有remove,poll,take。</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">public</span><span style="color:#E1E4E8"> E </span><span style="color:#B392F0">poll</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">    //reentrantLock互斥锁</span></span>
+<span class="line"><span style="color:#F97583">    final</span><span style="color:#E1E4E8"> ReentrantLock lock </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.lock;</span></span>
+<span class="line"><span style="color:#E1E4E8">    lock.</span><span style="color:#B392F0">lock</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">    try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">        //如果队列为0,返回null,反之进入移除队列</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> (count </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">?</span><span style="color:#79B8FF"> null</span><span style="color:#F97583"> :</span><span style="color:#B392F0"> dequeue</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">finally</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        lock.</span><span style="color:#B392F0">unlock</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">//移除队列</span></span>
+<span class="line"><span style="color:#F97583">private</span><span style="color:#E1E4E8"> E </span><span style="color:#B392F0">dequeue</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">    //获取当前队列数据</span></span>
+<span class="line"><span style="color:#F97583">    final</span><span style="color:#F97583"> Object</span><span style="color:#E1E4E8">[] items </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.items;</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">SuppressWarnings</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;unchecked&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#6A737D">    //获取当前队头数据</span></span>
+<span class="line"><span style="color:#E1E4E8">    E x </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (E) items[takeIndex];</span></span>
+<span class="line"><span style="color:#6A737D">    //将队头数据置为null</span></span>
+<span class="line"><span style="color:#E1E4E8">    items[takeIndex] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">    //如果队头索引自增与数组长度相等,则将其索引设置为第一位</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">takeIndex </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> items.length)</span></span>
+<span class="line"><span style="color:#E1E4E8">        takeIndex </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    count</span><span style="color:#F97583">--</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (itrs </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#6A737D">        //更新迭代器中的元素数据</span></span>
+<span class="line"><span style="color:#E1E4E8">        itrs.</span><span style="color:#B392F0">elementDequeued</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#6A737D">    //唤醒put/offer/add等方法</span></span>
+<span class="line"><span style="color:#E1E4E8">    notFull.</span><span style="color:#B392F0">signal</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> x;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<p>poll方法是通过删除队头数据来进行移除元素,唤醒与沉睡机制采用reentrantLock 的 condition 机制。</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">public</span><span style="color:#E1E4E8"> E </span><span style="color:#B392F0">take</span><span style="color:#E1E4E8">() throws InterruptedException {</span></span>
+<span class="line"><span style="color:#F97583">    final</span><span style="color:#E1E4E8"> ReentrantLock lock </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.lock;</span></span>
+<span class="line"><span style="color:#E1E4E8">      lock.</span><span style="color:#B392F0">lockInterruptibly</span><span style="color:#E1E4E8">();</span><span style="color:#6A737D">//中断</span></span>
+<span class="line"><span style="color:#F97583">      try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">          //队列没有元素,阻塞移除方法的线程</span></span>
+<span class="line"><span style="color:#F97583">          while</span><span style="color:#E1E4E8"> (count </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">              notEmpty.</span><span style="color:#B392F0">await</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#6A737D">          //有元素进行元素移除操作</span></span>
+<span class="line"><span style="color:#F97583">          return</span><span style="color:#B392F0"> dequeue</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">      } </span><span style="color:#F97583">finally</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">          lock.</span><span style="color:#B392F0">unlock</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<p>take方法跟 poll方法一样,也是通过dequeue() 方法进行移除元素,但不同的是,他会进行一个线程阻塞,也就是运用condition的 awati()方法,同时这个阻塞是可被打断的,关键词lockInterruptibly。</p>
+<p>remove() 方法相对来说比较复杂,他跟以上两个方法的不同点在于remove可以根据索引来删除元素,而另两个则是通过删除队列的头元素。</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> boolean</span><span style="color:#B392F0"> remove</span><span style="color:#E1E4E8">(Object o) {</span></span>
+<span class="line"><span style="color:#6A737D">    //确保传入元素不为null</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (o </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">    //获取队列当前数据</span></span>
+<span class="line"><span style="color:#F97583">    final</span><span style="color:#F97583"> Object</span><span style="color:#E1E4E8">[] items </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.items;</span></span>
+<span class="line"><span style="color:#F97583">    final</span><span style="color:#E1E4E8"> ReentrantLock lock </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.lock;</span></span>
+<span class="line"><span style="color:#E1E4E8">    lock.</span><span style="color:#B392F0">lock</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">    try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (count </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            final</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> putIndex </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.putIndex;</span></span>
+<span class="line"><span style="color:#F97583">            int</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> takeIndex;</span></span>
+<span class="line"><span style="color:#6A737D">            //找出O元素的索引值</span></span>
+<span class="line"><span style="color:#F97583">            do</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">                if</span><span style="color:#E1E4E8"> (o.</span><span style="color:#B392F0">equals</span><span style="color:#E1E4E8">(items[i])) {</span><span style="color:#6A737D">//如果匹配到,删除元素,i为o的索引</span></span>
+<span class="line"><span style="color:#B392F0">                    removeAt</span><span style="color:#E1E4E8">(i);</span></span>
+<span class="line"><span style="color:#F97583">                    return</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">                }</span></span>
+<span class="line"><span style="color:#6A737D">                //只有一个元素时,重置索引值</span></span>
+<span class="line"><span style="color:#F97583">                if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">i </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> items.length)</span></span>
+<span class="line"><span style="color:#E1E4E8">                    i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            } </span><span style="color:#F97583">while</span><span style="color:#E1E4E8"> (i </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> putIndex);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">finally</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        lock.</span><span style="color:#B392F0">unlock</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<p>removeAt() 方法。</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">void</span><span style="color:#B392F0"> removeAt</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">final</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> removeIndex) {</span></span>
+<span class="line"><span style="color:#F97583">    final</span><span style="color:#F97583"> Object</span><span style="color:#E1E4E8">[] items </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.items;</span></span>
+<span class="line"><span style="color:#6A737D">    //判断当前元素是否是头部索引值</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (removeIndex </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> takeIndex) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        items[takeIndex] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">takeIndex </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> items.length)</span></span>
+<span class="line"><span style="color:#E1E4E8">            takeIndex </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        count</span><span style="color:#F97583">--</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (itrs </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">            itrs.</span><span style="color:#B392F0">elementDequeued</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">       //如果不是,通过移动元素位置,将要删除的元素置为队尾删除</span></span>
+<span class="line"><span style="color:#F97583">        final</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> putIndex </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.putIndex;</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> removeIndex;;) {</span></span>
+<span class="line"><span style="color:#6A737D">            //确保当前队列大小大于1</span></span>
+<span class="line"><span style="color:#F97583">            int</span><span style="color:#E1E4E8"> next </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (next </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> items.length)</span></span>
+<span class="line"><span style="color:#E1E4E8">                next </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">            //如果不是队尾元素,进行元素移动</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (next </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> putIndex) {</span></span>
+<span class="line"><span style="color:#E1E4E8">                items[i] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> items[next];</span></span>
+<span class="line"><span style="color:#E1E4E8">                i </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> next;</span></span>
+<span class="line"><span style="color:#E1E4E8">            } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">                //如果是队尾,元素移动完毕,直接将队尾为null,即删除</span></span>
+<span class="line"><span style="color:#E1E4E8">                items[i] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">                this</span><span style="color:#E1E4E8">.putIndex </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> i;</span></span>
+<span class="line"><span style="color:#F97583">                break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">        count</span><span style="color:#F97583">--</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (itrs </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">            itrs.</span><span style="color:#B392F0">removedAt</span><span style="color:#E1E4E8">(removeIndex);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">    notFull.</span><span style="color:#B392F0">signal</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<h3 id="linkedblockingqueue">LinkedBlockingQueue</h3>
+<p>由<strong>链表</strong>构成的<strong>有界</strong>阻塞队列,需要注意的是虽然是有界的,但是其默认大小是Integer.MAX_VALUE,高达21亿,一般情况下内存早爆了(在线程池中ThreadPoolExecutor有体现)。</p>
+<ul>
+<li>
+<p>数据结构: 链表Node,可以指定容量,默认为Integer.MAX_VALUE,内部类Node存储元素。</p>
+</li>
+<li>
+<p>锁分离: 存取互不排斥,操作的是不同的Node对象。</p>
+<ul>
+<li>
+<p>takeLock: 取Node节点保证前驱后继不会乱。</p>
+</li>
+<li>
+<p>putLock: 存Node节点保证前驱后继不会乱。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>阻塞:</p>
+<ul>
+<li>
+<p>notEmpty,出队: 队列count为0,无元素可取时,阻塞在该对象上。</p>
+</li>
+<li>
+<p>notFull,入队: 队列count为数组的length,放不进元素时,阻塞在该对象上。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>入队: 队尾入队,记录last节点。</p>
+</li>
+<li>
+<p>出队: 队首出队,记录head节点。</p>
+</li>
+<li>
+<p>删除元素时两个锁一起加。</p>
+</li>
+<li>
+<p>先进先出。</p>
+</li>
+</ul>
+<h3 id="priorityblockingqueue">PriorityBlockingQueue</h3>
+<p>支持优先级排序的无界阻塞队列。</p>
+<ul>
+<li>数据结构: 数组 + 平衡二叉树堆,可以指定初始容量,会自动扩容,最大容量为Integer.MAX_VALUE。</li>
+<li>锁: ReenLock存取东一把锁。</li>
+<li>阻塞: notEmpty,出队,队列为空是阻塞。</li>
+<li>入队:
+<ul>
+<li>不阻塞,永远返回成功,无界。</li>
+<li>根绝比较器进行堆化,根据二叉堆进行排序,自下而上。</li>
+</ul>
+</li>
+<li>出队:
+<ul>
+<li>弹出堆顶元素。</li>
+<li>堆尾元素放到堆顶。</li>
+<li>自上而下堆化。</li>
+<li>为空则阻塞。</li>
+</ul>
+</li>
+</ul>
+<h3 id="delayqueue">DelayQueue</h3>
+<p>支持优先级的延迟无界阻塞队列。</p>
+<h3 id="synchronousqueue">SynchronousQueue</h3>
+<p>单个元素的阻塞队列,队列中只有一个元素,如果想插入多个,必须等队列元素取出后,才能插入,只能有一个”坑位”,用一个插一个。</p>
+<ul>
+<li>
+<p>存取调用同一个方法: transfer。</p>
+<ul>
+<li>
+<p>put,offer为生产者,携带数据e,为Data模式,设置到QNode属性中。</p>
+</li>
+<li>
+<p>take,poll为消费者,不携带数据,为Request模式,设置到QNode属性中。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>数据结构: 链表Node。</p>
+</li>
+<li>
+<p>锁: cas + 自旋。</p>
+</li>
+<li>
+<p>阻塞: LockSupport。</p>
+</li>
+<li>
+<p>判断队尾节点或者栈顶节点Node与入队模式是否相同:</p>
+<ul>
+<li>
+<p>相同则构造节点Node入队,并阻塞当前线程,元素e和相乘赋值给Node属性。</p>
+</li>
+<li>
+<p>不同则将元素e(部位null)返回给取数据线程,配对线程被唤醒,出队。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>公平模式: TransferQueue,队尾匹配,队头出队,先进先出。</p>
+</li>
+<li>
+<p>非公平模式: TransferStack,栈顶匹配,栈顶出栈,后进先出。</p>
+</li>
+</ul>
+<h3 id="linkedtransferqueue">LinkedTransferQueue</h3>
+<p>由链表构成的无界阻塞队列。</p>
+<ul>
+<li>数据结构: 链表Node。</li>
+<li>锁: cas + 自旋。</li>
+<li>阻塞: LockSupport。</li>
+<li>可以自己控制放元素需要阻塞线程,比如使用四个添加元素的方法就不会阻塞线程,只入队元素,使用transfer()会阻塞线程。</li>
+<li>取元素与SynchronousQueue基本一样,都会阻塞等待有新的元素进入被匹配到。</li>
+</ul>
+<h3 id="linkedblockingdeque">LinkedBlockingDeque</h3>
+<p>由链表构成的双向阻塞队列。</p>
+<h3 id="linkedblockingqueue和arrayblockingqueue区别">LinkedBlockingQueue和ArrayBlockingQueue区别</h3>
+<ol>
+<li>
+<p>队列大小不同:</p>
+<ul>
+<li>ArrayBlockingQueue在初始化的时候,必须指定队列的大小。</li>
+<li>LinkedBlockingQueue在初始化的时候,如果没有指定大小,则会默认Integer.MAX_VALUE,是一个很大的值,这样就会导致数据再一个不可控的范围,一旦添加速度大于移除的速度时,可能会有内存泄露的风险。</li>
+</ul>
+</li>
+<li>
+<p>底层实现不同:
+ArrayBlockingQueue的底层是一个数组,而LinkedBlockingQueue底层是一个链表结构。官方文档介绍中,LinkedBlockingQueue的吞吐性是高于ArrayBlockingQueue;但是在添加或移除元素,LinkedBlockingQueue则会生成一个额外的Node对象,对GC可能存在影响。</p>
+<ul>
+<li>
+<blockquote>
+<p>至于为什么说LinkedBlockingQueue的吞吐性高于ArrayBlockingQueue:</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>吞吐性强是因为有两个锁,Array里面使用的是一个锁,不管put还是take行为,都可能被这个锁卡住,而Linked里put和take是两个锁,put只会被put行为卡住,而不会被take卡住,因此吞吐性能自然强于Array。而”less
+predictable performance” 这个也是显而易见的,Array采用的是固定内存,而Linked采用的是动态内存,无论是分配内存还是释放内存(甚至GC)动态内存的性能自然都会比固定内存要差。</p>
+</blockquote>
+</li>
+<li>
+<p>锁机制不一样:</p>
+<p>ArrayBlockingQueue使用的一个锁控制,LinkedBlockingQueue使用两个锁控制,一个putLock,另一个takeLock,但是锁的本质都是ReentrantLock。</p>
+</li>
+</ol>
+<p>LinkedBlockingQueue是一个基于链表实现的阻塞queue,它的性能ArrayBlockingQueue,但是差于ConcurrentLinkedQueue;并且它非常适于生产者消费者的环境中,比Executors.newFixedThreadPool()。
+就是基于这个队列的,使用LinkedBlockingQueue时一定要设置容量,不然会有内存溢出的风险。</p> </div> <div class="mb-12 flex flex-wrap gap-2 gap-y-4 md:gap-5"> <a href="/tags/java" aria-label="java"> <!-- <span
+		class="w-fit rounded-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2"
+	> --> <span class="w-fit rounded-full px-2 py-1 text-sm font-semibold shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2">
+#java </span> </a><a href="/tags/queue" aria-label="queue"> <!-- <span
+		class="w-fit rounded-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2"
+	> --> <span class="w-fit rounded-full px-2 py-1 text-sm font-semibold shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2">
+#queue </span> </a> </div> <!-- related posts --> <footer> <h2 class="mb-6 text-lg font-bold dark:text-white">Related Posts</h2> <section class="flex flex-col md:flex-row sm:justify-between gap-8"> <div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/bird-1_1kRUeh.webp" class="h-16 w-16 rounded-full object-cover" alt="img of Single test coverage statistical principle" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/interview/unittest/single-test-coverage-statistical-principle/"> 单测覆盖率是如何统计的?原理是什么? </a> </header> </div><div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/cat-17_1yaiRW.webp" class="h-16 w-16 rounded-full object-cover" alt="img of How to unit test the JDBC layer" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/interview/unittest/how-to-unit-test-the-jdbc-layer/"> 如何对JDBC这一层做单元测试 </a> </header> </div><div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/cat-26_RMRQG.webp" class="h-16 w-16 rounded-full object-cover" alt="img of How to make a single test Mock" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/interview/unittest/how-to-make-a-single-test-mock/"> 什么是Mock?怎么做单测的Mock? </a> </header> </div> </section> </footer> </article> </div>  </div> </article> <button aria-label="Back to Top" class="z-90 fixed bottom-8 end-4 flex h-10 w-10 translate-y-28 items-center justify-center rounded-full border-2 border-transparent bg-[#f8f9fa99] text-3xl opacity-0 transition-all duration-300 hover:border-zinc-400 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 dark:border-slate-50/[0.06] dark:bg-slate-900/75 sm:end-8 sm:h-12 sm:w-12" data-show="false" id="to-top-btn" style="opacity: 1;--tw-translate-y: -26px;
+		transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));"> <svg aria-hidden="true" class="h-6 w-6" fill="none" focusable="false" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <path d="M4.5 15.75l7.5-7.5 7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button>  <footer class="flex h-28 w-full items-center justify-center border-t-2 px-16">
+&copy; 2024 chou403 · Powered by &nbsp;<a href="https://astro.build" style="color:cornflowerblue;">Astro</a>&nbsp;& &nbsp;<a href="https://blog-template-gray.vercel.app" style="color:cornflowerblue;">OpenBlog</a> </footer> </main>    </body> </html>  <div> <div class="fixed inset-0 z-50 hidden" id="headlessui-dialog-:Rlb6:" role="dialog" aria-modal="true" data-headlessui-state="open"> <div class="fixed inset-0 bg-black/20 backdrop-blur-sm dark:bg-slate-900/80" id="" aria-hidden="true" data-headlessui-state="open"></div> <div class="relative w-80 max-w-[calc(100%-3rem)] bg-white p-6 dark:bg-slate-800" id="toc_content"> <button id="close-dialog-page" type="button" class="absolute right-5 top-5 z-10 flex h-8 w-8 items-center justify-center text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300" tabindex="0"><span class="sr-only">Close navigation</span> <svg viewBox="0 0 10 10" class="h-2.5 w-2.5 overflow-visible"> <path d="M0 0L10 10M10 0L0 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </svg> </button> <nav class="h-[59rem] max-w-xs dark:text-black"> <h1 class="mb-3 text-2xl font-bold dark:text-white">On this page</h1> <ul class="sidebar flex flex-col gap-4 [text-wrap:balance]"> <li class="flex flex-col"> <a href="#阻塞队列" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 阻塞队列 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#blockingqueue" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> BlockingQueue </a>  </li><li class="flex flex-col"> <a href="#arrayblockingqueue" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> ArrayBlockingQueue </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#添加元素原理" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 添加元素原理 </a>  </li><li class="flex flex-col"> <a href="#获取元素删除元素原理" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 获取元素/删除元素原理 </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#linkedblockingqueue" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> LinkedBlockingQueue </a>  </li><li class="flex flex-col"> <a href="#priorityblockingqueue" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> PriorityBlockingQueue </a>  </li><li class="flex flex-col"> <a href="#delayqueue" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> DelayQueue </a>  </li><li class="flex flex-col"> <a href="#synchronousqueue" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> SynchronousQueue </a>  </li><li class="flex flex-col"> <a href="#linkedtransferqueue" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> LinkedTransferQueue </a>  </li><li class="flex flex-col"> <a href="#linkedblockingdeque" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> LinkedBlockingDeque </a>  </li><li class="flex flex-col"> <a href="#linkedblockingqueue和arrayblockingqueue区别" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> LinkedBlockingQueue和ArrayBlockingQueue区别 </a>  </li> </ul> </li> </ul> </nav> </div> </div> </div> 

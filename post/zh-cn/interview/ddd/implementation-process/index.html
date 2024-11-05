@@ -1,0 +1,128 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth" data-astro-cid-37fxchfa> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico" type="image/x-icon"><!-- <link rel="icon" type="image/svg+xml" href="/favicon1.svg" /> --><meta name="generator" content="Astro v4.16.2"><!-- Canonical URL --><link rel="canonical" href="https://blog-template-gray.vercel.app/post/zh-cn/interview/ddd/implementation-process/"><!-- Primary Meta Tags --><title>DDD的实现流程 • 知道的越多,才知知道的越少</title><!-- ViewTransitions  --><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><!-- SEO --><meta name="title" content="DDD的实现流程 • 知道的越多,才知知道的越少"><meta name="description" content="详细描述DDD的实现流程"><meta name="author" content="chou403"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://blog-template-gray.vercel.app/post/zh-cn/interview/ddd/implementation-process/"><meta property="og:title" content="DDD的实现流程"><meta property="og:description" content="详细描述DDD的实现流程"><meta property="og:image" content="https://blog-template-gray.vercel.app/_astro/pexels-pixabay-416160.jpg"><meta property="article:author" content="chou403"><meta property="article:published_time" content="2024-08-09T14:46:12.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://blog-template-gray.vercel.app/post/zh-cn/interview/ddd/implementation-process/"><meta property="twitter:title" content="DDD的实现流程"><meta property="twitter:description" content="详细描述DDD的实现流程"><meta property="twitter:image" content="https://blog-template-gray.vercel.app/_astro/pexels-pixabay-416160.jpg"><!-- RSS auto-discovery --><link rel="alternate" type="application/rss+xml" title="知道的越多,才知知道的越少" href="/rss.xml"><link as="font" crossorigin rel="preload" href="/fonts/Manrope-Bold.woff2" type="font/woff2"><style>@font-face {font-weight: 200;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-ExtraLight.woff2)} @font-face {font-weight: 300;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Light.woff2)} @font-face {font-weight: 400;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Regular.woff2)} @font-face {font-weight: 500;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Medium.woff2)} @font-face {font-weight: 600;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-SemiBold.woff2)} @font-face {font-weight: 700;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Bold.woff2)} @font-face {font-weight: 800;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-ExtraBold.woff2)} @font-face { font-family: '_font_fallback_973809341016'; size-adjust: 103.76%; src: local('Arial'); ascent-override: 102.74%; descent-override: 28.91%; line-gap-override: 0.00%; }</style><script>
+	function getTheme() {
+		const storedTheme = typeof localStorage !== 'undefined' && localStorage.getItem('theme')
+
+		return (
+			storedTheme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+		)
+	}
+
+	function setTheme(newTheme) {
+		const html = document.documentElement
+		const isDark = newTheme === 'dark'
+
+		html.classList.toggle('dark', isDark)
+		html.classList.toggle('light', !isDark)
+
+		localStorage.setItem('theme', newTheme)
+	}
+
+	// set initial theme
+	setTheme(getTheme())
+	document.addEventListener('astro:after-swap', () => setTheme(getTheme()))
+
+	document.addEventListener('theme-change', (e) => {
+		setTheme(e.detail.theme)
+	})
+</script><script>
+	if (!('animations' in localStorage)) {
+		localStorage.setItem('animations', 'true')
+	} else {
+		localStorage.setItem('animations', 'false')
+	}
+</script><link rel="stylesheet" href="/_astro/_page_.CCiJ3j76.css">
+<link rel="stylesheet" href="/_astro/_slug_.Ba2ksmBT.css"><script type="module" src="/_astro/hoisted.D9DAUC0s.js"></script></head> <body class="mx-auto bg-white dark:bg-slate-900 dark:text-slate-400 dark:text-white" data-astro-cid-37fxchfa> <main class="mt-4 grid gap-12 overflow-hidden px-5 antialiased sm:mx-auto sm:max-w-2xl sm:px-8 md:max-w-6xl md:overflow-visible lg:px-0" data-astro-cid-37fxchfa> <header class="fixed left-0 top-0 z-50 flex h-12 w-full items-center bg-[#f8f9fa99] px-5 py-2.5 font-semibold dark:border-slate-50/[0.06] dark:bg-slate-900/60"> <a class="mr-auto text-lg" href="/">Home</a> <div id="astro-header-drawer" class="absolute right-1 top-12 z-50 translate-x-96 rounded-l-lg bg-white p-4 text-slate-500 shadow transition-transform duration-300 ease-in dark:bg-[#0a0910] md:static md:h-auto md:translate-x-0 md:rounded-none md:border-none md:bg-transparent md:p-0 md:shadow-none dark:md:bg-transparent"> <nav class="flex h-full justify-between gap-2 text-left md:w-full md:flex-row md:gap-5"> <div class="flex flex-col gap-4 border-black pr-4 dark:border-white md:flex-row md:border-r-2"> <a href="/tags" class="text-opacity-60 flex items-center gap-1 text-2xl md:text-base" rel="noopener noreferrer ">  <svg xmlns="http://www.w3.org/2000/svg" class="w-8 md:w-6" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M7.859 6h-2.834a2.025 2.025 0 0 0 -2.025 2.025v2.834c0 .537 .213 1.052 .593 1.432l6.116 6.116a2.025 2.025 0 0 0 2.864 0l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-6.117 -6.116a2.025 2.025 0 0 0 -1.431 -.593z"></path> <path d="M17.573 18.407l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-7.117 -7.116"></path> <path d="M6 9h-.01"></path> </svg> Tags
+ </a> </div> <div class="flex items-center justify-center gap-3 md:justify-end md:p-0"> <a href="https://github.com/chou403/chou403.github.io" class="text-opacity-60" rel="noopener noreferrer " target="_blank" aria-label="Github">  <span><svg viewBox="0 0 16 16" class="h-5 w-5" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg> </span>  </a> </div> <!-- <LanguageSwitcher client:load /> --> </nav> </div> <div class="flex items-center gap-3 text-slate-500 md:pl-3" data-astro-transition-persist="navbar"> <div> <site-search id="search" class="ms-auto"> <button data-open-modal disabled class="flex items-center justify-center rounded-md gap-1"> <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 19-3.5-3.5"></path><circle cx="11" cy="11" r="6"></circle></svg> <!-- <span class='md:hidden text-2xl'> Search</span> --> </button> <dialog aria-label="search" class="h-full max-h-full w-full max-w-full border border-zinc-400 bg-white dark:bg-[#0a0910ec] shadow backdrop:backdrop-blur sm:mx-auto sm:mb-auto sm:mt-16 sm:h-max sm:max-h-[calc(100%-8rem)] sm:min-h-[15rem] sm:w-5/6 sm:max-w-[48rem] sm:rounded-md opacity-0"> <div class="dialog-frame flex flex-col gap-4 p-6 pt-12 sm:pt-6"> <button data-close-modal class="ms-auto cursor-pointer rounded-full bg-black text-white px-4 py-2 dark:bg-white dark:text-black">Close</button> <div class="search-container dark:text-white"> <div id="pagefind__search"></div> </div> </div> </dialog> </site-search>   </div>  <theme-toggle class="relative h-6 w-6"> <button id="toggle-theme" class="group" aria-label="Toggle Theme"> <span class="absolute left-0 right-0 top-0 opacity-0 group-aria-pressed:opacity-100"> <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.715 15.15A6.5 6.5 0 0 1 9 6.035C6.106 6.922 4 9.645 4 12.867c0 3.94 3.153 7.136 7.042 7.136 3.101 0 5.734-2.032 6.673-4.853Z" class="fill-sky-400/20"></path><path d="m17.715 15.15.95.316a1 1 0 0 0-1.445-1.185l.495.869ZM9 6.035l.846.534a1 1 0 0 0-1.14-1.49L9 6.035Zm8.221 8.246a5.47 5.47 0 0 1-2.72.718v2a7.47 7.47 0 0 0 3.71-.98l-.99-1.738Zm-2.72.718A5.5 5.5 0 0 1 9 9.5H7a7.5 7.5 0 0 0 7.5 7.5v-2ZM9 9.5c0-1.079.31-2.082.845-2.93L8.153 5.5A7.47 7.47 0 0 0 7 9.5h2Zm-4 3.368C5 10.089 6.815 7.75 9.292 6.99L8.706 5.08C5.397 6.094 3 9.201 3 12.867h2Zm6.042 6.136C7.718 19.003 5 16.268 5 12.867H3c0 4.48 3.588 8.136 8.042 8.136v-2Zm5.725-4.17c-.81 2.433-3.074 4.17-5.725 4.17v2c3.552 0 6.553-2.327 7.622-5.537l-1.897-.632Z" class="fill-sky-500"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M17 3a1 1 0 0 1 1 1 2 2 0 0 0 2 2 1 1 0 1 1 0 2 2 2 0 0 0-2 2 1 1 0 1 1-2 0 2 2 0 0 0-2-2 1 1 0 1 1 0-2 2 2 0 0 0 2-2 1 1 0 0 1 1-1Z" class="fill-sky-500"></path></svg> </span> <span class="absolute left-0 right-0 top-0 opacity-0 group-aria-[pressed=false]:opacity-100"> <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" class="fill-sky-400/20 stroke-sky-500"></path><path d="M12 4v1M17.66 6.344l-.828.828M20.005 12.004h-1M17.66 17.664l-.828-.828M12 20.01V19M6.34 17.664l.835-.836M3.995 12.004h1.01M6 6l.835.836" class="stroke-sky-500"></path></svg> </span> </button> </theme-toggle> <script>
+	const button = document.getElementById('toggle-theme')
+
+	function setButtonPresssed() {
+		const bodyThemeIsDark = document.documentElement.classList.contains('dark')
+		button.setAttribute('aria-pressed', String(bodyThemeIsDark))
+	}
+	setButtonPresssed()
+</script> <button id="toggleMenu" class="md:ml-6 md:hidden"> <svg width="24" height="24"><path d="M5 6h14M5 12h14M5 18h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg> </button> <button id="astro-header-drawer-button" type="button" class="md:ml-6 md:hidden"> <svg width="24" height="24" fill="none" aria-hidden="true"><path d="M12 6v.01M12 12v.01M12 18v.01M12 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> <span class="sr-only">Show Menu</span> </button> </div> </header>  <div class="pointer-events-none absolute inset-x-0 top-0 z-[60] flex justify-center overflow-hidden"> <div class="flex w-[108rem] flex-none justify-end"> <picture> <source srcset="/_astro/docs.BiePeNN8.avif" type="image/avif"> <img src="/_astro/docs.BeNwu2rW_1CTG48.webp" class="w-[71.75rem] max-w-none flex-none dark:hidden" alt="img of docs" width="200" height="200" loading="lazy" decoding="async"> </picture> <picture> <source srcset="/_astro/docs-dark.C7CksN2y.avif" type="image/avif"> <img src="/_astro/docs-dark.Bsq-hjJH_17S3ea.webp" class="hidden w-[90rem] max-w-none flex-none dark:block" alt="img of docs-dark" width="200" height="200" loading="lazy" decoding="async"> </picture> </div> </div>  <article class="mt-12 min-w-full sm:max-w-none md:max-w-none md:py-4"> <header class="mb-3 flex flex-col gap-6"> <div class="flex flex-wrap gap-2"> <div class="flex items-center justify-center"> <h1 class="text-4xl font-semibold md:pb-2.5 md:text-4xl"> 详细描述DDD的实现流程 </h1> </div> </div> <div class="flex gap-x-1"> <p class="text-center text-sm font-bold text-opacity-50"> chou403 </p> <p class="text-center text-sm font-bold text-opacity-50">
+/ Interview </p> <p class="text-center text-sm text-opacity-50">
+/ <time class="text-sm font-bold text-opacity-60" datetime="2024-07-09T15:41:23.000Z"> Jul 9, 2024 </time> </p> <p class="text-center text-sm font-bold text-opacity-50">
+/ 6 min read </p> <!-- {
+					data.updatedDate && (
+						<span class="text-quote rounded-lg p-1">
+							Last Updated:
+							<FormattedDate date={data.updatedDate} />
+						</span>
+					)
+				} --> </div> </header> <!-- annotate blog post image --> <!-- <>
+			{
+				heroImage && (
+					<Image
+						src={heroImage}
+						width={1000}
+						height={500}
+						quality={100}
+						format="jpg"
+						loading="eager"
+						class="my-8 max-h-[300px] w-full rounded-md object-cover md:max-h-[500px]"
+						alt={`img of ${title}`}
+					/>
+				)
+			}
+		</> --> <hr> <div>   <div class="mt-8 grid grid-cols-1 gap-10"> <!-- aside  --> <!-- Left menu bar comments --> <!-- <aside class="hidden flex-col gap-8 md:flex">
+			<div class="sticky top-12 z-10 hidden self-start transition-all duration-200 md:block">
+				{headings && headings.length > 0 && <TableOfContents {headings} />}
+			</div>
+		</aside> --> <!-- post --> <article class="grid w-full max-w-full"> <div class="prose prose-lg mb-12 min-w-full dark:prose-invert md:prose-xl"> <h2 id="实现流程">实现流程</h2>
+<p>领域驱动设计(DDD)是一种面向领域的软件设计方法。它强调将业务知识和业务逻辑集成到软件设计中,从而提高软件系统的可维护性,可扩展性和可测试性。DDD 的实现流程主要包括以下几个步骤:</p>
+<ol>
+<li>确定业务领域
+首先,需要明确软件系统要解决的业务问题,并确定业务领域的边界。业务领域是指具有内在一致性和自治性的业务范畴,它包含了一些核心概念,业务规则和业务流程。</li>
+</ol>
+<p>(假设我们要对一个电商网站进行DDD落地,首先,需要明确电商系统要解决的业务问题,即为用户提供方便快捷的购物体验。业务领域的边界为商品,订单和用户三个核心领域。)</p>
+<ol start="2">
+<li>设计领域模型
+在确定业务领域之后,需要设计领域模型。领域模型是用来描述业务领域的核心概念,业务规则和业务流程的一种图形化表示方式。它由实体,值对象,聚合,领域服务和事件等元素组成。</li>
+</ol>
+<p>(接着,需要设计领域模型。商品,订单和用户分别是三个领域,它们分别由实体,值对象,聚合,领域服务和事件等元素组成。例如,商品领域可以设计为Product实体,包含商品ID,商品名称,商品描述,商品价格等属性;订单领域可以设计为Order聚合,包含订单ID,用户ID,订单状态,订单金额等属性,同时包含OrderItem实体和Delivery值对象;用户领域可以设计为User实体,包含用户ID,用户名称,用户地址,用户手机号等属性。)</p>
+<ol start="3">
+<li>建立统一语言
+为了确保所有团队成员都能够理解和共享业务知识,需要建立统一的业务语言。这个语言应该是简单,清晰,精确和易于理解的,以便能够准确地表达业务概念和业务规则。</li>
+</ol>
+<p>(为了确保所有团队成员都能够理解和共享业务知识,需要建立统一的业务语言。例如,商品领域中可以定义”商品价格”表示商品的单价,而不是”商品单价”或者”商品售价”。)</p>
+<ol start="4">
+<li>实现领域模型
+在设计好领域模型之后,需要将它们转化为实际的代码。实现领域模型需要注意以下几点:</li>
+</ol>
+<ul>
+<li>将领域对象封装到聚合中,并保证聚合内的对象保持一致性。</li>
+<li>实现领域服务,以实现领域模型之间的交互和协作。</li>
+<li>使用领域事件来传递领域对象之间的消息。</li>
+</ul>
+<p>(在设计好领域模型之后,需要将它们转化为实际的代码。实现领域模型需要注意以下几点:</p>
+<ul>
+<li>在聚合中封装实体和值对象,并保证聚合内的对象保持一致性。</li>
+<li>实现领域服务,例如OrderService,负责创建订单,取消订单,查询订单等操作。</li>
+<li>使用领域事件来传递领域对象之间的消息,例如OrderCreatedEvent,表示订单已经被创建。)</li>
+</ul>
+<ol start="5">
+<li>
+<p>应用架构设计
+除了领域模型之外,还需要设计应用架构。应用架构包括了应用层,基础设施层和表示层等组件。应用层负责处理用户请求和协调领域对象的交互,基础设施层负责提供数据持久化和外部服务访问等功能,表示层负责将应用程序的结果展示给用户。</p>
+</li>
+<li>
+<p>领域驱动设计实践
+最后,需要实践领域驱动设计。实践过程中需要注意以下几点:</p>
+</li>
+</ol>
+<ul>
+<li>确保领域模型和业务需求的一致性。</li>
+<li>实时更新领域模型,以应对业务需求的变化。</li>
+<li>鼓励团队成员共同参与领域模型的设计和实现。</li>
+</ul>
+<p>最后,需要实践领域驱动设计。实践过程中需要注意以下几点:</p>
+<ul>
+<li>确保领域模型和业务需求的一致性。例如,修改商品价格时,需要同步更新所有已经下单但未支付的订单的金额。</li>
+<li>实时更新领域模型,以应对业务需求的变化。例如,新增促销活动时,需要修改商品领域模型,增加促销价格属性。</li>
+</ul> </div> <div class="mb-12 flex flex-wrap gap-2 gap-y-4 md:gap-5"> <a href="/tags/ddd" aria-label="ddd"> <!-- <span
+		class="w-fit rounded-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2"
+	> --> <span class="w-fit rounded-full px-2 py-1 text-sm font-semibold shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2">
+#ddd </span> </a> </div> <!-- related posts --> <footer> <h2 class="mb-6 text-lg font-bold dark:text-white">Related Posts</h2> <section class="flex flex-col md:flex-row sm:justify-between gap-8"> <div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/pexels-svetozar-milashevich-99573-1490908_ZGzmIg.webp" class="h-16 w-16 rounded-full object-cover" alt="img of spring cloud anemic or rich" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/interview/ddd/spring-anemic-or-rich/"> spring cloud 是贫血模型还是充血模型 </a> </header> </div><div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/cat-27_19ohXy.webp" class="h-16 w-16 rounded-full object-cover" alt="img of Domain Object" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/interview/ddd/domain-object/"> 领域对象是什么,怎么理解 </a> </header> </div><div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/triger-2_gBaCF.webp" class="h-16 w-16 rounded-full object-cover" alt="img of 架构模式" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/interview/ddd/layered-architecture/"> DDD的分层架构是怎么样的 </a> </header> </div> </section> </footer> </article> </div>  </div> </article> <button aria-label="Back to Top" class="z-90 fixed bottom-8 end-4 flex h-10 w-10 translate-y-28 items-center justify-center rounded-full border-2 border-transparent bg-[#f8f9fa99] text-3xl opacity-0 transition-all duration-300 hover:border-zinc-400 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 dark:border-slate-50/[0.06] dark:bg-slate-900/75 sm:end-8 sm:h-12 sm:w-12" data-show="false" id="to-top-btn" style="opacity: 1;--tw-translate-y: -26px;
+		transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));"> <svg aria-hidden="true" class="h-6 w-6" fill="none" focusable="false" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <path d="M4.5 15.75l7.5-7.5 7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button>  <footer class="flex h-28 w-full items-center justify-center border-t-2 px-16">
+&copy; 2024 chou403 · Powered by &nbsp;<a href="https://astro.build" style="color:cornflowerblue;">Astro</a>&nbsp;& &nbsp;<a href="https://blog-template-gray.vercel.app" style="color:cornflowerblue;">OpenBlog</a> </footer> </main>    </body> </html>  <div> <div class="fixed inset-0 z-50 hidden" id="headlessui-dialog-:Rlb6:" role="dialog" aria-modal="true" data-headlessui-state="open"> <div class="fixed inset-0 bg-black/20 backdrop-blur-sm dark:bg-slate-900/80" id="" aria-hidden="true" data-headlessui-state="open"></div> <div class="relative w-80 max-w-[calc(100%-3rem)] bg-white p-6 dark:bg-slate-800" id="toc_content"> <button id="close-dialog-page" type="button" class="absolute right-5 top-5 z-10 flex h-8 w-8 items-center justify-center text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300" tabindex="0"><span class="sr-only">Close navigation</span> <svg viewBox="0 0 10 10" class="h-2.5 w-2.5 overflow-visible"> <path d="M0 0L10 10M10 0L0 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </svg> </button> <nav class="h-[59rem] max-w-xs dark:text-black"> <h1 class="mb-3 text-2xl font-bold dark:text-white">On this page</h1> <ul class="sidebar flex flex-col gap-4 [text-wrap:balance]"> <li class="flex flex-col"> <a href="#实现流程" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 实现流程 </a>  </li> </ul> </nav> </div> </div> </div> 

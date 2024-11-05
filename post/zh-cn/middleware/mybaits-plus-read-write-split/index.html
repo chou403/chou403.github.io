@@ -1,0 +1,474 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth" data-astro-cid-37fxchfa> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico" type="image/x-icon"><!-- <link rel="icon" type="image/svg+xml" href="/favicon1.svg" /> --><meta name="generator" content="Astro v4.16.2"><!-- Canonical URL --><link rel="canonical" href="https://blog-template-gray.vercel.app/post/zh-cn/middleware/mybaits-plus-read-write-split/"><!-- Primary Meta Tags --><title>Mybatis Plus • 知道的越多,才知知道的越少</title><!-- ViewTransitions  --><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><!-- SEO --><meta name="title" content="Mybatis Plus • 知道的越多,才知知道的越少"><meta name="description" content="基于 Mybatis Plus 的三种实现读写分离 &#38; 分库分表"><meta name="author" content="chou403"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://blog-template-gray.vercel.app/post/zh-cn/middleware/mybaits-plus-read-write-split/"><meta property="og:title" content="Mybatis Plus"><meta property="og:description" content="基于 Mybatis Plus 的三种实现读写分离 &#38; 分库分表"><meta property="og:image" content="https://blog-template-gray.vercel.app/_astro/cat-5.jpg"><meta property="article:author" content="chou403"><meta property="article:published_time" content="2024-08-09T14:46:20.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://blog-template-gray.vercel.app/post/zh-cn/middleware/mybaits-plus-read-write-split/"><meta property="twitter:title" content="Mybatis Plus"><meta property="twitter:description" content="基于 Mybatis Plus 的三种实现读写分离 &#38; 分库分表"><meta property="twitter:image" content="https://blog-template-gray.vercel.app/_astro/cat-5.jpg"><!-- RSS auto-discovery --><link rel="alternate" type="application/rss+xml" title="知道的越多,才知知道的越少" href="/rss.xml"><link as="font" crossorigin rel="preload" href="/fonts/Manrope-Bold.woff2" type="font/woff2"><style>@font-face {font-weight: 200;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-ExtraLight.woff2)} @font-face {font-weight: 300;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Light.woff2)} @font-face {font-weight: 400;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Regular.woff2)} @font-face {font-weight: 500;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Medium.woff2)} @font-face {font-weight: 600;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-SemiBold.woff2)} @font-face {font-weight: 700;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Bold.woff2)} @font-face {font-weight: 800;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-ExtraBold.woff2)} @font-face { font-family: '_font_fallback_1568597883842'; size-adjust: 103.76%; src: local('Arial'); ascent-override: 102.74%; descent-override: 28.91%; line-gap-override: 0.00%; }</style><script>
+	function getTheme() {
+		const storedTheme = typeof localStorage !== 'undefined' && localStorage.getItem('theme')
+
+		return (
+			storedTheme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+		)
+	}
+
+	function setTheme(newTheme) {
+		const html = document.documentElement
+		const isDark = newTheme === 'dark'
+
+		html.classList.toggle('dark', isDark)
+		html.classList.toggle('light', !isDark)
+
+		localStorage.setItem('theme', newTheme)
+	}
+
+	// set initial theme
+	setTheme(getTheme())
+	document.addEventListener('astro:after-swap', () => setTheme(getTheme()))
+
+	document.addEventListener('theme-change', (e) => {
+		setTheme(e.detail.theme)
+	})
+</script><script>
+	if (!('animations' in localStorage)) {
+		localStorage.setItem('animations', 'true')
+	} else {
+		localStorage.setItem('animations', 'false')
+	}
+</script><link rel="stylesheet" href="/_astro/_page_.CCiJ3j76.css">
+<link rel="stylesheet" href="/_astro/_slug_.Ba2ksmBT.css"><script type="module" src="/_astro/hoisted.D9DAUC0s.js"></script></head> <body class="mx-auto bg-white dark:bg-slate-900 dark:text-slate-400 dark:text-white" data-astro-cid-37fxchfa> <main class="mt-4 grid gap-12 overflow-hidden px-5 antialiased sm:mx-auto sm:max-w-2xl sm:px-8 md:max-w-6xl md:overflow-visible lg:px-0" data-astro-cid-37fxchfa> <header class="fixed left-0 top-0 z-50 flex h-12 w-full items-center bg-[#f8f9fa99] px-5 py-2.5 font-semibold dark:border-slate-50/[0.06] dark:bg-slate-900/60"> <a class="mr-auto text-lg" href="/">Home</a> <div id="astro-header-drawer" class="absolute right-1 top-12 z-50 translate-x-96 rounded-l-lg bg-white p-4 text-slate-500 shadow transition-transform duration-300 ease-in dark:bg-[#0a0910] md:static md:h-auto md:translate-x-0 md:rounded-none md:border-none md:bg-transparent md:p-0 md:shadow-none dark:md:bg-transparent"> <nav class="flex h-full justify-between gap-2 text-left md:w-full md:flex-row md:gap-5"> <div class="flex flex-col gap-4 border-black pr-4 dark:border-white md:flex-row md:border-r-2"> <a href="/tags" class="text-opacity-60 flex items-center gap-1 text-2xl md:text-base" rel="noopener noreferrer ">  <svg xmlns="http://www.w3.org/2000/svg" class="w-8 md:w-6" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M7.859 6h-2.834a2.025 2.025 0 0 0 -2.025 2.025v2.834c0 .537 .213 1.052 .593 1.432l6.116 6.116a2.025 2.025 0 0 0 2.864 0l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-6.117 -6.116a2.025 2.025 0 0 0 -1.431 -.593z"></path> <path d="M17.573 18.407l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-7.117 -7.116"></path> <path d="M6 9h-.01"></path> </svg> Tags
+ </a> </div> <div class="flex items-center justify-center gap-3 md:justify-end md:p-0"> <a href="https://github.com/chou403/chou403.github.io" class="text-opacity-60" rel="noopener noreferrer " target="_blank" aria-label="Github">  <span><svg viewBox="0 0 16 16" class="h-5 w-5" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg> </span>  </a> </div> <!-- <LanguageSwitcher client:load /> --> </nav> </div> <div class="flex items-center gap-3 text-slate-500 md:pl-3" data-astro-transition-persist="navbar"> <div> <site-search id="search" class="ms-auto"> <button data-open-modal disabled class="flex items-center justify-center rounded-md gap-1"> <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 19-3.5-3.5"></path><circle cx="11" cy="11" r="6"></circle></svg> <!-- <span class='md:hidden text-2xl'> Search</span> --> </button> <dialog aria-label="search" class="h-full max-h-full w-full max-w-full border border-zinc-400 bg-white dark:bg-[#0a0910ec] shadow backdrop:backdrop-blur sm:mx-auto sm:mb-auto sm:mt-16 sm:h-max sm:max-h-[calc(100%-8rem)] sm:min-h-[15rem] sm:w-5/6 sm:max-w-[48rem] sm:rounded-md opacity-0"> <div class="dialog-frame flex flex-col gap-4 p-6 pt-12 sm:pt-6"> <button data-close-modal class="ms-auto cursor-pointer rounded-full bg-black text-white px-4 py-2 dark:bg-white dark:text-black">Close</button> <div class="search-container dark:text-white"> <div id="pagefind__search"></div> </div> </div> </dialog> </site-search>   </div>  <theme-toggle class="relative h-6 w-6"> <button id="toggle-theme" class="group" aria-label="Toggle Theme"> <span class="absolute left-0 right-0 top-0 opacity-0 group-aria-pressed:opacity-100"> <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.715 15.15A6.5 6.5 0 0 1 9 6.035C6.106 6.922 4 9.645 4 12.867c0 3.94 3.153 7.136 7.042 7.136 3.101 0 5.734-2.032 6.673-4.853Z" class="fill-sky-400/20"></path><path d="m17.715 15.15.95.316a1 1 0 0 0-1.445-1.185l.495.869ZM9 6.035l.846.534a1 1 0 0 0-1.14-1.49L9 6.035Zm8.221 8.246a5.47 5.47 0 0 1-2.72.718v2a7.47 7.47 0 0 0 3.71-.98l-.99-1.738Zm-2.72.718A5.5 5.5 0 0 1 9 9.5H7a7.5 7.5 0 0 0 7.5 7.5v-2ZM9 9.5c0-1.079.31-2.082.845-2.93L8.153 5.5A7.47 7.47 0 0 0 7 9.5h2Zm-4 3.368C5 10.089 6.815 7.75 9.292 6.99L8.706 5.08C5.397 6.094 3 9.201 3 12.867h2Zm6.042 6.136C7.718 19.003 5 16.268 5 12.867H3c0 4.48 3.588 8.136 8.042 8.136v-2Zm5.725-4.17c-.81 2.433-3.074 4.17-5.725 4.17v2c3.552 0 6.553-2.327 7.622-5.537l-1.897-.632Z" class="fill-sky-500"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M17 3a1 1 0 0 1 1 1 2 2 0 0 0 2 2 1 1 0 1 1 0 2 2 2 0 0 0-2 2 1 1 0 1 1-2 0 2 2 0 0 0-2-2 1 1 0 1 1 0-2 2 2 0 0 0 2-2 1 1 0 0 1 1-1Z" class="fill-sky-500"></path></svg> </span> <span class="absolute left-0 right-0 top-0 opacity-0 group-aria-[pressed=false]:opacity-100"> <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" class="fill-sky-400/20 stroke-sky-500"></path><path d="M12 4v1M17.66 6.344l-.828.828M20.005 12.004h-1M17.66 17.664l-.828-.828M12 20.01V19M6.34 17.664l.835-.836M3.995 12.004h1.01M6 6l.835.836" class="stroke-sky-500"></path></svg> </span> </button> </theme-toggle> <script>
+	const button = document.getElementById('toggle-theme')
+
+	function setButtonPresssed() {
+		const bodyThemeIsDark = document.documentElement.classList.contains('dark')
+		button.setAttribute('aria-pressed', String(bodyThemeIsDark))
+	}
+	setButtonPresssed()
+</script> <button id="toggleMenu" class="md:ml-6 md:hidden"> <svg width="24" height="24"><path d="M5 6h14M5 12h14M5 18h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg> </button> <button id="astro-header-drawer-button" type="button" class="md:ml-6 md:hidden"> <svg width="24" height="24" fill="none" aria-hidden="true"><path d="M12 6v.01M12 12v.01M12 18v.01M12 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> <span class="sr-only">Show Menu</span> </button> </div> </header>  <div class="pointer-events-none absolute inset-x-0 top-0 z-[60] flex justify-center overflow-hidden"> <div class="flex w-[108rem] flex-none justify-end"> <picture> <source srcset="/_astro/docs.BiePeNN8.avif" type="image/avif"> <img src="/_astro/docs.BeNwu2rW_1CTG48.webp" class="w-[71.75rem] max-w-none flex-none dark:hidden" alt="img of docs" width="200" height="200" loading="lazy" decoding="async"> </picture> <picture> <source srcset="/_astro/docs-dark.C7CksN2y.avif" type="image/avif"> <img src="/_astro/docs-dark.Bsq-hjJH_17S3ea.webp" class="hidden w-[90rem] max-w-none flex-none dark:block" alt="img of docs-dark" width="200" height="200" loading="lazy" decoding="async"> </picture> </div> </div>  <article class="mt-12 min-w-full sm:max-w-none md:max-w-none md:py-4"> <header class="mb-3 flex flex-col gap-6"> <div class="flex flex-wrap gap-2"> <div class="flex items-center justify-center"> <h1 class="text-4xl font-semibold md:pb-2.5 md:text-4xl"> 基于 Mybatis Plus 的三种实现读写分离 &amp; 分库分表 </h1> </div> </div> <div class="flex gap-x-1"> <p class="text-center text-sm font-bold text-opacity-50"> chou403 </p> <p class="text-center text-sm font-bold text-opacity-50">
+/ Middleware </p> <p class="text-center text-sm text-opacity-50">
+/ <time class="text-sm font-bold text-opacity-60" datetime="2024-01-27T15:56:54.000Z"> Jan 27, 2024 </time> </p> <p class="text-center text-sm font-bold text-opacity-50">
+/ 8 min read </p> <!-- {
+					data.updatedDate && (
+						<span class="text-quote rounded-lg p-1">
+							Last Updated:
+							<FormattedDate date={data.updatedDate} />
+						</span>
+					)
+				} --> </div> </header> <!-- annotate blog post image --> <!-- <>
+			{
+				heroImage && (
+					<Image
+						src={heroImage}
+						width={1000}
+						height={500}
+						quality={100}
+						format="jpg"
+						loading="eager"
+						class="my-8 max-h-[300px] w-full rounded-md object-cover md:max-h-[500px]"
+						alt={`img of ${title}`}
+					/>
+				)
+			}
+		</> --> <hr> <div>   <div class="mt-8 grid grid-cols-1 gap-10"> <!-- aside  --> <!-- Left menu bar comments --> <!-- <aside class="hidden flex-col gap-8 md:flex">
+			<div class="sticky top-12 z-10 hidden self-start transition-all duration-200 md:block">
+				{headings && headings.length > 0 && <TableOfContents {headings} />}
+			</div>
+		</aside> --> <!-- post --> <article class="grid w-full max-w-full"> <div class="prose prose-lg mb-12 min-w-full dark:prose-invert md:prose-xl"> <h2 id="使用-dynamic-datasource">使用 Dynamic DataSource</h2>
+<h3 id="系统版本介绍">系统版本介绍</h3>
+<p>SpringBoot: 3.1.4</p>
+<p>MySQL: 8.2.0</p>
+<p>Mybaits Plus: 3.5.4.1</p>
+<p>Dynamic DataSource: 4.1.3</p>
+<p>Gradle 8.4</p>
+<p>…</p>
+<h3 id="依赖引用">依赖引用</h3>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">com.mysql:mysql-connector-j:8.2.0</span></span>
+<span class="line"><span style="color:#E1E4E8">com.baomidou:mybatis-plus-boot-starter:3.5.4.1</span></span>
+<span class="line"><span style="color:#E1E4E8">com.baomidou:dynamic-datasource-spring-boot3-starter:4.1.3</span></span>
+<span class="line"></span></code></pre> </div> 
+<h3 id="配置数据源">配置数据源</h3>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#85E89D">spring</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  datasource</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    dynamic</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">      primary</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">write</span></span>
+<span class="line"><span style="color:#85E89D">      strict</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span></span>
+<span class="line"><span style="color:#85E89D">      datasource</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">        write</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">          url</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">jdbc:mysql://localhost:3306/boot?allowPublicKeyRetrieval=True&amp;serverTimezone=GMT%2B8&amp;characterEncoding=utf-8&amp;useSSL=false</span></span>
+<span class="line"><span style="color:#85E89D">          username</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">root</span></span>
+<span class="line"><span style="color:#85E89D">          password</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">3306</span></span>
+<span class="line"><span style="color:#85E89D">        read1</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">          url</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">jdbc:mysql://localhost:3307/boot?allowPublicKeyRetrieval=True&amp;serverTimezone=GMT%2B8&amp;characterEncoding=utf-8&amp;useSSL=false</span></span>
+<span class="line"><span style="color:#85E89D">          username</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">root</span></span>
+<span class="line"><span style="color:#85E89D">          password</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">3307</span></span>
+<span class="line"><span style="color:#85E89D">        read2</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">          url</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">jdbc:mysql://localhost:3308/boot?allowPublicKeyRetrieval=True&amp;serverTimezone=GMT%2B8&amp;characterEncoding=utf-8&amp;useSSL=false</span></span>
+<span class="line"><span style="color:#85E89D">          username</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">root</span></span>
+<span class="line"><span style="color:#85E89D">          password</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">3308</span></span>
+<span class="line"></span></code></pre> </div> 
+<h3 id="切换数据源">切换数据源</h3>
+<p>使用 @DS 切换数据源,@DS可以注解在方法上或类上,<strong>同时存在就近原则,方法上注解优先于类上注解</strong>。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>注解</th><th>结果</th></tr></thead><tbody><tr><td>没有@DS</td><td>默认数据源</td></tr><tr><td>@DS(“dsName”)</td><td>dsName 可以为组名也可以为具体某个库的名称</td></tr></tbody></table>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">Service</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">DS</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;slave&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> UserServiceImpl</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> UserService</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  @</span><span style="color:#F97583">Autowired</span></span>
+<span class="line"><span style="color:#F97583">  private</span><span style="color:#E1E4E8"> JdbcTemplate jdbcTemplate;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#E1E4E8"> List </span><span style="color:#B392F0">selectAll</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8">  jdbcTemplate.</span><span style="color:#B392F0">queryForList</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;select * from user&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#E1E4E8">  @</span><span style="color:#F97583">DS</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;slave_1&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#E1E4E8"> List </span><span style="color:#B392F0">selectByCondition</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8">  jdbcTemplate.</span><span style="color:#B392F0">queryForList</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;select * from user where age &gt;10&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<h2 id="使用aop-判断方法名方式">使用AOP 判断方法名方式</h2>
+<p>采用 AOP的方式,通过方法名判断,方法名中有 get,select 开头的则连接 slave,其他的则连接 master 数据库。</p>
+<h3 id="aop-配置数据源">AOP 配置数据源</h3>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#85E89D">spring</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  datasource</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    write</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">      jdbc-url</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">jdbc:mysql://localhost:3306/boot?allowPublicKeyRetrieval=True&amp;serverTimezone=GMT%2B8&amp;characterEncoding=utf-8&amp;useSSL=false</span></span>
+<span class="line"><span style="color:#85E89D">      username</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">root</span></span>
+<span class="line"><span style="color:#85E89D">      password</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">3306</span></span>
+<span class="line"><span style="color:#85E89D">    read1</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">      jdbc-url</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">jdbc:mysql://localhost:3307/boot?allowPublicKeyRetrieval=True&amp;serverTimezone=GMT%2B8&amp;characterEncoding=utf-8&amp;useSSL=false</span></span>
+<span class="line"><span style="color:#85E89D">      username</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">root</span></span>
+<span class="line"><span style="color:#85E89D">      password</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">3307</span></span>
+<span class="line"><span style="color:#85E89D">    read2</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">      jdbc-url</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">jdbc:mysql://localhost:3308/boot?allowPublicKeyRetrieval=True&amp;serverTimezone=GMT%2B8&amp;characterEncoding=utf-8&amp;useSSL=false</span></span>
+<span class="line"><span style="color:#85E89D">      username</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">root</span></span>
+<span class="line"><span style="color:#85E89D">      password</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">3308</span></span>
+<span class="line"></span></code></pre> </div> 
+<h3 id="数据源枚举">数据源枚举</h3>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">public</span><span style="color:#E1E4E8"> @</span><span style="color:#F97583">interface</span><span style="color:#F97583"> Writer</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> enum</span><span style="color:#B392F0"> ReadsAndWrite</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    WRITE</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">READ1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">READ2</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<h3 id="数据源选择规则类">数据源选择规则类</h3>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> ReadWriteSeparationRule</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> static</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> ThreadLocal&lt;</span><span style="color:#F97583">ReadsAndWrite</span><span style="color:#E1E4E8">&gt; contextHolder </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> ThreadLocal&lt;&gt;();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> static</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> AtomicInteger counter </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> AtomicInteger</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">-</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> set</span><span style="color:#E1E4E8">(ReadsAndWrite </span><span style="color:#FFAB70">nodeType</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        contextHolder.</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">(nodeType);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> ReadsAndWrite </span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> contextHolder.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 多个写节点也可以做简单的负载均衡</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> writer</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#B392F0">        set</span><span style="color:#E1E4E8">(ReadsAndWrite.WRITE);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 读简单的1:2权重负载均衡</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> reader</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        int</span><span style="color:#E1E4E8"> index </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> counter.</span><span style="color:#B392F0">incrementAndGet</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">%</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (counter.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 1000</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            counter.</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">-</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (index </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#B392F0">            set</span><span style="color:#E1E4E8">(ReadsAndWrite.READ1);</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">            set</span><span style="color:#E1E4E8">(ReadsAndWrite.READ2);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<h3 id="数据源路由类">数据源路由类</h3>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> ReadWriteRoutingDataSource</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> AbstractRoutingDataSource</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Nullable</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#F97583">    protected</span><span style="color:#E1E4E8"> Object </span><span style="color:#B392F0">determineCurrentLookupKey</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> ReadWriteSeparationRule.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"></span></code></pre> </div> 
+<h3 id="数据源配置类">数据源配置类</h3>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">Slf4j</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">Configuration</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> DataSourceConfig</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Bean</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">ConfigurationProperties</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;spring.datasource.write&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#E1E4E8"> DataSource </span><span style="color:#B392F0">writeDataSource</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> DataSourceBuilder.</span><span style="color:#B392F0">create</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">build</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Bean</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">ConfigurationProperties</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;spring.datasource.read1&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#E1E4E8"> DataSource </span><span style="color:#B392F0">read1DataSource</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> DataSourceBuilder.</span><span style="color:#B392F0">create</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">build</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Bean</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">ConfigurationProperties</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;spring.datasource.read2&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#E1E4E8"> DataSource </span><span style="color:#B392F0">read2DataSource</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> DataSourceBuilder.</span><span style="color:#B392F0">create</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">build</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Bean</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#E1E4E8"> DataSource </span><span style="color:#B392F0">dynamicDatasource</span><span style="color:#E1E4E8">(@</span><span style="color:#F97583">Qualifier</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;writeDataSource&quot;</span><span style="color:#E1E4E8">) DataSource </span><span style="color:#FFAB70">writeDataSource</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">                                        @</span><span style="color:#F97583">Qualifier</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;read1DataSource&quot;</span><span style="color:#E1E4E8">) DataSource </span><span style="color:#FFAB70">read1DataSource</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">                                        @</span><span style="color:#F97583">Qualifier</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;read2DataSource&quot;</span><span style="color:#E1E4E8">) DataSource </span><span style="color:#FFAB70">read2DataSource</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        Map&lt;</span><span style="color:#F97583">Object</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">Object</span><span style="color:#E1E4E8">&gt; targetDataSources </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> HashMap&lt;&gt;();</span></span>
+<span class="line"><span style="color:#E1E4E8">        targetDataSources.</span><span style="color:#B392F0">put</span><span style="color:#E1E4E8">(ReadsAndWrite.WRITE, writeDataSource);</span></span>
+<span class="line"><span style="color:#E1E4E8">        targetDataSources.</span><span style="color:#B392F0">put</span><span style="color:#E1E4E8">(ReadsAndWrite.READ1, read1DataSource);</span></span>
+<span class="line"><span style="color:#E1E4E8">        targetDataSources.</span><span style="color:#B392F0">put</span><span style="color:#E1E4E8">(ReadsAndWrite.READ2, read2DataSource);</span></span>
+<span class="line"><span style="color:#E1E4E8">        ReadWriteRoutingDataSource readWriteRoutingDataSource </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> ReadWriteRoutingDataSource</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        readWriteRoutingDataSource.</span><span style="color:#B392F0">setDefaultTargetDataSource</span><span style="color:#E1E4E8">(writeDataSource);</span></span>
+<span class="line"><span style="color:#E1E4E8">        readWriteRoutingDataSource.</span><span style="color:#B392F0">setTargetDataSources</span><span style="color:#E1E4E8">(targetDataSources);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> readWriteRoutingDataSource;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<h3 id="mybatisplus-配置类">MybatisPlus 配置类</h3>
+<p>MybatisPlus 配置类中添加一下内容</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">Slf4j</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">Configuration</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">EnableTransactionManagement</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> MybatisPlusConfig</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Resource</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">name</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> &quot;dynamicDatasource&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> DataSource dynamicDatasource;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Bean</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#E1E4E8"> SqlSessionFactory </span><span style="color:#B392F0">sqlSessionFactory</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">throws</span><span style="color:#E1E4E8"> Exception {</span></span>
+<span class="line"><span style="color:#E1E4E8">        MybatisSqlSessionFactoryBean sqlSessionFactoryBean </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> MybatisSqlSessionFactoryBean</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        sqlSessionFactoryBean.</span><span style="color:#B392F0">setDataSource</span><span style="color:#E1E4E8">(dynamicDatasource);</span></span>
+<span class="line"><span style="color:#E1E4E8">        sqlSessionFactoryBean.</span><span style="color:#B392F0">setMapperLocations</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> PathMatchingResourcePatternResolver</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">getResources</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;classpath:mapper/*.xml&quot;</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        MybatisConfiguration configuration </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> MybatisConfiguration</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        configuration.</span><span style="color:#B392F0">setMapUnderscoreToCamelCase</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        configuration.</span><span style="color:#B392F0">setCacheEnabled</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        configuration.</span><span style="color:#B392F0">setLogImpl</span><span style="color:#E1E4E8">(StdOutImpl.class);</span></span>
+<span class="line"><span style="color:#E1E4E8">        sqlSessionFactoryBean.</span><span style="color:#B392F0">setConfiguration</span><span style="color:#E1E4E8">(configuration);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> sqlSessionFactoryBean.</span><span style="color:#B392F0">getObject</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Bean</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#E1E4E8"> PlatformTransactionManager </span><span style="color:#B392F0">platformTransactionManager</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> DataSourceTransactionManager</span><span style="color:#E1E4E8">(dynamicDatasource);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<h3 id="读写节点选择">读写节点选择</h3>
+<p>以上内容都准备结束,最后就是通过 aop 获取请求方法名,根据方法名分配方法读或写操作。</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">Slf4j</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">Aspect</span></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">Component</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> ReadWriteDataSourceAop</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Pointcut</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;!@annotation(io.chou403.framework.annotation.Writer) &quot;</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">            &quot;&amp;&amp; (execution(* io.chou403..*.select*(..)) &quot;</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">            &quot;|| execution(* io.chou403..*.get*(..)) &quot;</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">            &quot;|| execution(* io.chou403..*.find*(..)))&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> readPointcut</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Pointcut</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;@annotation(io.chou403.framework.annotation.Writer) &quot;</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">            &quot;|| execution(* io.chou403..*.insert*(..)) &quot;</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">            &quot;|| execution(* io.chou403..*.save*(..)) &quot;</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">            &quot;|| execution(* io.chou403..*.add*(..)) &quot;</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">            &quot;|| execution(* io.chou403..*.update*(..)) &quot;</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">            &quot;|| execution(* io.chou403..*.edit*(..)) &quot;</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">            &quot;|| execution(* io.chou403..*.delete*(..)) &quot;</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">            &quot;|| execution(* io.chou403..*.remove*(..))&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> writePointcut</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Before</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;readPointcut()&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> read</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        ReadWriteSeparationRule.</span><span style="color:#B392F0">reader</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Before</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;writePointcut()&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> write</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        ReadWriteSeparationRule.</span><span style="color:#B392F0">writer</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<h2 id="使用shardingsphere-jdbc">使用shardingsphere jdbc</h2>
+<p>依赖</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">org.apache.shardingsphere:shardingsphere-jdbc-core:5.4.0</span></span>
+<span class="line"></span></code></pre> </div> 
+<p>application.yml 配置文件</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#85E89D">spring</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  datasource</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    driver-class-name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">org.apache.shardingsphere.driver.ShardingSphereDriver</span></span>
+<span class="line"><span style="color:#85E89D">    url</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">jdbc:shardingsphere:classpath:sharding-config.yaml</span></span>
+<span class="line"></span></code></pre> </div> 
+<p>resources 文件夹添加 sharding-config.yaml 配置读写分离</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#6A737D"># 不配置则默认单机模式</span></span>
+<span class="line"><span style="color:#85E89D">mode</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">  # 运行模式类型。可选配置: Standalone,Cluster</span></span>
+<span class="line"><span style="color:#85E89D">  type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Standalone</span></span>
+<span class="line"><span style="color:#6A737D">  # 持久化仓库配置</span></span>
+<span class="line"><span style="color:#85E89D">  repository</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">    # 持久化仓库类型</span></span>
+<span class="line"><span style="color:#85E89D">    type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">JDBC</span></span>
+<span class="line"><span style="color:#6A737D"># 数据源配置,可配置多个</span></span>
+<span class="line"><span style="color:#85E89D">dataSources</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">  # 数据源名称</span></span>
+<span class="line"><span style="color:#85E89D">  master_0</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">    # 数据源完整类名</span></span>
+<span class="line"><span style="color:#85E89D">    dataSourceClassName</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">com.zaxxer.hikari.HikariDataSource</span></span>
+<span class="line"><span style="color:#6A737D">    # 数据库驱动类名,以数据库连接池自身配置为准</span></span>
+<span class="line"><span style="color:#85E89D">    driverClassName</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">com.mysql.cj.jdbc.Driver</span></span>
+<span class="line"><span style="color:#6A737D">    # 数据库 URL 连接,以数据库连接池自身配置为准</span></span>
+<span class="line"><span style="color:#85E89D">    jdbcUrl</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">jdbc:mysql://localhost:3306/boot?allowPublicKeyRetrieval=True&amp;serverTimezone=GMT%2B8&amp;characterEncoding=utf-8&amp;useSSL=false</span></span>
+<span class="line"><span style="color:#6A737D">    # 数据库用户名,以数据库连接池自身配置为准</span></span>
+<span class="line"><span style="color:#85E89D">    username</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">root</span></span>
+<span class="line"><span style="color:#6A737D">    # 数据库密码,以数据库连接池自身配置为准</span></span>
+<span class="line"><span style="color:#85E89D">    password</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">3306</span></span>
+<span class="line"><span style="color:#85E89D">  slave_0</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    dataSourceClassName</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">com.zaxxer.hikari.HikariDataSource</span></span>
+<span class="line"><span style="color:#85E89D">    driverClassName</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">com.mysql.cj.jdbc.Driver</span></span>
+<span class="line"><span style="color:#85E89D">    jdbcUrl</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">jdbc:mysql://localhost:3307/boot?allowPublicKeyRetrieval=True&amp;serverTimezone=GMT%2B8&amp;characterEncoding=utf-8&amp;useSSL=false</span></span>
+<span class="line"><span style="color:#85E89D">    username</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">root</span></span>
+<span class="line"><span style="color:#85E89D">    password</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">3307</span></span>
+<span class="line"><span style="color:#85E89D">  slave_1</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    dataSourceClassName</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">com.zaxxer.hikari.HikariDataSource</span></span>
+<span class="line"><span style="color:#85E89D">    driverClassName</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">com.mysql.cj.jdbc.Driver</span></span>
+<span class="line"><span style="color:#85E89D">    jdbcUrl</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">jdbc:mysql://localhost:3308/boot?allowPublicKeyRetrieval=True&amp;serverTimezone=GMT%2B8&amp;characterEncoding=utf-8&amp;useSSL=false</span></span>
+<span class="line"><span style="color:#85E89D">    username</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">root</span></span>
+<span class="line"><span style="color:#85E89D">    password</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">3308</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#85E89D">rules</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#F97583">!READWRITE_SPLITTING</span></span>
+<span class="line"><span style="color:#85E89D">    dataSources</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">      # 读写分离逻辑数据源名称</span></span>
+<span class="line"><span style="color:#85E89D">      ds_0</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">        # 写库数据源名称</span></span>
+<span class="line"><span style="color:#85E89D">        writeDataSourceName</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">master_0</span></span>
+<span class="line"><span style="color:#6A737D">        # 读库数据源名称</span></span>
+<span class="line"><span style="color:#85E89D">        readDataSourceNames</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">          - </span><span style="color:#9ECBFF">slave_0</span></span>
+<span class="line"><span style="color:#E1E4E8">          - </span><span style="color:#9ECBFF">slave_1</span></span>
+<span class="line"><span style="color:#6A737D">        # 事务内读请求的路由策略,可选值: PRIMARY(路由至主库),FIXED(同一事务内路由至固定数据源),DYNAMIC(同一事务内路由至非固定数据源)。默认值: DYNAMIC</span></span>
+<span class="line"><span style="color:#85E89D">        transactionalReadQueryStrategy</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">PRIMARY</span></span>
+<span class="line"><span style="color:#6A737D">        # 负载均衡算法名称</span></span>
+<span class="line"><span style="color:#85E89D">        loadBalancerName</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">random</span></span>
+<span class="line"><span style="color:#6A737D">    # 负载均衡算法配置</span></span>
+<span class="line"><span style="color:#85E89D">    loadBalancers</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">      # 负载均衡算法名称</span></span>
+<span class="line"><span style="color:#85E89D">      random</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">        # 负载均衡算法类型</span></span>
+<span class="line"><span style="color:#85E89D">        type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">RANDOM</span></span>
+<span class="line"><span style="color:#6A737D">  # 单表规则</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#F97583">!SINGLE</span></span>
+<span class="line"><span style="color:#85E89D">    tables</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#9ECBFF">&quot;*.*&quot;</span></span>
+<span class="line"><span style="color:#6A737D"># 日志输出</span></span>
+<span class="line"><span style="color:#85E89D">props</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  sql-show</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"></span></code></pre> </div> 
+<p>若需要实现数据库分表,sharding-config.yaml 文件中添加一下内容,若需要进一步分库,需要同时增加数据源配置</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">- </span><span style="color:#F97583">!SHARDING</span><span style="color:#6A737D"> # 数据分片规则配置</span></span>
+<span class="line"><span style="color:#85E89D">  tables</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">    # 逻辑表名称</span></span>
+<span class="line"><span style="color:#85E89D">    sys_user</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">      # 由数据源名 + 表名组成</span></span>
+<span class="line"><span style="color:#85E89D">      actualDataNodes</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">ds_0.sys_user_${0..1}</span></span>
+<span class="line"><span style="color:#6A737D">      # 分表策略</span></span>
+<span class="line"><span style="color:#85E89D">      tableStrategy</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">        standard</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">          # 分片列名称</span></span>
+<span class="line"><span style="color:#85E89D">          shardingColumn</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">id</span></span>
+<span class="line"><span style="color:#6A737D">          # 分片算法名称</span></span>
+<span class="line"><span style="color:#85E89D">          shardingAlgorithmName</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">sys_user_inline</span></span>
+<span class="line"><span style="color:#6A737D">      # 分库策略</span></span>
+<span class="line"><span style="color:#6A737D">      #databaseStrategy:</span></span>
+<span class="line"><span style="color:#6A737D">      #  standard:</span></span>
+<span class="line"><span style="color:#6A737D">      #    shardingColumn: id</span></span>
+<span class="line"><span style="color:#6A737D">      #    shardingAlgorithmName: database_inline</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">      # 分布式序列策略</span></span>
+<span class="line"><span style="color:#85E89D">      keyGenerateStrategy</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">        # 自增列名称,缺省表示不使用自增主键生成器</span></span>
+<span class="line"><span style="color:#85E89D">        column</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">id</span></span>
+<span class="line"><span style="color:#6A737D">        # 分布式序列算法名称</span></span>
+<span class="line"><span style="color:#85E89D">        keyGeneratorName</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">snowflake</span></span>
+<span class="line"><span style="color:#6A737D">  # 分片算法配置</span></span>
+<span class="line"><span style="color:#85E89D">  shardingAlgorithms</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">    #database_inline:</span></span>
+<span class="line"><span style="color:#6A737D">    #  type: INLINE</span></span>
+<span class="line"><span style="color:#6A737D">    #  props:</span></span>
+<span class="line"><span style="color:#6A737D">    #    algorithm-expression: ds_${id % 2}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # 分片算法名称</span></span>
+<span class="line"><span style="color:#85E89D">    sys_user_inline</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">      # 分片算法类型</span></span>
+<span class="line"><span style="color:#85E89D">      type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">INLINE</span></span>
+<span class="line"><span style="color:#6A737D">      # 分片算法属性配置</span></span>
+<span class="line"><span style="color:#85E89D">      props</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">        algorithm-expression</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">sys_user_${id % 2}</span></span>
+<span class="line"><span style="color:#6A737D">  # 分布式序列算法配置</span></span>
+<span class="line"><span style="color:#85E89D">  keyGenerators</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">    # 分布式序列算法名称</span></span>
+<span class="line"><span style="color:#85E89D">    snowflake</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">      # 分布式序列算法类型</span></span>
+<span class="line"><span style="color:#85E89D">      type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">SNOWFLAKE</span></span>
+<span class="line"></span></code></pre> </div> 
+<h2 id="可能会出现的问题">可能会出现的问题</h2>
+<p>Cause: javax.xml.bind.JAXBException: Implementation of JAXB-API has not been found on module path or classpath.
+JAXB API是java EE 的API,因此在java SE 9.0 中不再包含这个 Jar 包。java 9 中引入了模块的概念,默认情况下,Java SE中将不再包含java EE 的Jar包 。而在 java 6/7 / 8 时关于这个API 都是捆绑在一起的。
+jdk 版本较高,需要单独添加依赖</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#9ECBFF">implementation &#39;com.sun.xml.bind:jaxb-core:2.3.0&#39;</span></span>
+<span class="line"><span style="color:#9ECBFF">implementation &#39;javax.xml.bind:jaxb-api:2.3.0&#39;</span></span>
+<span class="line"><span style="color:#9ECBFF">implementation &#39;com.sun.xml.bind:jaxb-impl:2.3.0&#39;</span></span>
+<span class="line"></span></code></pre> </div> 
+<p>Caused by: org.apache.ibatis.executor.ExecutorException: Error preparing statement. Cause: org.apache.shardingsphere.infra.exception.TableNotExistsException: Table or view <code>sys_user</code> does not exist.
+多数据源,表存在多个,无法识别单表。需添加单表设置。<a href="https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-jdbc/yaml-config/rules/single/">参考内容</a></p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#E1E4E8">- </span><span style="color:#F97583">!SINGLE</span></span>
+<span class="line"><span style="color:#85E89D">  tables</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    - </span><span style="color:#9ECBFF">&quot;*.*&quot;</span></span>
+<span class="line"></span></code></pre> </div> 
+<p>Caused by: com.github.pagehelper.PageException: When you use the PageHelper pagination plugin, you must set the helper property
+使用 mybatis 分页插件 pagehelper,在不指定方言(dialect)的情况下回直接报错,报错信息是使用 pagehelper 插件必须设置 helper 属性;
+application.yml 文件中添加</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#85E89D">pagehelper</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  helper-dialect</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">mysql</span></span>
+<span class="line"></span></code></pre> </div>  </div> <div class="mb-12 flex flex-wrap gap-2 gap-y-4 md:gap-5"> <a href="/tags/java" aria-label="java"> <!-- <span
+		class="w-fit rounded-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2"
+	> --> <span class="w-fit rounded-full px-2 py-1 text-sm font-semibold shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2">
+#java </span> </a><a href="/tags/mybatisplus" aria-label="mybatisplus"> <!-- <span
+		class="w-fit rounded-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2"
+	> --> <span class="w-fit rounded-full px-2 py-1 text-sm font-semibold shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2">
+#mybatisplus </span> </a> </div> <!-- related posts --> <footer> <h2 class="mb-6 text-lg font-bold dark:text-white">Related Posts</h2> <section class="flex flex-col md:flex-row sm:justify-between gap-8"> <div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/pexels-tinathphoto-6694828_cJm4I.webp" class="h-16 w-16 rounded-full object-cover" alt="img of Single test coverage statistical principle" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/interview/unittest/single-test-coverage-statistical-principle/"> 单测覆盖率是如何统计的?原理是什么? </a> </header> </div><div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/bird-3_Z1W4tfh.webp" class="h-16 w-16 rounded-full object-cover" alt="img of How to unit test the JDBC layer" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/interview/unittest/how-to-unit-test-the-jdbc-layer/"> 如何对JDBC这一层做单元测试 </a> </header> </div><div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/cat-38_Djk1o.webp" class="h-16 w-16 rounded-full object-cover" alt="img of How to make a single test Mock" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/interview/unittest/how-to-make-a-single-test-mock/"> 什么是Mock?怎么做单测的Mock? </a> </header> </div> </section> </footer> </article> </div>  </div> </article> <button aria-label="Back to Top" class="z-90 fixed bottom-8 end-4 flex h-10 w-10 translate-y-28 items-center justify-center rounded-full border-2 border-transparent bg-[#f8f9fa99] text-3xl opacity-0 transition-all duration-300 hover:border-zinc-400 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 dark:border-slate-50/[0.06] dark:bg-slate-900/75 sm:end-8 sm:h-12 sm:w-12" data-show="false" id="to-top-btn" style="opacity: 1;--tw-translate-y: -26px;
+		transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));"> <svg aria-hidden="true" class="h-6 w-6" fill="none" focusable="false" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <path d="M4.5 15.75l7.5-7.5 7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button>  <footer class="flex h-28 w-full items-center justify-center border-t-2 px-16">
+&copy; 2024 chou403 · Powered by &nbsp;<a href="https://astro.build" style="color:cornflowerblue;">Astro</a>&nbsp;& &nbsp;<a href="https://blog-template-gray.vercel.app" style="color:cornflowerblue;">OpenBlog</a> </footer> </main>    </body> </html>  <div> <div class="fixed inset-0 z-50 hidden" id="headlessui-dialog-:Rlb6:" role="dialog" aria-modal="true" data-headlessui-state="open"> <div class="fixed inset-0 bg-black/20 backdrop-blur-sm dark:bg-slate-900/80" id="" aria-hidden="true" data-headlessui-state="open"></div> <div class="relative w-80 max-w-[calc(100%-3rem)] bg-white p-6 dark:bg-slate-800" id="toc_content"> <button id="close-dialog-page" type="button" class="absolute right-5 top-5 z-10 flex h-8 w-8 items-center justify-center text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300" tabindex="0"><span class="sr-only">Close navigation</span> <svg viewBox="0 0 10 10" class="h-2.5 w-2.5 overflow-visible"> <path d="M0 0L10 10M10 0L0 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </svg> </button> <nav class="h-[59rem] max-w-xs dark:text-black"> <h1 class="mb-3 text-2xl font-bold dark:text-white">On this page</h1> <ul class="sidebar flex flex-col gap-4 [text-wrap:balance]"> <li class="flex flex-col"> <a href="#使用-dynamic-datasource" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 使用 Dynamic DataSource </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#系统版本介绍" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 系统版本介绍 </a>  </li><li class="flex flex-col"> <a href="#依赖引用" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 依赖引用 </a>  </li><li class="flex flex-col"> <a href="#配置数据源" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 配置数据源 </a>  </li><li class="flex flex-col"> <a href="#切换数据源" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 切换数据源 </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#使用aop-判断方法名方式" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 使用AOP 判断方法名方式 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#aop-配置数据源" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> AOP 配置数据源 </a>  </li><li class="flex flex-col"> <a href="#数据源枚举" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 数据源枚举 </a>  </li><li class="flex flex-col"> <a href="#数据源选择规则类" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 数据源选择规则类 </a>  </li><li class="flex flex-col"> <a href="#数据源路由类" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 数据源路由类 </a>  </li><li class="flex flex-col"> <a href="#数据源配置类" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 数据源配置类 </a>  </li><li class="flex flex-col"> <a href="#mybatisplus-配置类" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> MybatisPlus 配置类 </a>  </li><li class="flex flex-col"> <a href="#读写节点选择" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 读写节点选择 </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#使用shardingsphere-jdbc" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 使用shardingsphere jdbc </a>  </li><li class="flex flex-col"> <a href="#可能会出现的问题" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 可能会出现的问题 </a>  </li> </ul> </nav> </div> </div> </div> 

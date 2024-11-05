@@ -1,0 +1,619 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth" data-astro-cid-37fxchfa> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico" type="image/x-icon"><!-- <link rel="icon" type="image/svg+xml" href="/favicon1.svg" /> --><meta name="generator" content="Astro v4.16.2"><!-- Canonical URL --><link rel="canonical" href="https://blog-template-gray.vercel.app/post/zh-cn/java/algorithm-introductory-to-abandoned/"><!-- Primary Meta Tags --><title>算法入门到放弃 • 知道的越多,才知知道的越少</title><!-- ViewTransitions  --><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><!-- SEO --><meta name="title" content="算法入门到放弃 • 知道的越多,才知知道的越少"><meta name="description" content="从复杂度,栈,队列以及树的基本概念开始,讲述算法中常用的排序以及计算方式。"><meta name="author" content="chou403"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://blog-template-gray.vercel.app/post/zh-cn/java/algorithm-introductory-to-abandoned/"><meta property="og:title" content="算法入门到放弃"><meta property="og:description" content="从复杂度,栈,队列以及树的基本概念开始,讲述算法中常用的排序以及计算方式。"><meta property="og:image" content="https://blog-template-gray.vercel.app/_astro/pexels-wildlittlethingsphoto-2253275.jpg"><meta property="article:author" content="chou403"><meta property="article:published_time" content="2024-08-09T14:46:19.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://blog-template-gray.vercel.app/post/zh-cn/java/algorithm-introductory-to-abandoned/"><meta property="twitter:title" content="算法入门到放弃"><meta property="twitter:description" content="从复杂度,栈,队列以及树的基本概念开始,讲述算法中常用的排序以及计算方式。"><meta property="twitter:image" content="https://blog-template-gray.vercel.app/_astro/pexels-wildlittlethingsphoto-2253275.jpg"><!-- RSS auto-discovery --><link rel="alternate" type="application/rss+xml" title="知道的越多,才知知道的越少" href="/rss.xml"><link as="font" crossorigin rel="preload" href="/fonts/Manrope-Bold.woff2" type="font/woff2"><style>@font-face {font-weight: 200;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-ExtraLight.woff2)} @font-face {font-weight: 300;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Light.woff2)} @font-face {font-weight: 400;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Regular.woff2)} @font-face {font-weight: 500;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Medium.woff2)} @font-face {font-weight: 600;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-SemiBold.woff2)} @font-face {font-weight: 700;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Bold.woff2)} @font-face {font-weight: 800;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-ExtraBold.woff2)} @font-face { font-family: '_font_fallback_1301699041772'; size-adjust: 103.76%; src: local('Arial'); ascent-override: 102.74%; descent-override: 28.91%; line-gap-override: 0.00%; }</style><script>
+	function getTheme() {
+		const storedTheme = typeof localStorage !== 'undefined' && localStorage.getItem('theme')
+
+		return (
+			storedTheme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+		)
+	}
+
+	function setTheme(newTheme) {
+		const html = document.documentElement
+		const isDark = newTheme === 'dark'
+
+		html.classList.toggle('dark', isDark)
+		html.classList.toggle('light', !isDark)
+
+		localStorage.setItem('theme', newTheme)
+	}
+
+	// set initial theme
+	setTheme(getTheme())
+	document.addEventListener('astro:after-swap', () => setTheme(getTheme()))
+
+	document.addEventListener('theme-change', (e) => {
+		setTheme(e.detail.theme)
+	})
+</script><script>
+	if (!('animations' in localStorage)) {
+		localStorage.setItem('animations', 'true')
+	} else {
+		localStorage.setItem('animations', 'false')
+	}
+</script><link rel="stylesheet" href="/_astro/_page_.CCiJ3j76.css">
+<link rel="stylesheet" href="/_astro/_slug_.Ba2ksmBT.css"><script type="module" src="/_astro/hoisted.D9DAUC0s.js"></script></head> <body class="mx-auto bg-white dark:bg-slate-900 dark:text-slate-400 dark:text-white" data-astro-cid-37fxchfa> <main class="mt-4 grid gap-12 overflow-hidden px-5 antialiased sm:mx-auto sm:max-w-2xl sm:px-8 md:max-w-6xl md:overflow-visible lg:px-0" data-astro-cid-37fxchfa> <header class="fixed left-0 top-0 z-50 flex h-12 w-full items-center bg-[#f8f9fa99] px-5 py-2.5 font-semibold dark:border-slate-50/[0.06] dark:bg-slate-900/60"> <a class="mr-auto text-lg" href="/">Home</a> <div id="astro-header-drawer" class="absolute right-1 top-12 z-50 translate-x-96 rounded-l-lg bg-white p-4 text-slate-500 shadow transition-transform duration-300 ease-in dark:bg-[#0a0910] md:static md:h-auto md:translate-x-0 md:rounded-none md:border-none md:bg-transparent md:p-0 md:shadow-none dark:md:bg-transparent"> <nav class="flex h-full justify-between gap-2 text-left md:w-full md:flex-row md:gap-5"> <div class="flex flex-col gap-4 border-black pr-4 dark:border-white md:flex-row md:border-r-2"> <a href="/tags" class="text-opacity-60 flex items-center gap-1 text-2xl md:text-base" rel="noopener noreferrer ">  <svg xmlns="http://www.w3.org/2000/svg" class="w-8 md:w-6" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M7.859 6h-2.834a2.025 2.025 0 0 0 -2.025 2.025v2.834c0 .537 .213 1.052 .593 1.432l6.116 6.116a2.025 2.025 0 0 0 2.864 0l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-6.117 -6.116a2.025 2.025 0 0 0 -1.431 -.593z"></path> <path d="M17.573 18.407l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-7.117 -7.116"></path> <path d="M6 9h-.01"></path> </svg> Tags
+ </a> </div> <div class="flex items-center justify-center gap-3 md:justify-end md:p-0"> <a href="https://github.com/chou403/chou403.github.io" class="text-opacity-60" rel="noopener noreferrer " target="_blank" aria-label="Github">  <span><svg viewBox="0 0 16 16" class="h-5 w-5" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg> </span>  </a> </div> <!-- <LanguageSwitcher client:load /> --> </nav> </div> <div class="flex items-center gap-3 text-slate-500 md:pl-3" data-astro-transition-persist="navbar"> <div> <site-search id="search" class="ms-auto"> <button data-open-modal disabled class="flex items-center justify-center rounded-md gap-1"> <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 19-3.5-3.5"></path><circle cx="11" cy="11" r="6"></circle></svg> <!-- <span class='md:hidden text-2xl'> Search</span> --> </button> <dialog aria-label="search" class="h-full max-h-full w-full max-w-full border border-zinc-400 bg-white dark:bg-[#0a0910ec] shadow backdrop:backdrop-blur sm:mx-auto sm:mb-auto sm:mt-16 sm:h-max sm:max-h-[calc(100%-8rem)] sm:min-h-[15rem] sm:w-5/6 sm:max-w-[48rem] sm:rounded-md opacity-0"> <div class="dialog-frame flex flex-col gap-4 p-6 pt-12 sm:pt-6"> <button data-close-modal class="ms-auto cursor-pointer rounded-full bg-black text-white px-4 py-2 dark:bg-white dark:text-black">Close</button> <div class="search-container dark:text-white"> <div id="pagefind__search"></div> </div> </div> </dialog> </site-search>   </div>  <theme-toggle class="relative h-6 w-6"> <button id="toggle-theme" class="group" aria-label="Toggle Theme"> <span class="absolute left-0 right-0 top-0 opacity-0 group-aria-pressed:opacity-100"> <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.715 15.15A6.5 6.5 0 0 1 9 6.035C6.106 6.922 4 9.645 4 12.867c0 3.94 3.153 7.136 7.042 7.136 3.101 0 5.734-2.032 6.673-4.853Z" class="fill-sky-400/20"></path><path d="m17.715 15.15.95.316a1 1 0 0 0-1.445-1.185l.495.869ZM9 6.035l.846.534a1 1 0 0 0-1.14-1.49L9 6.035Zm8.221 8.246a5.47 5.47 0 0 1-2.72.718v2a7.47 7.47 0 0 0 3.71-.98l-.99-1.738Zm-2.72.718A5.5 5.5 0 0 1 9 9.5H7a7.5 7.5 0 0 0 7.5 7.5v-2ZM9 9.5c0-1.079.31-2.082.845-2.93L8.153 5.5A7.47 7.47 0 0 0 7 9.5h2Zm-4 3.368C5 10.089 6.815 7.75 9.292 6.99L8.706 5.08C5.397 6.094 3 9.201 3 12.867h2Zm6.042 6.136C7.718 19.003 5 16.268 5 12.867H3c0 4.48 3.588 8.136 8.042 8.136v-2Zm5.725-4.17c-.81 2.433-3.074 4.17-5.725 4.17v2c3.552 0 6.553-2.327 7.622-5.537l-1.897-.632Z" class="fill-sky-500"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M17 3a1 1 0 0 1 1 1 2 2 0 0 0 2 2 1 1 0 1 1 0 2 2 2 0 0 0-2 2 1 1 0 1 1-2 0 2 2 0 0 0-2-2 1 1 0 1 1 0-2 2 2 0 0 0 2-2 1 1 0 0 1 1-1Z" class="fill-sky-500"></path></svg> </span> <span class="absolute left-0 right-0 top-0 opacity-0 group-aria-[pressed=false]:opacity-100"> <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" class="fill-sky-400/20 stroke-sky-500"></path><path d="M12 4v1M17.66 6.344l-.828.828M20.005 12.004h-1M17.66 17.664l-.828-.828M12 20.01V19M6.34 17.664l.835-.836M3.995 12.004h1.01M6 6l.835.836" class="stroke-sky-500"></path></svg> </span> </button> </theme-toggle> <script>
+	const button = document.getElementById('toggle-theme')
+
+	function setButtonPresssed() {
+		const bodyThemeIsDark = document.documentElement.classList.contains('dark')
+		button.setAttribute('aria-pressed', String(bodyThemeIsDark))
+	}
+	setButtonPresssed()
+</script> <button id="toggleMenu" class="md:ml-6 md:hidden"> <svg width="24" height="24"><path d="M5 6h14M5 12h14M5 18h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg> </button> <button id="astro-header-drawer-button" type="button" class="md:ml-6 md:hidden"> <svg width="24" height="24" fill="none" aria-hidden="true"><path d="M12 6v.01M12 12v.01M12 18v.01M12 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> <span class="sr-only">Show Menu</span> </button> </div> </header>  <div class="pointer-events-none absolute inset-x-0 top-0 z-[60] flex justify-center overflow-hidden"> <div class="flex w-[108rem] flex-none justify-end"> <picture> <source srcset="/_astro/docs.BiePeNN8.avif" type="image/avif"> <img src="/_astro/docs.BeNwu2rW_1CTG48.webp" class="w-[71.75rem] max-w-none flex-none dark:hidden" alt="img of docs" width="200" height="200" loading="lazy" decoding="async"> </picture> <picture> <source srcset="/_astro/docs-dark.C7CksN2y.avif" type="image/avif"> <img src="/_astro/docs-dark.Bsq-hjJH_17S3ea.webp" class="hidden w-[90rem] max-w-none flex-none dark:block" alt="img of docs-dark" width="200" height="200" loading="lazy" decoding="async"> </picture> </div> </div>  <article class="mt-12 min-w-full sm:max-w-none md:max-w-none md:py-4"> <header class="mb-3 flex flex-col gap-6"> <div class="flex flex-wrap gap-2"> <div class="flex items-center justify-center"> <h1 class="text-4xl font-semibold md:pb-2.5 md:text-4xl"> 从复杂度,栈,队列以及树的基本概念开始,讲述算法中常用的排序以及计算方式。 </h1> </div> </div> <div class="flex gap-x-1"> <p class="text-center text-sm font-bold text-opacity-50"> chou403 </p> <p class="text-center text-sm font-bold text-opacity-50">
+/ Java </p> <p class="text-center text-sm text-opacity-50">
+/ <time class="text-sm font-bold text-opacity-60" datetime="2022-09-25T15:20:35.000Z"> Sep 25, 2022 </time> </p> <p class="text-center text-sm font-bold text-opacity-50">
+/ 41 min read </p> <!-- {
+					data.updatedDate && (
+						<span class="text-quote rounded-lg p-1">
+							Last Updated:
+							<FormattedDate date={data.updatedDate} />
+						</span>
+					)
+				} --> </div> </header> <!-- annotate blog post image --> <!-- <>
+			{
+				heroImage && (
+					<Image
+						src={heroImage}
+						width={1000}
+						height={500}
+						quality={100}
+						format="jpg"
+						loading="eager"
+						class="my-8 max-h-[300px] w-full rounded-md object-cover md:max-h-[500px]"
+						alt={`img of ${title}`}
+					/>
+				)
+			}
+		</> --> <hr> <div>   <div class="mt-8 grid grid-cols-1 gap-10"> <!-- aside  --> <!-- Left menu bar comments --> <!-- <aside class="hidden flex-col gap-8 md:flex">
+			<div class="sticky top-12 z-10 hidden self-start transition-all duration-200 md:block">
+				{headings && headings.length > 0 && <TableOfContents {headings} />}
+			</div>
+		</aside> --> <!-- post --> <article class="grid w-full max-w-full"> <div class="prose prose-lg mb-12 min-w-full dark:prose-invert md:prose-xl"> <h2 id="算法复杂度">算法复杂度</h2>
+<p>算法的复杂度: 复杂度分析,事后统计法,大O表示法,时间复杂度。</p>
+<h3 id="时间复杂度分析">时间复杂度分析</h3>
+<p>衡量算法运行速度的指标。</p>
+<ul>
+<li>
+<p>只关注循环执行次数最多的一段代码。</p>
+</li>
+<li>
+<p>总复杂度等于最高阶项的复杂度。</p>
+</li>
+<li>
+<p>嵌套代码的复杂度等于嵌套内外代码复杂度的乘积。</p>
+<p>推导大O阶:</p>
+<ol>
+<li>用常数1取代运行时间中的所有加法常数。</li>
+<li>在修改后的运行次数函数中,只保留最高阶项。</li>
+<li>如果最高阶项存在切不是1,则去除与这个项相乘的常数。得到的结果就是大O阶。</li>
+</ol>
+<p>常见的时间复杂度:</p>
+<ol>
+<li>O(1) 常数阶</li>
+<li>O(n) 线性阶</li>
+<li>O(n<sup>2</sup>) 平方阶</li>
+<li>O(logn) 对数阶</li>
+<li>O(nlogn) 线性对数阶</li>
+<li>O(n<sup>3</sup>) 立方阶</li>
+<li>O(2<sup>n</sup>) 指数阶</li>
+<li>O(n!) 阶乘阶</li>
+</ol>
+<p>从小到大依次是:</p>
+<ul>
+<li>O(1)&lt;O(logn)&lt;O(n)&lt;O(nlogn)&lt;O(n<sup>2</sup>)&lt;O(n<sup>3</sup>)&lt;O(2<sup>n</sup>)&lt;O(n!)&lt;O(n<sup>n</sup>)。</li>
+</ul>
+</li>
+</ul>
+<h3 id="空间复杂度">空间复杂度</h3>
+<p>衡量程序运行临时占用存储空间大小的指标。</p>
+<ul>
+<li>
+<p>算法的存储量包括:</p>
+<ol>
+<li>程序本身所占空间。</li>
+<li>输入数据所占空间。</li>
+<li>辅助变量所占空间。</li>
+</ol>
+</li>
+<li>
+<p>输入数据所占空间只取决于问题本身,和算法无关,则只需分析除输入和程序之外的辅助变量所占额外空间。</p>
+</li>
+<li>
+<p>空间复杂度对一个算法在运行过程中临时占用的存储空间大小的量度,一般也作为问题规模n的函数,以数量级形式给出,记作: S(n)=O(g(n))。</p>
+<ul>
+<li>
+<p>g(n)的计算规则和时间复杂度一致。</p>
+<ul>
+<li>
+<p>分析1</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> fun</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> n){</span></span>
+<span class="line"><span style="color:#F97583">        int</span><span style="color:#E1E4E8"> i,j,k,s;</span></span>
+<span class="line"><span style="color:#E1E4E8">        s</span><span style="color:#F97583">=</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> (i</span><span style="color:#F97583">=</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">;i</span><span style="color:#F97583">&lt;=</span><span style="color:#E1E4E8">n;i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">            for</span><span style="color:#E1E4E8"> (j</span><span style="color:#F97583">=</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">;j</span><span style="color:#F97583">&lt;=</span><span style="color:#E1E4E8">i;j</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">                for</span><span style="color:#E1E4E8"> (k</span><span style="color:#F97583">=</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">;k</span><span style="color:#F97583">&lt;=</span><span style="color:#E1E4E8">j;k</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">                    s</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8">(s);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span></code></pre> </div> 
+<p>由于算法中临时标量的个数与问题规模n无关,所以空间复杂度均为S(n) = O(1)。</p>
+</li>
+<li>
+<p>分析2</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> fun</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> a[], </span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> n, </span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> k) {</span></span>
+<span class="line"><span style="color:#F97583">        int</span><span style="color:#E1E4E8"> i;</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (k </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> n </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            for</span><span style="color:#E1E4E8"> (i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> n; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">                //执行n次</span></span>
+<span class="line"><span style="color:#E1E4E8">                System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(a[i]);</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">            for</span><span style="color:#E1E4E8"> (i </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> k; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> n; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">                //执行n-k次</span></span>
+<span class="line"><span style="color:#E1E4E8">                a[i] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> a[i] </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> i;</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#B392F0">            fun</span><span style="color:#E1E4E8">(a, n, k </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span></code></pre> </div> 
+<p>S(n) = O(g(1*n)),此方法属于递归算法,每次调用本身都要分配空间,fun(a,n,0)的空间复杂度为O(n)。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>注意:</p>
+<ol>
+<li>空间复杂度相比时间复杂度分析要少。</li>
+<li>对于递归算法来说,代码一般都比较简短,算法本身所占用的存储空间较少,但运行时需要占用较多的临时工作单元。</li>
+<li>若写成非递归算法,代码一般可能比较长,算法本身占用的存储空间较多,但运行时将可能需要较少的存储单元。</li>
+</ol>
+</li>
+</ul>
+<h3 id="递归">递归</h3>
+<ol>
+<li>一个问题的解可以分解为几个子问题的解。</li>
+<li>这个问题与分解之后的子问题,除了数据规模不同,求解思路完全一样。</li>
+<li>存在基线/终止条件。</li>
+</ol>
+<h3 id="栈和队列">栈和队列</h3>
+<ol>
+<li>栈(堆栈): 后进先出的结构,简称LIFO结构。</li>
+<li>队列: 先进先出的结构,简称FIFO结构。</li>
+</ol>
+<h3 id="树">树</h3>
+<p>树是n(n&gt;=0) 个结点的有限集。n=0时称为空数。在任何一棵非空树中:</p>
+<ol>
+<li>有且仅有一个特定的称为跟(Root)的结点。</li>
+<li>当n&gt;1时,其余结点可分为m(m&gt;0)个互不相交的有限集T1,T2,…,Tm,其中每一个集合本身又是一棵树,并且称为跟的子树(SubTree)。</li>
+</ol>
+<p><strong>树的度</strong>:</p>
+<ul>
+<li>结点拥有的字段数量称为结点的度。根据各个结点的度的不同,结点可以分为:
+<ul>
+<li>叶子结点: 度为0的结点。</li>
+<li>分支结点: 度不为0
+<ul>
+<li>内部结点: 除了跟结点之外,分支结点也叫作内部结点。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>树的度是树内各结点的度的最大值。</li>
+</ul>
+<p><strong>结点间关系</strong>:</p>
+<ul>
+<li>当前结点的子树的跟称为该结点的孩子(子结点)。</li>
+<li>当前结点称为其子结点的双亲【因为当前结点只有一个,所以叫做双亲结点,而不是父/母结点】。</li>
+<li>同一个双亲的孩子之间互称为兄弟。</li>
+<li>结点的祖先是从跟结点到当前结点所经分支上的所有结点。</li>
+<li>以某结点为跟的子树中任一结点都称为该结点的子孙。</li>
+</ul>
+<p><strong>树的深度</strong>(层):</p>
+<ul>
+<li>结点的层: 从跟结点开始,跟结点为第一层,根的孩子为第二层。若某结点为第i层,则其子树的跟就在第i+1层。</li>
+<li>其双亲在同一层的结点互为堂兄弟。</li>
+<li>树中结点的最大层次称为树的深度。</li>
+</ul>
+<p>结点的高度=结点到叶子结点的最长路径(边数)。</p>
+<p>结点的深度=跟结点到这个结点所经历的边的个数。</p>
+<p>结点的层数=结点的深度+1。</p>
+<p>树的高度==跟结点的高度。</p>
+<p><strong>树的有序性</strong>:</p>
+<ul>
+<li>如果树中结点的各子树从左向右是有序的,子树间不能互换位置,则称该树为有序树,否则为无序树。</li>
+</ul>
+<p><strong>二叉树</strong>:</p>
+<ul>
+<li>二叉树是n(n&gt;=0)个结点的有限集合,该集合或者为空集。或者由一个根结点和两棵互不相交的,分别称为跟结点的左子树和右子树的二叉树组成。</li>
+<li>特殊二叉树,斜树,满二叉树,完全二叉树。
+<ul>
+<li>满二叉树:
+<ul>
+<li>二叉树中除了叶子结点,每个结点的度都为2。</li>
+<li>满二叉树钟第i层的结点数为2<sup>n-1</sup> 个。</li>
+<li>满二叉树为k的满二叉树必有2<sup>k</sup>-1个结点,叶子数为2<sup>k-1</sup>。</li>
+<li>满二叉树中不存在度为1的结点,每个分支点钟都有两棵深度相同的子树,切叶子结点都在最底层。</li>
+<li>具有n个结点的满二叉树的深度为log<sub>2</sub>(n+1)。</li>
+</ul>
+</li>
+<li>完全二叉树:
+<ul>
+<li>二叉树中除去最后一层结点为满二叉树,且最后一层的结点依次从左到右分布。</li>
+<li>对于位置为k的结点,左子结点=2<em>k+1,右子结点=2</em>(k+1)。</li>
+<li>最后一个非叶结点的位置为(n/2)-1,n为数组长度。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="排序">排序</h2>
+<p><img src="https://cdn.jsdelivr.net/gh/chou403/pic-md@main/img/image-20230201155528854.png" alt="image-20230201155528854"/></p>
+<h3 id="冒泡排序">冒泡排序</h3>
+<p>一种简单的排序算法。它重复地走访过要排序的数列,一次比较两个元素,如果它们的顺序错误就把它们交换过来。走访数列的工作室重复地进行直到没有再需要交换,也就是说该数列已排序完成。这个算法的名字又来是因为元素会经由交换慢慢’浮’到数列的顶端。</p>
+<ol>
+<li>比较响铃的元素。如果第一个比第二个大,就交换它们两个;</li>
+<li>对每一对相邻元素做同样的工作,从开始第一队到结尾的最后一对,这样在最后的元素应该会是最大的数;</li>
+<li>针对所有的元素重复以上的步骤,除了最后一个;</li>
+<li>重复步骤1~3,直到排序完成。</li>
+</ol>
+<h3 id="选择排序">选择排序</h3>
+<p>选择排序的思想其实和冒泡排序有点类似,选择排序可以看成冒泡排序的优化。</p>
+<ul>
+<li>首先,找到数组中最大(小)的那个元素;</li>
+<li>其次,将它和数组的第一个元素交换位置(如果第一个元素就是最大(小)元素那么它就和自己交换);</li>
+<li>再次,在剩下的元素中找到最大(小)的元素,将它与数组的第二个元素交换位置。如此往复,直到将整个数组排序;</li>
+<li>这种方法叫做选择排序,因为它在不断地选择剩余元素之中的最大(小)者。</li>
+</ul>
+<h3 id="插入排序">插入排序</h3>
+<ul>
+<li>对于未排序数据,在已排序序列中从后往前扫描,找到对应位置并插入。</li>
+<li>为了给要插入的元素腾出空间,我们需要将插入位置之后的已排序元素在都向右移动一位。插入排序所需的时间取决于输入中元素的初始顺序。例如,对一个很大且其中的元素已经有序(或接近有序)的数组进行排序将会比对随机书序的数组或是逆序数组进行排序要快很多。总的来说,插入排序对于部分有序的数组十分高效,也很适合小规模数组。</li>
+</ul>
+<h3 id="快速排序">快速排序</h3>
+<ul>
+<li>
+<p>快速排序是对冒泡排序的一种改进,也是采用分治法的一个典型的应用。</p>
+</li>
+<li>
+<p>首先任意选取一个数据(比如数组中的第一个数)作为关键数据,我们称为基准数,然后将所有比它小的数都放到它前面,所有比它大的数都放到它后面,这个过程称为一趟快速排序,也称为分区操作。</p>
+</li>
+<li>
+<p>通过一趟快速排序将要排序的数据分隔成独立的两部分,其中一部分的所有数据都比另外一部分的所有数据都要小,然后再按此方法对这两部分数据分别进行快速排序,整个排序过程可以递归进行,以此达到整个数据变成有序序列。</p>
+</li>
+</ul>
+<h4 id="快速排序中的基准数">快速排序中的基准数</h4>
+<ul>
+<li>
+<p>基准的选取: 最优的情况是基准值刚好取在无序区的中间,这样能够最大效率地让两边排序,同时最大地减少递归划分的次数,但是一般很难做到最优。基准的选取一般有三种方式,选取数组的第一个元素,选取数组的最后一个元素,以及选取第一个,最后一个以及中间的元素的中位数(如4 5 6 7,第一个4,最后一个7,中间的为5,这三个数的中位数为5,所以选择5作为基准)。</p>
+</li>
+<li>
+<p>Dual-Pivot快排: 两个基准数的快速排序算法,其实就是用两个基准数,把整个数组分成三份来进行快速排序,在这种新的算法下面,比经典快排从实验来看节省了10%的时间。
+<strong>为了提升性能,有时我们在分隔后独立的两部分的个数小于某个数(比如15)的情况下,会采用其他排序算法,比如插入排序。</strong></p>
+</li>
+</ul>
+<h3 id="希尔排序">希尔排序</h3>
+<ul>
+<li>
+<p>一种基于插入排序的快速的排序算法。简单插入排序对于大规模乱序数组很慢,因为元素只能一点一点地从数组的一端移动到另一端。</p>
+</li>
+<li>
+<p>希尔排序为了加快速度简单地改进了插入排序,也称为缩小增量排序,同时该算法是冲破O(n<sup>2</sup>)的第一批算法之一。</p>
+</li>
+<li>
+<p>希尔排序是把记录按下标的一定增量分组,对每组使用直接插入排序算法排序;然后缩小增量继续分组排序,随着增量逐渐减少,每组包含的关键字越来越多,当增量减至1时,整个文件恰被分成一组,再次排序,完成整个数组的排序。这个不断缩小的增量,就构成了一个增量序列。</p>
+</li>
+</ul>
+<h4 id="希尔排序中的增量序列">希尔排序中的增量序列</h4>
+<ul>
+<li>
+<p>从理论上说,只要一个数组是递减的,并且最后一个值是1,都可以作为增量序列使用,有没有一个步长序列,使得排序过程中所需的比较和移动次数相对较少,并且无论待排序列记录有多少,算法的时间复杂度都能渐近最佳?但是目前从数学上来说,无法证明某个序列是”最好的”。</p>
+</li>
+<li>
+<p>常用的增量序列</p>
+<ul>
+<li>希尔增量序列: <code>{N/2,(N/2)/2,..,1}</code>,其中N为原始数组的长度,这是最常用的序列,但却不是最好的。</li>
+<li>Hibbard序列: <code>{2&lt;sup&gt;k&lt;/sup&gt;-1,..,3,1}</code>。</li>
+<li>Sedgewick序列: <code>{...,109,41,19,5,1}</code> 表达式为 9<em>4<sup>i</sup>-9</em>2<sup>i</sup>+1或者4<sup>i</sup>-3*2<sup>i</sup>+1。</li>
+</ul>
+</li>
+</ul>
+<h3 id="归并排序">归并排序</h3>
+<ul>
+<li>对于给定的一组数据,利用递归与分治技术将数据序列划分成为越来越小的半子表,在对半子表排序后,再用递归方法将排好序的半子表合并成为越来越大的有序序列。</li>
+<li>为了提升性能,有时我们在半子表的个数小于某个数(比如15)的情况下,对半子表的排序采用其他排序算法,比如插入排序。</li>
+<li>若将两个有序表合并成一个有序表,称为2-路归并,与之对应的还有多路归并。</li>
+</ul>
+<h3 id="堆排序">堆排序</h3>
+<ul>
+<li>许多应用程序都需要处理有序的元素,但不一定要求他们全部有序,或者不一定要一次就将他们排序,很多时候,我们每次只需要操作数据中的最大元素(最小元素),那么有一种基于二叉堆的数据结构可提供支持。</li>
+<li>所谓二叉堆,是一个完全二叉树的结构,同时满足堆的性质: 即子结点的键值或索引总是小于(或者大于)它的父结点。再一个二叉堆中,跟结点总是最大(或者最小)结点,这样堆我们称之为最大(小)堆。</li>
+<li>堆排序算法就是抓住了这一特点,每次都取堆顶的元素,然后将剩余的元素重新调整为最大(最小)堆,以此类推,最终得到排序的序列。</li>
+</ul>
+<h3 id="计数排序">计数排序</h3>
+<ul>
+<li>计数排序,基数排序,桶排序三种排序算法都利用了桶的概念,但对桶的使用方法上有差异。</li>
+<li>计数排序是一个排序时不比较元素大小的排序算法。</li>
+<li>计数排序对一定范围内的整数排序时候的速度非常快,一般快于其他排序算法。但计数排序局限性比较大,只限于对整数进行排序,而且待排序元素值分布较连续,跨度小的情况。</li>
+<li>如果一个数组里所有元素都是整数,而且都在 0-k以内。那对于数组里每个元素来说,如果能知道数组里有多少项小于或等于该元素,就能准确给出该元素在排序后的数组的位置。
+<img src="https://cdn.jsdelivr.net/gh/chou403/pic-md@main/img/image-20230201143216345.png" alt="image-20230201143216345"/>
+对于这个数组来说,元素5之前有8个元素小于等于5(含5本身),因此排序后5所在的位置肯定是7,只要构造一个(5+1)
+大小的数组,里面存下所有对应A中每个元素之前的元素个数,就能在线性时间内完成排序。</li>
+<li>实际应用中我们会同时找出数组中的max和min,主要是为了尽量节省空间。试想[1003,1001,1030,1050]这样的数据要排序,真的需要建立长度为1050+1的数组吗?我们只需要长度为1050-1003+1=48的数组(先不考虑额外+1的长度),就能囊括从最小到最大元素之间的所有元素了。</li>
+<li>如果待排序数组的元素值跨度很大,比如[9999,1,2],为三个元素排序要使用9999-1+1的空间,实在是浪费。所以计数排序适用于待排序元素值分布较连续,跨度小的情况。</li>
+</ul>
+<h3 id="桶排序">桶排序</h3>
+<ul>
+<li>
+<p>桶排序是计数排序的升级版。</p>
+</li>
+<li>
+<p>桶排序的工作原理: 假设输入数据服从均匀分布,将数据分到有限数量的桶里,每个桶再分别排序(有可能再使用别的排序算法或是以递归方式继续使用桶排序)。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/chou403/pic-md@main/img/image-20230201151434039.png" alt="image-20230201151434039"/></p>
+</li>
+<li>
+<p>**在桶排序中保证元素均匀分不到每个桶尤为关键。**举个例子,有数组[0,9,4,5,8,7,6,3,2,1]要排序,它们都是10以下的数,如果还按照上面的范围[0,10)建立桶,全部的元素将进入同一个桶中,此时桶排序就失去了意义。实际情况我们很可能事先就不知道输入数据是什么,为了保证元素均匀分不到各个桶中,需要建立多少个桶,每个桶的范围是什么呢?</p>
+<p>其实我们可以这样: 简单点,首先限定桶的容量,再根据元素的个数来决定桶的个数。当然使用更复杂的方法也是可以的。</p>
+</li>
+<li>
+<p>桶排序利用函数的映射关系,减少了几乎所有的比较工作。实际上,桶排序的f(k)值得计算,其作用就相当于快排中划分,已经把大量数据分隔成了基本有序的数据块(桶)。然后只需要对桶中的少量数据做先进的比较排序即可。</p>
+</li>
+</ul>
+<h3 id="基数排序">基数排序</h3>
+<ul>
+<li>常见的数据元素一般是由若干位组成的,比如字符串由若干字符组成,整数由若干位0~9数字组成。基数排序按照从右往左的顺序,依次将每一位都当做一次关键字,然后按照该关键字对数组的元素入桶,每一轮入桶都基于上轮入桶的结果;完成所有位的入桶后,整个数组就达到有序状态。</li>
+<li>比如对于数字2985,从右往左就是先以个位为关键字进行入桶,然后是十位,百位,千位,总共需要四轮。基数排序也是一种无需比较的排序算法。</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/chou403/pic-md@main/img/image-20230201154905705.png" alt="image-20230201154905705"/></p>
+<h2 id="位运算">位运算</h2>
+<ul>
+<li>位运算基本概念:
+<ul>
+<li>十进制: 逢十进一</li>
+<li>二进制: 逢二进一</li>
+</ul>
+</li>
+<li>负数的表示
+<ul>
+<li>计算机中负数的表示,是以补码的形式呈现的。</li>
+<li><img src="https://cdn.jsdelivr.net/gh/chou403/pic-md@main/img/image-20230208153406112.png" alt="image-20230208153406112"/></li>
+</ul>
+</li>
+<li>常用的位运算
+<ul>
+<li>按位与 &amp; (1&amp;1=1,0&amp;0=0,1&amp;0=0)</li>
+<li>按位或 | (1|1=1,0|0=0,1|0=1)</li>
+<li>按位非 ~ (-1=0,~0=1)</li>
+<li>按位异或 ^ (1^1=0,1^0=1,0^0=0,很明显任何一个数和自己异或结果一定是0)</li>
+<li>有符号右移 &gt;&gt; (若正数,高位补0,负数,高位补1)</li>
+<li>有符号左移 &lt;&lt; (低位补0)</li>
+<li>无符号右移 &gt;&gt;&gt; (不论正负,高位均补0)</li>
+<li>无符号左移 &lt;&lt;&lt; (低位补0)</li>
+</ul>
+</li>
+<li>运用场景
+<ul>
+<li>网络连接(SelectionKey.java)</li>
+<li>HashMap (tableSizeFor)</li>
+<li>…</li>
+</ul>
+</li>
+<li>常见简单面试题
+<ul>
+<li>取模</li>
+<li>判断奇偶数</li>
+<li>实现数字翻倍或减半</li>
+<li>交换两数</li>
+</ul>
+</li>
+</ul>
+<h2 id="字符串处理">字符串处理</h2>
+<ul>
+<li>字符串匹配之BF(Bruce Force)算法</li>
+<li>字符串匹配之BM(Boyer-Moore)算法
+<ul>
+<li>坏字符: 坏字符的位置 - 模式串中的上一次出现位置</li>
+<li>好后缀: 好后缀的位置 - 模式串中的上一次出现位置</li>
+</ul>
+</li>
+<li>字符串匹配之KMP(Knuth-Morris-Pratt)算法</li>
+</ul>
+<h2 id="动态规划">动态规划</h2>
+<h3 id="动态规划定义">动态规划定义</h3>
+<p>动态规划是运筹学的一个分支,是求解决策过程最优化的过程。</p>
+<p>在现实生活中,有一类活动,由于它的特殊性,可将过程分成若干个互相联系的阶段,在它的每一阶段都需要作出决策,从而使整个过程达到最好的活动效果。因此各个阶段决策的选取不能任意确定,它依赖于当前面临的状态,又影响以后的发展。</p>
+<p>所以如果一类活动过程可以分为若干个互相联系的阶段,在每一个阶段都需作出决策,每一个阶段都有若干个策略可供选择,一个阶段的策略确定以后,形成了本阶段的决策,常常影响到下一阶段的决策,从而就完全确定了一个过程的活动路线,则称它为<span style="color: red;">多阶段决策问题</span>。</p>
+<p>当各个阶段决策确定后,就组成一个决策序列,因而也就确定了整个过程的一条活动路线。在多阶段决策问题中,决策依赖于当前状态,又随即引起状态的转义,一个决策序列就是在变化的状态中产生出来的,故有”动态”的含义,称这种解决多阶段决策最优化的过程为<span style="color: red;">动态规划方法</span>。</p>
+<h3 id="动态规划的解题步骤">动态规划的解题步骤</h3>
+<ol>
+<li>
+<p>确定状态转移公式,当前的状态是怎么由前面的状态变化而来的及其与之相关联的辅助的dp数组(dp table)以及下标的含义。这一步往往也是最难的,这一步想清楚了,整个动态规划的问题基本上可以说解决了一大半。一般来说,首先要确定dp数组中元素代表的意义,然后在这个意义之下,确定状态是在dp数组的元素之间如何变化的。</p>
+</li>
+<li>
+<p>初始化dp数组。</p>
+</li>
+<li>
+<p>根绝题目条件确定遍历顺序,并实现状态转移公式。</p>
+<p>同时在实现的过程中,可以适当的输出dp数组的值,确定自己的代码实现思路无误。</p>
+</li>
+</ol>
+<h3 id="什么样的问题适合用动态规划">什么样的问题适合用动态规划?</h3>
+<p>多阶段决策最优解模型。</p>
+<ol>
+<li>最优子结构。</li>
+<li>无后效性。</li>
+<li>重复子问题。</li>
+</ol>
+<h2 id="埃氏筛和欧拉筛">埃氏筛和欧拉筛</h2>
+<ul>
+<li>自然数(非负整数): 从0开始: 0,1,2,3,4….。</li>
+<li>素数(质数): 指在大于1的自然数中,除了1和它本身以外不再有其它因数的自然数。</li>
+<li>合数: 指自然数中除了能被1和本身整除外,还能被其他数(0除外)整除的数。</li>
+</ul>
+<h3 id="埃氏筛">埃氏筛</h3>
+<p>埃拉托色尼筛选法,简称埃氏筛法, 是针对自然数列中的自然数而实施的,用于求一定范围内的质数。也就是给定整数n,求小于n的所有质数(素数)。
+埃拉托斯特尼筛法,简称埃氏筛或爱氏筛,是一种由希腊数学家埃拉托斯特尼所提出的一种简单检定素数的算法。要得到自然数n以内的全部素数,必须把不大于根号n的所有素数的倍数剔除,剩下的就是素数。</p>
+<h4 id="基本思想">基本思想</h4>
+<p>从2开始,将每个质数的倍数都标记成合数,以达到筛选素数的目的。</p>
+<h4 id="缺陷">缺陷</h4>
+<p>对于一个合数,有可能被筛多次。例如 30 = 2<em>15 = 3</em>10 = 5*6……(那么如何确保每个合数只被筛选一次呢?我们只要用它的最小<a href="https://so.csdn.net/so/search?q=%E8%B4%A8%E5%9B%A0%E5%AD%90&spm=1001.2101.3001.7020">质因子</a>来筛选即可)。</p>
+<h4 id="代码案例">代码案例**</h4>
+<p>给出要筛数值的范围n,找出以内的素数。先用2去筛,即把2留下,把2的倍数剔除掉;再用下一个质数,也就是3筛,把3留下,把3的倍数剔除掉;接下去用下一个质数5筛,把5留下,把5的倍数剔除掉;不断重复下去……。</p>
+<ol>
+<li>首先将0,1排除:</li>
+<li>创建从2到n的连续整数列表,[2,3,4,…,n];</li>
+<li>初始化 p = 2,因为2是最小的质数;</li>
+<li>枚举所有p的倍数(2p,3p,4p,…),标记为非质数(合数);</li>
+<li>找到下一个 没有标记 且 大于p 的数。如果没有,结束运算;如果有,将该值赋予p,重复步骤4;</li>
+<li>运算结束后,剩下所有未标记的数都是找到的质数。</li>
+</ol>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> eratosthenes</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> n) {</span></span>
+<span class="line"><span style="color:#F97583">    boolean</span><span style="color:#E1E4E8">[] isPrime </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#F97583"> boolean</span><span style="color:#E1E4E8">[n];</span><span style="color:#6A737D">// false 代表素数</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#E1E4E8"> count </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> n; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">isPrime[i]) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            count</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">            for</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> j </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> i;j </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> n;j </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> i) { </span><span style="color:#6A737D">// j就是合数的标记位</span></span>
+<span class="line"><span style="color:#E1E4E8">                isPrime[j] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<h3 id="欧拉筛线性筛">欧拉筛(线性筛)</h3>
+<p><strong>前置知识</strong>
+正整数的唯一分解定理,即: 每个大于1的自然数均可写为质数的积,而且这些素因子按大小排列之后,写法仅有一种方式。</p>
+<span style="color: red;"><p>由唯一分解定理可知,任意一个自然数i必然可以分解为 i = a*b (a为i的最小质因子)</p></span>
+<span style="color: red;">这里非常重要, 为什么我必须要规定a为c的最小质因子呢?</span>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> eratosthenes</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> n) {</span></span>
+<span class="line"><span style="color:#6A737D">    // 用来存放质数</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#E1E4E8">[] set </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8">[n </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#6A737D">    // 用来标记合数</span></span>
+<span class="line"><span style="color:#F97583">    boolean</span><span style="color:#E1E4E8">[] bol </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#F97583"> boolean</span><span style="color:#E1E4E8">[n </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#E1E4E8"> count </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> n; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // 如果 i 是素数 存放在 set 里</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">bol[i]){</span></span>
+<span class="line"><span style="color:#6A737D">            // count 统计的目前 质数的个数 正好可以用这个 count 将 质数顺序的存放在 set 集合中</span></span>
+<span class="line"><span style="color:#E1E4E8">            set[count] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> i;</span></span>
+<span class="line"><span style="color:#E1E4E8">            count</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        /*</span></span>
+<span class="line"><span style="color:#6A737D">         根据 合数的定义(一个合数肯定是若干素数的乘积) 所以素数的倍数一定是合数</span></span>
+<span class="line"><span style="color:#6A737D">         所以 用 这个素数, 乘以现在已知的其他素数, 那么得到的会是一个个合数 在 bol 中标记</span></span>
+<span class="line"><span style="color:#6A737D">          */</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> j </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; j </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> count; j</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">            // 排除掉 超过 n 的合数</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (i </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> set[j] </span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> n) </span><span style="color:#F97583">break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">            // 为合数在 bol 中做标记</span></span>
+<span class="line"><span style="color:#E1E4E8">            bol[i</span><span style="color:#F97583">*</span><span style="color:#E1E4E8">set[j]] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (i</span><span style="color:#F97583">%</span><span style="color:#E1E4E8">set[j] </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8"> ) </span><span style="color:#F97583">break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<p>这里set[j] 就代表质数数组 2,3,5,7…。
+不难发现,每一轮循环 ,对于每一个set[j] (质数),他只用了 i 值 一次,这里也是和埃氏筛法 不同的地方(埃氏筛法是 把每一个素数的 倍数在一个循环内标记完,标记出来的就不是素数), 而欧拉筛法每次只标记每个质数的i倍,标记出来的就不是素数,这是欧拉筛法的大体方向。</p>
+<p>细细思考,这两种方法似乎是一样的 , 有点类似与 a<em>b 和 b</em>a 的感觉。</p>
+<p>但是真的是这样吗?</p>
+<p>大家都知道, 埃氏筛法会有重复标记,这是不可避免的,因为这个算法一下子标记了一个质数的 2,3,4,5,6…n倍,而就在这 2,3,4,5,6…n 这些数中,还可能分解出更小的质数,而这个更小的质数,在执行它的循环时,肯定标记过 从 2到n中的数,而到这次循环时又标记了一次,这种重复计算 极大的降低了效率,而且没有了优化的空间。</p>
+<p>比如 12 = 2<em>6 在 埃氏筛中, 第一轮 质数2 就已经把 12 给筛走了 但是12 = 3</em>4 ,第二轮 质数 3 又筛选了一次。</p>
+<p>而欧拉筛呢 ,他是第一轮循环 把 记录的所有质数 的 2 倍给 筛出来, 筛出来的就不是素数,第二轮把记录的所有的质数 的 3倍筛出来,筛出来的就不是素数,第三轮把记录的所有质数的4倍筛出来,筛出来的就不是素数…。
+如果仅仅按照这个思路, 欧拉筛和埃氏筛一模一样,就是 a<em>b 和 b</em>a 的关系 。</p>
+<p>所以欧拉筛的 精华来了。</p>
+<p>if(i % prime[j]==0) break</p>
+<p>先告诉你它的作用,防止重复筛选。那为什么呢?</p>
+<p>我们来看我们一开始说的内容。
+由唯一分解定理可知,任意一个自然数i必然可以 i = a<em>b ( a为c的最小质因子这里非常重要,为什么我必须要规定 a为c的最小质因子呢?
+可能 i 还可以被写成 i = c</em>d 的形式 ,但我们只要 a * b。
+我们举个例子</p>
+<p>12 = 2<em>6
+12 = 3</em>4
+当对12 进行筛选的时候 ,在 12 % 2 ==0 那么直接跳出循环,3没有机会再对12进行标记。</p>
+<h2 id="双指针算法">双指针算法</h2>
+<p>双指针指的是在遍历对象的过程中,不是普通的使用单个指针进行访问,而是使用两个相同方向(快慢指针)或者相反方向(对撞指针)的指针进行扫描,从而达到相应的目的。最常见的双指针算法有两种: 一种是,再一个序列里边,用两个指针维护一段区间;另一种是,在两个序列里边,一个指针指向其中一个序列,另外一个指针指向另一个序列,来维护某种次序。</p>
+<p>双指针算法的核心思想(作用): 优化。</p>
+<p>在利用双指针算法解题时,考虑原问题如何用暴力算法解出,观察是否可构成单调性,若可以,就可采用双指针算法对暴力算法进行优化,当我们采用朴素的方法即暴力枚举每一种可能的情况,时间复杂度为O(n<sup>2</sup>),而当我们使用双指针算法通过某种性质就可以将上述的O(n<sup>2</sup>)的操作优化到O(n)。</p>
+<h3 id="暴力算法和双指针算法区别">暴力算法和双指针算法区别</h3>
+<p>由于具有某种单调性,朴素算法往往能优化为双指针算法。</p>
+<p>区别:</p>
+<ul>
+<li>朴素算法每次在第二层遍历的时候,是会从新开始(j会回溯到初始位置),然后再遍历下去。(假设i是终点,j是起点)。</li>
+<li>双指针算法: 由于具有某种单调性,每次在第二层遍历的时候,不需要回溯到初始位置(单调性),而是在满足要求的位置继续走下去或者更新掉。</li>
+</ul>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> removeDuplicates</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8">[] nums) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8">(nums.length </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> j </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;j </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> nums.length; j</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8">(nums[j] </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> nums[i]) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            nums[i] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> nums[j];</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<h2 id="二分法">二分法</h2>
+<p>二分法通常又叫二分查找,一般用于查找一个有序数组中的某个值的位置或者给定的特定值的插入位置。</p>
+<p>相比把整个数组遍历一次的O(n)复杂度,二分查找可以把复杂度降低到O(logn)。</p>
+<p>二分法一定是建立在元素有序的前提下(或数据具有二段性),所以看到题目中出现有序数组等词时,并且要求我们查找某个值或者给一个值求插入位置,或者判断其中是否存在某个值或者利用二分思路求最大最小值等。</p>
+<p>二分法思路很简单,无非就是每次根据中值判断,然后缩减区间到原来的一半,二分法最容易出错的地方在于边界和细节处理。</p>
+<p>二分法的边界模板分为两种:</p>
+<ul>
+<li><code>一种是左闭右闭的区间写法[left,right];while(left &lt;= right) left 的改变为left=mid+1,right的改变为right=mid-1</code></li>
+<li><code>一种是左闭右开的区间写法[left,right);while(left &lt; right) left的改变为left=mid+1,right的改变为right=mid</code></li>
+</ul>
+<p>x的平方根肯定在0到x之间,使用二分查找定位该数字,该数字的平方一定是最接近x的,m平方值如果大于x,则往左边找,如果小于等于x则往右边找。找到0和x的最中间的数m,如果m<em>m &gt; x,则m取x/2到x的中间数字,直到m</em>m &lt; x,m则为平方根的整数部分。</p>
+<p>如果m * m &lt; =x,则取0到x/2的中间值,直到两边的界限重合,找到最大的整数,则为x平方根的整数部分。时间复杂度: O(logn)。</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> binarySearch</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> x) {</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#E1E4E8"> index </span><span style="color:#F97583">=</span><span style="color:#F97583"> -</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">,l </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">,r </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x;</span></span>
+<span class="line"><span style="color:#F97583">    while</span><span style="color:#E1E4E8">(l </span><span style="color:#F97583">&lt;=</span><span style="color:#E1E4E8"> r) {</span></span>
+<span class="line"><span style="color:#F97583">      int</span><span style="color:#E1E4E8"> mid </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> l </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> (r </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> l)</span><span style="color:#F97583">/</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8">(mid </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> mid </span><span style="color:#F97583">&lt;=</span><span style="color:#E1E4E8"> x) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        index </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> mid;</span></span>
+<span class="line"><span style="color:#E1E4E8">        l </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> mid </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">      } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        r </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> mid </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> index;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div> 
+<h2 id="牛顿迭代">牛顿迭代</h2>
+<p>牛顿迭代法是一种求方程f(x)=0近似解的一种方法。</p>
+<p>假设我们现在得到的近似解是xi,然后我们画出在(xi,f(xi))点与曲线相切的直线,该直线与x轴相交会得到一个xi+1。根据导数与直线斜率的关系,我们可以得到: f’(xi)=(f(xi))/(xi-xi+1)。整理后得到如下递推式: xi+1=xi-f(xi)/f’(xi)。根据本递推式我们可以知道如果曲线平滑,随着迭代次数的增加,xi将愈发接近方程的解。牛顿迭代法的收敛率是平方级的,即每次迭代精度会翻倍。然而在方程有多个解时可能最后收敛的结果只会确定少数的解。</p>
+<p>应用牛顿-拉弗森方法,要注意以下问题:</p>
+<ul>
+<li>函数在整个定义域内最好是二阶可导的</li>
+<li>起始点对求根计算影响重大,可以增加一些别的判断手段进行试错</li>
+</ul>
+<p>假设平方根是i,则i和x/i必然都是x的因子,而x/i必然等于i,推导出i + x/i = 2 * i,得出i = (i + x/i) / 2。</p>
+<p>由此得出解法,i可以任选一个值,只要上述公式成立,i必然就是x的平方根,如果不成立, (i + x/i) / 2 得出的值进行递归,直至得出正确解。</p>
+<!-- remove bg-neutral-200/30 --><div class="code-container"> <pre class="shiki shiki-themes code dark:shadow-2xl"><button aria-label="copy-button" class="copy-button rounded-md transition-all ease-in dark:text-gray-600 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 z-[2]"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path> <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path> </svg></button><span class="check-span rounded-md transition-all ease-in opacity-0 text-green-600 dark:text-green-400"><svg class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M5 12l5 5l10 -10"></path> </svg></span><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> newton</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> x) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8">(x </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">int</span><span style="color:#E1E4E8">)</span><span style="color:#B392F0">sqrt</span><span style="color:#E1E4E8">(x,x);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> double</span><span style="color:#B392F0"> sqrt</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#E1E4E8"> i, </span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> x) {</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#E1E4E8"> res </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (i </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> x</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">i)</span><span style="color:#F97583">/</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8">(res </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> i) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> i;</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> sqrt</span><span style="color:#E1E4E8">(res, x);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre> </div>  </div> <div class="mb-12 flex flex-wrap gap-2 gap-y-4 md:gap-5"> <a href="/tags/java" aria-label="java"> <!-- <span
+		class="w-fit rounded-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2"
+	> --> <span class="w-fit rounded-full px-2 py-1 text-sm font-semibold shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2">
+#java </span> </a><a href="/tags/algorithm" aria-label="algorithm"> <!-- <span
+		class="w-fit rounded-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2"
+	> --> <span class="w-fit rounded-full px-2 py-1 text-sm font-semibold shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2">
+#algorithm </span> </a> </div> <!-- related posts --> <footer> <h2 class="mb-6 text-lg font-bold dark:text-white">Related Posts</h2> <section class="flex flex-col md:flex-row sm:justify-between gap-8"> <div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/zebra-1_2g61Ku.webp" class="h-16 w-16 rounded-full object-cover" alt="img of Single test coverage statistical principle" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/interview/unittest/single-test-coverage-statistical-principle/"> 单测覆盖率是如何统计的?原理是什么? </a> </header> </div><div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/triger-2_gBaCF.webp" class="h-16 w-16 rounded-full object-cover" alt="img of How to unit test the JDBC layer" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/interview/unittest/how-to-unit-test-the-jdbc-layer/"> 如何对JDBC这一层做单元测试 </a> </header> </div><div class="flex flex-wrap gap-2"> <div class="min-h-full"> <img src="/_astro/pexels-pixabay-69932_1bV4DH.webp" class="h-16 w-16 rounded-full object-cover" alt="img of How to make a single test Mock" width="200" height="200" loading="lazy" decoding="async"> </div> <header class="flex items-center justify-center"> <a class="font-medium hover:underline" href="/post/zh-cn/interview/unittest/how-to-make-a-single-test-mock/"> 什么是Mock?怎么做单测的Mock? </a> </header> </div> </section> </footer> </article> </div>  </div> </article> <button aria-label="Back to Top" class="z-90 fixed bottom-8 end-4 flex h-10 w-10 translate-y-28 items-center justify-center rounded-full border-2 border-transparent bg-[#f8f9fa99] text-3xl opacity-0 transition-all duration-300 hover:border-zinc-400 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 dark:border-slate-50/[0.06] dark:bg-slate-900/75 sm:end-8 sm:h-12 sm:w-12" data-show="false" id="to-top-btn" style="opacity: 1;--tw-translate-y: -26px;
+		transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));"> <svg aria-hidden="true" class="h-6 w-6" fill="none" focusable="false" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <path d="M4.5 15.75l7.5-7.5 7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button>  <footer class="flex h-28 w-full items-center justify-center border-t-2 px-16">
+&copy; 2024 chou403 · Powered by &nbsp;<a href="https://astro.build" style="color:cornflowerblue;">Astro</a>&nbsp;& &nbsp;<a href="https://blog-template-gray.vercel.app" style="color:cornflowerblue;">OpenBlog</a> </footer> </main>    </body> </html>  <div> <div class="fixed inset-0 z-50 hidden" id="headlessui-dialog-:Rlb6:" role="dialog" aria-modal="true" data-headlessui-state="open"> <div class="fixed inset-0 bg-black/20 backdrop-blur-sm dark:bg-slate-900/80" id="" aria-hidden="true" data-headlessui-state="open"></div> <div class="relative w-80 max-w-[calc(100%-3rem)] bg-white p-6 dark:bg-slate-800" id="toc_content"> <button id="close-dialog-page" type="button" class="absolute right-5 top-5 z-10 flex h-8 w-8 items-center justify-center text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300" tabindex="0"><span class="sr-only">Close navigation</span> <svg viewBox="0 0 10 10" class="h-2.5 w-2.5 overflow-visible"> <path d="M0 0L10 10M10 0L0 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </svg> </button> <nav class="h-[59rem] max-w-xs dark:text-black"> <h1 class="mb-3 text-2xl font-bold dark:text-white">On this page</h1> <ul class="sidebar flex flex-col gap-4 [text-wrap:balance]"> <li class="flex flex-col"> <a href="#算法复杂度" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 算法复杂度 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#时间复杂度分析" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 时间复杂度分析 </a>  </li><li class="flex flex-col"> <a href="#空间复杂度" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 空间复杂度 </a>  </li><li class="flex flex-col"> <a href="#递归" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 递归 </a>  </li><li class="flex flex-col"> <a href="#栈和队列" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 栈和队列 </a>  </li><li class="flex flex-col"> <a href="#树" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 树 </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#排序" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 排序 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#冒泡排序" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 冒泡排序 </a>  </li><li class="flex flex-col"> <a href="#选择排序" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 选择排序 </a>  </li><li class="flex flex-col"> <a href="#插入排序" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 插入排序 </a>  </li><li class="flex flex-col"> <a href="#快速排序" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 快速排序 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#快速排序中的基准数" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 快速排序中的基准数 </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#希尔排序" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 希尔排序 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#希尔排序中的增量序列" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 希尔排序中的增量序列 </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#归并排序" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 归并排序 </a>  </li><li class="flex flex-col"> <a href="#堆排序" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 堆排序 </a>  </li><li class="flex flex-col"> <a href="#计数排序" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 计数排序 </a>  </li><li class="flex flex-col"> <a href="#桶排序" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 桶排序 </a>  </li><li class="flex flex-col"> <a href="#基数排序" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 基数排序 </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#位运算" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 位运算 </a>  </li><li class="flex flex-col"> <a href="#字符串处理" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 字符串处理 </a>  </li><li class="flex flex-col"> <a href="#动态规划" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 动态规划 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#动态规划定义" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 动态规划定义 </a>  </li><li class="flex flex-col"> <a href="#动态规划的解题步骤" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 动态规划的解题步骤 </a>  </li><li class="flex flex-col"> <a href="#什么样的问题适合用动态规划" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 什么样的问题适合用动态规划? </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#埃氏筛和欧拉筛" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 埃氏筛和欧拉筛 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#埃氏筛" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 埃氏筛 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#基本思想" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 基本思想 </a>  </li><li class="flex flex-col"> <a href="#缺陷" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 缺陷 </a>  </li><li class="flex flex-col"> <a href="#代码案例" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 代码案例** </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#欧拉筛线性筛" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 欧拉筛(线性筛) </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#双指针算法" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 双指针算法 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#暴力算法和双指针算法区别" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 暴力算法和双指针算法区别 </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#二分法" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 二分法 </a>  </li><li class="flex flex-col"> <a href="#牛顿迭代" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 牛顿迭代 </a>  </li> </ul> </nav> </div> </div> </div> 

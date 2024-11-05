@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth" data-astro-cid-37fxchfa> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico" type="image/x-icon"><!-- <link rel="icon" type="image/svg+xml" href="/favicon1.svg" /> --><meta name="generator" content="Astro v4.16.2"><!-- Canonical URL --><link rel="canonical" href="https://blog-template-gray.vercel.app/post/zh-cn/network/ftp-bt-pt/"><!-- Primary Meta Tags --><title>FTP BT PT • 知道的越多,才知知道的越少</title><!-- ViewTransitions  --><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><!-- SEO --><meta name="title" content="FTP BT PT • 知道的越多,才知知道的越少"><meta name="description" content="FTP BT PT 描述"><meta name="author" content="chou403"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://blog-template-gray.vercel.app/post/zh-cn/network/ftp-bt-pt/"><meta property="og:title" content="FTP BT PT"><meta property="og:description" content="FTP BT PT 描述"><meta property="og:image" content="https://blog-template-gray.vercel.app/_astro/cat-23.jpg"><meta property="article:author" content="chou403"><meta property="article:published_time" content="2024-10-11T15:42:27.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://blog-template-gray.vercel.app/post/zh-cn/network/ftp-bt-pt/"><meta property="twitter:title" content="FTP BT PT"><meta property="twitter:description" content="FTP BT PT 描述"><meta property="twitter:image" content="https://blog-template-gray.vercel.app/_astro/cat-23.jpg"><!-- RSS auto-discovery --><link rel="alternate" type="application/rss+xml" title="知道的越多,才知知道的越少" href="/rss.xml"><link as="font" crossorigin rel="preload" href="/fonts/Manrope-Bold.woff2" type="font/woff2"><style>@font-face {font-weight: 200;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-ExtraLight.woff2)} @font-face {font-weight: 300;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Light.woff2)} @font-face {font-weight: 400;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Regular.woff2)} @font-face {font-weight: 500;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Medium.woff2)} @font-face {font-weight: 600;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-SemiBold.woff2)} @font-face {font-weight: 700;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-Bold.woff2)} @font-face {font-weight: 800;font-style: normal;font-family: Manrope;font-display: swap;src: url(/fonts/Manrope-ExtraBold.woff2)} @font-face { font-family: '_font_fallback_1532247741214'; size-adjust: 103.76%; src: local('Arial'); ascent-override: 102.74%; descent-override: 28.91%; line-gap-override: 0.00%; }</style><script>
+	function getTheme() {
+		const storedTheme = typeof localStorage !== 'undefined' && localStorage.getItem('theme')
+
+		return (
+			storedTheme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+		)
+	}
+
+	function setTheme(newTheme) {
+		const html = document.documentElement
+		const isDark = newTheme === 'dark'
+
+		html.classList.toggle('dark', isDark)
+		html.classList.toggle('light', !isDark)
+
+		localStorage.setItem('theme', newTheme)
+	}
+
+	// set initial theme
+	setTheme(getTheme())
+	document.addEventListener('astro:after-swap', () => setTheme(getTheme()))
+
+	document.addEventListener('theme-change', (e) => {
+		setTheme(e.detail.theme)
+	})
+</script><script>
+	if (!('animations' in localStorage)) {
+		localStorage.setItem('animations', 'true')
+	} else {
+		localStorage.setItem('animations', 'false')
+	}
+</script><link rel="stylesheet" href="/_astro/_page_.CCiJ3j76.css">
+<link rel="stylesheet" href="/_astro/_slug_.Ba2ksmBT.css"><script type="module" src="/_astro/hoisted.D9DAUC0s.js"></script></head> <body class="mx-auto bg-white dark:bg-slate-900 dark:text-slate-400 dark:text-white" data-astro-cid-37fxchfa> <main class="mt-4 grid gap-12 overflow-hidden px-5 antialiased sm:mx-auto sm:max-w-2xl sm:px-8 md:max-w-6xl md:overflow-visible lg:px-0" data-astro-cid-37fxchfa> <header class="fixed left-0 top-0 z-50 flex h-12 w-full items-center bg-[#f8f9fa99] px-5 py-2.5 font-semibold dark:border-slate-50/[0.06] dark:bg-slate-900/60"> <a class="mr-auto text-lg" href="/">Home</a> <div id="astro-header-drawer" class="absolute right-1 top-12 z-50 translate-x-96 rounded-l-lg bg-white p-4 text-slate-500 shadow transition-transform duration-300 ease-in dark:bg-[#0a0910] md:static md:h-auto md:translate-x-0 md:rounded-none md:border-none md:bg-transparent md:p-0 md:shadow-none dark:md:bg-transparent"> <nav class="flex h-full justify-between gap-2 text-left md:w-full md:flex-row md:gap-5"> <div class="flex flex-col gap-4 border-black pr-4 dark:border-white md:flex-row md:border-r-2"> <a href="/tags" class="text-opacity-60 flex items-center gap-1 text-2xl md:text-base" rel="noopener noreferrer ">  <svg xmlns="http://www.w3.org/2000/svg" class="w-8 md:w-6" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M7.859 6h-2.834a2.025 2.025 0 0 0 -2.025 2.025v2.834c0 .537 .213 1.052 .593 1.432l6.116 6.116a2.025 2.025 0 0 0 2.864 0l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-6.117 -6.116a2.025 2.025 0 0 0 -1.431 -.593z"></path> <path d="M17.573 18.407l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-7.117 -7.116"></path> <path d="M6 9h-.01"></path> </svg> Tags
+ </a> </div> <div class="flex items-center justify-center gap-3 md:justify-end md:p-0"> <a href="https://github.com/chou403/chou403.github.io" class="text-opacity-60" rel="noopener noreferrer " target="_blank" aria-label="Github">  <span><svg viewBox="0 0 16 16" class="h-5 w-5" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg> </span>  </a> </div> <!-- <LanguageSwitcher client:load /> --> </nav> </div> <div class="flex items-center gap-3 text-slate-500 md:pl-3" data-astro-transition-persist="navbar"> <div> <site-search id="search" class="ms-auto"> <button data-open-modal disabled class="flex items-center justify-center rounded-md gap-1"> <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 19-3.5-3.5"></path><circle cx="11" cy="11" r="6"></circle></svg> <!-- <span class='md:hidden text-2xl'> Search</span> --> </button> <dialog aria-label="search" class="h-full max-h-full w-full max-w-full border border-zinc-400 bg-white dark:bg-[#0a0910ec] shadow backdrop:backdrop-blur sm:mx-auto sm:mb-auto sm:mt-16 sm:h-max sm:max-h-[calc(100%-8rem)] sm:min-h-[15rem] sm:w-5/6 sm:max-w-[48rem] sm:rounded-md opacity-0"> <div class="dialog-frame flex flex-col gap-4 p-6 pt-12 sm:pt-6"> <button data-close-modal class="ms-auto cursor-pointer rounded-full bg-black text-white px-4 py-2 dark:bg-white dark:text-black">Close</button> <div class="search-container dark:text-white"> <div id="pagefind__search"></div> </div> </div> </dialog> </site-search>   </div>  <theme-toggle class="relative h-6 w-6"> <button id="toggle-theme" class="group" aria-label="Toggle Theme"> <span class="absolute left-0 right-0 top-0 opacity-0 group-aria-pressed:opacity-100"> <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.715 15.15A6.5 6.5 0 0 1 9 6.035C6.106 6.922 4 9.645 4 12.867c0 3.94 3.153 7.136 7.042 7.136 3.101 0 5.734-2.032 6.673-4.853Z" class="fill-sky-400/20"></path><path d="m17.715 15.15.95.316a1 1 0 0 0-1.445-1.185l.495.869ZM9 6.035l.846.534a1 1 0 0 0-1.14-1.49L9 6.035Zm8.221 8.246a5.47 5.47 0 0 1-2.72.718v2a7.47 7.47 0 0 0 3.71-.98l-.99-1.738Zm-2.72.718A5.5 5.5 0 0 1 9 9.5H7a7.5 7.5 0 0 0 7.5 7.5v-2ZM9 9.5c0-1.079.31-2.082.845-2.93L8.153 5.5A7.47 7.47 0 0 0 7 9.5h2Zm-4 3.368C5 10.089 6.815 7.75 9.292 6.99L8.706 5.08C5.397 6.094 3 9.201 3 12.867h2Zm6.042 6.136C7.718 19.003 5 16.268 5 12.867H3c0 4.48 3.588 8.136 8.042 8.136v-2Zm5.725-4.17c-.81 2.433-3.074 4.17-5.725 4.17v2c3.552 0 6.553-2.327 7.622-5.537l-1.897-.632Z" class="fill-sky-500"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M17 3a1 1 0 0 1 1 1 2 2 0 0 0 2 2 1 1 0 1 1 0 2 2 2 0 0 0-2 2 1 1 0 1 1-2 0 2 2 0 0 0-2-2 1 1 0 1 1 0-2 2 2 0 0 0 2-2 1 1 0 0 1 1-1Z" class="fill-sky-500"></path></svg> </span> <span class="absolute left-0 right-0 top-0 opacity-0 group-aria-[pressed=false]:opacity-100"> <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" class="fill-sky-400/20 stroke-sky-500"></path><path d="M12 4v1M17.66 6.344l-.828.828M20.005 12.004h-1M17.66 17.664l-.828-.828M12 20.01V19M6.34 17.664l.835-.836M3.995 12.004h1.01M6 6l.835.836" class="stroke-sky-500"></path></svg> </span> </button> </theme-toggle> <script>
+	const button = document.getElementById('toggle-theme')
+
+	function setButtonPresssed() {
+		const bodyThemeIsDark = document.documentElement.classList.contains('dark')
+		button.setAttribute('aria-pressed', String(bodyThemeIsDark))
+	}
+	setButtonPresssed()
+</script> <button id="toggleMenu" class="md:ml-6 md:hidden"> <svg width="24" height="24"><path d="M5 6h14M5 12h14M5 18h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg> </button> <button id="astro-header-drawer-button" type="button" class="md:ml-6 md:hidden"> <svg width="24" height="24" fill="none" aria-hidden="true"><path d="M12 6v.01M12 12v.01M12 18v.01M12 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> <span class="sr-only">Show Menu</span> </button> </div> </header>  <div class="pointer-events-none absolute inset-x-0 top-0 z-[60] flex justify-center overflow-hidden"> <div class="flex w-[108rem] flex-none justify-end"> <picture> <source srcset="/_astro/docs.BiePeNN8.avif" type="image/avif"> <img src="/_astro/docs.BeNwu2rW_1CTG48.webp" class="w-[71.75rem] max-w-none flex-none dark:hidden" alt="img of docs" width="200" height="200" loading="lazy" decoding="async"> </picture> <picture> <source srcset="/_astro/docs-dark.C7CksN2y.avif" type="image/avif"> <img src="/_astro/docs-dark.Bsq-hjJH_17S3ea.webp" class="hidden w-[90rem] max-w-none flex-none dark:block" alt="img of docs-dark" width="200" height="200" loading="lazy" decoding="async"> </picture> </div> </div>  <article class="mt-12 min-w-full sm:max-w-none md:max-w-none md:py-4"> <header class="mb-3 flex flex-col gap-6"> <div class="flex flex-wrap gap-2"> <div class="flex items-center justify-center"> <h1 class="text-4xl font-semibold md:pb-2.5 md:text-4xl"> FTP BT PT 描述 </h1> </div> </div> <div class="flex gap-x-1"> <p class="text-center text-sm font-bold text-opacity-50"> chou403 </p> <p class="text-center text-sm font-bold text-opacity-50">
+/ Network </p> <p class="text-center text-sm text-opacity-50">
+/ <time class="text-sm font-bold text-opacity-60" datetime="2024-10-11T15:42:27.000Z"> Oct 11, 2024 </time> </p> <p class="text-center text-sm font-bold text-opacity-50">
+/ 9 min read </p> <!-- {
+					data.updatedDate && (
+						<span class="text-quote rounded-lg p-1">
+							Last Updated:
+							<FormattedDate date={data.updatedDate} />
+						</span>
+					)
+				} --> </div> </header> <!-- annotate blog post image --> <!-- <>
+			{
+				heroImage && (
+					<Image
+						src={heroImage}
+						width={1000}
+						height={500}
+						quality={100}
+						format="jpg"
+						loading="eager"
+						class="my-8 max-h-[300px] w-full rounded-md object-cover md:max-h-[500px]"
+						alt={`img of ${title}`}
+					/>
+				)
+			}
+		</> --> <hr> <div>   <div class="mt-8 grid grid-cols-1 gap-10"> <!-- aside  --> <!-- Left menu bar comments --> <!-- <aside class="hidden flex-col gap-8 md:flex">
+			<div class="sticky top-12 z-10 hidden self-start transition-all duration-200 md:block">
+				{headings && headings.length > 0 && <TableOfContents {headings} />}
+			</div>
+		</aside> --> <!-- post --> <article class="grid w-full max-w-full"> <div class="prose prose-lg mb-12 min-w-full dark:prose-invert md:prose-xl"> <h2 id="一学一个不吱声">一学一个不吱声</h2>
+<p>FTP、BT 和 PT 这三者都是文件传输技术或协议,它们的出现是为了满足不同场景下的文件共享和传输需求。以下是对它们的详细描述,包括具体的用途、实际操作、优缺点以及它们出现的原因和三者的区别。</p>
+<h3 id="1-ftpfile-transfer-protocol">1. <strong>FTP(File Transfer Protocol)</strong></h3>
+<h4 id="用途"><strong>用途</strong></h4>
+<p>FTP 是用于在客户端和服务器之间传输文件的标准网络协议。它的主要用途是让用户通过网络上传或下载文件,通常用于网站管理、文件共享或备份等。</p>
+<h4 id="实际操作"><strong>实际操作</strong></h4>
+<ul>
+<li>使用 FTP 客户端(如 FileZilla、Cyberduck)连接到 FTP 服务器。</li>
+<li>输入服务器地址、用户名和密码(部分服务器允许匿名登录)。</li>
+<li>登录后,可以浏览服务器上的文件夹,上传或下载文件。</li>
+</ul>
+<h4 id="优点"><strong>优点</strong></h4>
+<ul>
+<li><strong>简单高效</strong>:适用于单个用户或小型团队的文件传输。</li>
+<li><strong>支持大文件</strong>:可以方便地上传和下载大文件。</li>
+<li><strong>成熟技术</strong>:广泛支持,操作和实现简单。</li>
+</ul>
+<h4 id="缺点"><strong>缺点</strong></h4>
+<ul>
+<li><strong>安全性较差</strong>:FTP 默认是不加密的,容易被窃听或篡改。尽管有 FTPS 和 SFTP 作为安全版本,但原生 FTP 本身不安全。</li>
+<li><strong>依赖中心服务器</strong>:服务器故障或网络问题会导致服务中断。</li>
+<li><strong>文件传输速度较慢</strong>:尤其在高并发下会出现瓶颈。</li>
+</ul>
+<h4 id="出现的原因"><strong>出现的原因</strong></h4>
+<p>FTP 出现于 1970 年代,用于满足互联网早期文件传输的需求。当时互联网刚刚起步,文件共享和传输是主要的应用之一,而 FTP 则成为满足这一需求的标准协议。</p>
+<hr/>
+<h3 id="2-btbittorrent">2. <strong>BT(BitTorrent)</strong></h3>
+<h4 id="用途-1"><strong>用途</strong></h4>
+<p>BT 是一种点对点(P2P)文件共享协议,主要用于大文件的分发。其最大的特点是通过多个节点同时传输文件的不同部分,提升传输效率。BT 广泛用于分发大型软件、游戏、电影等内容。</p>
+<h4 id="实际操作-1"><strong>实际操作</strong></h4>
+<ul>
+<li>用户下载 <code>.torrent</code> 文件或点击磁力链接(Magnet link),使用 BT 客户端(如 uTorrent、qBittorrent)启动下载。</li>
+<li>文件被分块,用户既是下载者又是上传者,文件块来自其他对等节点(peers)。</li>
+<li>下载完成后,用户可以选择继续做种(上传文件),以支持其他下载者。</li>
+</ul>
+<h4 id="优点-1"><strong>优点</strong></h4>
+<ul>
+<li><strong>分布式传输</strong>:下载文件时可以从多个节点获取数据,下载速度通常较快。</li>
+<li><strong>带宽分担</strong>:下载的人越多,上传的节点也越多,下载速度反而提高。</li>
+<li><strong>去中心化</strong>:不依赖于单一服务器,降低了服务器的负载。</li>
+</ul>
+<h4 id="缺点-1"><strong>缺点</strong></h4>
+<ul>
+<li><strong>需要源节点</strong>:如果没有人做种,下载将无法继续。</li>
+<li><strong>网络环境要求较高</strong>:需要稳定的网络连接,否则可能影响下载速度和稳定性。</li>
+<li><strong>版权争议</strong>:因为 BT 常用于共享大文件,有时会涉及版权问题。</li>
+</ul>
+<h4 id="出现的原因-1"><strong>出现的原因</strong></h4>
+<p>BT 出现于 2000 年代早期,用于解决传统集中式文件下载的低效问题。随着互联网用户增长、文件体积变大,传统的服务器-客户端模式无法应对大量用户同时下载的问题。BT 通过分布式传输提高了传输效率。</p>
+<hr/>
+<h3 id="3-ptprivate-tracker">3. <strong>PT(Private Tracker)</strong></h3>
+<h4 id="用途-2"><strong>用途</strong></h4>
+<p>PT 是 BT 的一种私有变体,使用私人跟踪器(Private Tracker)来管理文件共享。PT 网络通常是一个封闭的社区,只有获得邀请的用户才能加入,用户必须遵守上传和下载比率(Ratio)要求。它主要用于提供更高质量和更稳定的资源分享。</p>
+<h4 id="实际操作-2"><strong>实际操作</strong></h4>
+<ul>
+<li>用户需要通过邀请链接注册,成为 PT 社区的一员。</li>
+<li>使用 BT 客户端下载资源,但只能通过特定的私人跟踪器下载和上传文件。</li>
+<li>PT 社区通常有严格的比率要求,用户必须上传足够的文件块,以维持一定的比率,防止“吸血”(只下载不上传)。</li>
+</ul>
+<h4 id="优点-2"><strong>优点</strong></h4>
+<ul>
+<li><strong>资源质量高</strong>:PT 社区通常分享高质量的资源,且文件有详细的描述和审核。</li>
+<li><strong>速度快</strong>:由于上传/下载比率要求,资源丰富且下载速度快。</li>
+<li><strong>更稳定的社区</strong>:由于成员都是受邀的,并且有贡献要求,资源的持久性和稳定性比公共 BT 网络更高。</li>
+</ul>
+<h4 id="缺点-2"><strong>缺点</strong></h4>
+<ul>
+<li><strong>加入门槛高</strong>:需要邀请,难以获得加入机会。</li>
+<li><strong>比率压力</strong>:用户需要保持较高的上传比率,可能对上传带宽要求较高。</li>
+<li><strong>相对封闭</strong>:资源仅限于特定社区,不像公共 BT 那样广泛共享。</li>
+</ul>
+<h4 id="出现的原因-2"><strong>出现的原因</strong></h4>
+<p>PT 出现是为了解决 BT 网络中的“吸血”问题,即一些用户只下载而不上传,导致网络中缺乏共享资源。通过设置私有跟踪器和上传比率要求,PT 社区保证了资源的高质量和可持续性。</p>
+<hr/>
+<h3 id="三者的区别"><strong>三者的区别</strong></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th><strong>FTP</strong></th><th><strong>BT</strong></th><th><strong>PT</strong></th></tr></thead><tbody><tr><td><strong>架构</strong></td><td>客户端-服务器模式,依赖中心服务器</td><td>分布式点对点模式,文件由多个用户共享</td><td>基于 BT 的分布式模式,但由私人跟踪器管理</td></tr><tr><td><strong>传输模式</strong></td><td>文件直接传输,完整文件上传/下载</td><td>文件分块传输,多个节点同时传输</td><td>分块传输,要求维持上传/下载比率</td></tr><tr><td><strong>应用场景</strong></td><td>网站管理、文件备份、公司内部共享</td><td>大规模文件分发,如游戏、电影、软件等</td><td>封闭社区内的高质量资源共享</td></tr><tr><td><strong>优点</strong></td><td>简单、直接,适合少量文件传输</td><td>下载速度快,网络越大速度越快</td><td>高质量资源,下载速度快,资源持久稳定</td></tr><tr><td><strong>缺点</strong></td><td>速度慢、不安全,依赖中心服务器</td><td>需要源节点,版权争议较多</td><td>加入门槛高,用户需要保持高上传比率</td></tr><tr><td><strong>出现原因</strong></td><td>满足早期网络文件传输需求</td><td>提高大规模文件分发的效率</td><td>解决 BT 网络的资源枯竭和分享问题</td></tr></tbody></table>
+<h3 id="总结">总结</h3>
+<ul>
+<li><strong>FTP</strong> 是最早的文件传输协议,适合少量文件或特定用户组的传输。</li>
+<li><strong>BT</strong> 通过分布式网络提升了文件共享的效率,适合大规模文件分发。</li>
+<li><strong>PT</strong> 则在 BT 的基础上形成了私密共享社区,通过严格的管理提供更高质量的资源和更稳定的下载体验。</li>
+</ul> </div> <div class="mb-12 flex flex-wrap gap-2 gap-y-4 md:gap-5"> <a href="/tags/ftp" aria-label="FTP"> <!-- <span
+		class="w-fit rounded-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2"
+	> --> <span class="w-fit rounded-full px-2 py-1 text-sm font-semibold shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2">
+#FTP </span> </a><a href="/tags/bt" aria-label="BT"> <!-- <span
+		class="w-fit rounded-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2"
+	> --> <span class="w-fit rounded-full px-2 py-1 text-sm font-semibold shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2">
+#BT </span> </a><a href="/tags/pt" aria-label="PT"> <!-- <span
+		class="w-fit rounded-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2"
+	> --> <span class="w-fit rounded-full px-2 py-1 text-sm font-semibold shadow dark:bg-indigo-900 dark:text-white md:px-5 md:py-2">
+#PT </span> </a> </div> <!-- related posts --> <footer> <h2 class="mb-6 text-lg font-bold dark:text-white">Related Posts</h2> <section class="flex flex-col md:flex-row sm:justify-between gap-8"> <span class="text-gray-500">There are no related posts yet. 😢</span> </section> </footer> </article> </div>  </div> </article> <button aria-label="Back to Top" class="z-90 fixed bottom-8 end-4 flex h-10 w-10 translate-y-28 items-center justify-center rounded-full border-2 border-transparent bg-[#f8f9fa99] text-3xl opacity-0 transition-all duration-300 hover:border-zinc-400 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 dark:border-slate-50/[0.06] dark:bg-slate-900/75 sm:end-8 sm:h-12 sm:w-12" data-show="false" id="to-top-btn" style="opacity: 1;--tw-translate-y: -26px;
+		transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));"> <svg aria-hidden="true" class="h-6 w-6" fill="none" focusable="false" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <path d="M4.5 15.75l7.5-7.5 7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button>  <footer class="flex h-28 w-full items-center justify-center border-t-2 px-16">
+&copy; 2024 chou403 · Powered by &nbsp;<a href="https://astro.build" style="color:cornflowerblue;">Astro</a>&nbsp;& &nbsp;<a href="https://blog-template-gray.vercel.app" style="color:cornflowerblue;">OpenBlog</a> </footer> </main>    </body> </html>  <div> <div class="fixed inset-0 z-50 hidden" id="headlessui-dialog-:Rlb6:" role="dialog" aria-modal="true" data-headlessui-state="open"> <div class="fixed inset-0 bg-black/20 backdrop-blur-sm dark:bg-slate-900/80" id="" aria-hidden="true" data-headlessui-state="open"></div> <div class="relative w-80 max-w-[calc(100%-3rem)] bg-white p-6 dark:bg-slate-800" id="toc_content"> <button id="close-dialog-page" type="button" class="absolute right-5 top-5 z-10 flex h-8 w-8 items-center justify-center text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300" tabindex="0"><span class="sr-only">Close navigation</span> <svg viewBox="0 0 10 10" class="h-2.5 w-2.5 overflow-visible"> <path d="M0 0L10 10M10 0L0 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </svg> </button> <nav class="h-[59rem] max-w-xs dark:text-black"> <h1 class="mb-3 text-2xl font-bold dark:text-white">On this page</h1> <ul class="sidebar flex flex-col gap-4 [text-wrap:balance]"> <li class="flex flex-col"> <a href="#一学一个不吱声" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 一学一个不吱声 </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#1-ftpfile-transfer-protocol" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 1. FTP(File Transfer Protocol) </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#用途" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 用途 </a>  </li><li class="flex flex-col"> <a href="#实际操作" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 实际操作 </a>  </li><li class="flex flex-col"> <a href="#优点" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 优点 </a>  </li><li class="flex flex-col"> <a href="#缺点" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 缺点 </a>  </li><li class="flex flex-col"> <a href="#出现的原因" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 出现的原因 </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#2-btbittorrent" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 2. BT(BitTorrent) </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#用途-1" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 用途 </a>  </li><li class="flex flex-col"> <a href="#实际操作-1" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 实际操作 </a>  </li><li class="flex flex-col"> <a href="#优点-1" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 优点 </a>  </li><li class="flex flex-col"> <a href="#缺点-1" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 缺点 </a>  </li><li class="flex flex-col"> <a href="#出现的原因-1" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 出现的原因 </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#3-ptprivate-tracker" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 3. PT(Private Tracker) </a> <ul class="ml-3"> <li class="flex flex-col"> <a href="#用途-2" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 用途 </a>  </li><li class="flex flex-col"> <a href="#实际操作-2" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 实际操作 </a>  </li><li class="flex flex-col"> <a href="#优点-2" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 优点 </a>  </li><li class="flex flex-col"> <a href="#缺点-2" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 缺点 </a>  </li><li class="flex flex-col"> <a href="#出现的原因-2" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 出现的原因 </a>  </li> </ul> </li><li class="flex flex-col"> <a href="#三者的区别" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 三者的区别 </a>  </li><li class="flex flex-col"> <a href="#总结" class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"> 总结 </a>  </li> </ul> </li> </ul> </nav> </div> </div> </div> 
